@@ -73,3 +73,25 @@ final class RoutinePlan {
         self.isSaved = isSaved
     }
 }
+
+extension RoutinePlan {
+    var items: [RoutineItem] {
+        get {
+            guard let data = itemsJSON.data(using: .utf8),
+                  let items = try? JSONDecoder().decode([RoutineItem].self, from: data) else {
+                return []
+            }
+            return items
+        }
+        set {
+            if let data = try? JSONEncoder().encode(newValue),
+               let json = String(data: data, encoding: .utf8) {
+                itemsJSON = json
+            }
+        }
+    }
+
+    var nextIncomplete: RoutineItem? {
+        items.first(where: { !$0.isCompleted })
+    }
+}

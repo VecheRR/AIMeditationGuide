@@ -11,6 +11,8 @@ import SwiftData
 struct HomeView: View {
     @Query(sort: \MeditationSession.createdAt, order: .reverse)
     private var sessions: [MeditationSession]
+    @Query(sort: \RoutinePlan.createdAt, order: .reverse)
+    private var routines: [RoutinePlan]
 
     @State private var goBreathing = false
     @State private var goRoutine = false
@@ -22,6 +24,8 @@ struct HomeView: View {
     @State private var bg: GenBackground = .none
 
     private var last: MeditationSession? { sessions.first }
+    private var latestRoutine: RoutinePlan? { routines.first }
+    private var nextPractice: RoutineItem? { routines.first?.nextIncomplete }
 
     var body: some View {
         NavigationStack {
@@ -48,6 +52,12 @@ struct HomeView: View {
                     .padding(.horizontal, 16)
                     .padding(.top, 6)
 
+                    if let latestRoutine {
+                        routineCard(plan: latestRoutine, next: nextPractice)
+                            .padding(.horizontal, 16)
+                            .padding(.top, 4)
+                    }
+
                     if let last {
                         todayCard(last)
                             .padding(.horizontal, 16)
@@ -61,7 +71,7 @@ struct HomeView: View {
                 BreathingSetupView()
             }
             .navigationDestination(isPresented: $goRoutine) {
-                RoutineStubView()
+                RoutineView()
             }
             .fullScreenCover(isPresented: $showGenerator) {
                 GeneratorFlowView()
@@ -175,5 +185,53 @@ struct HomeView: View {
         playerSession = session
         bg = session.background
         openPlayer = true
+    }
+
+    private func routineCard(plan: RoutinePlan, next: RoutineItem?) -> some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack {
+                Text("Daily Routine")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                Spacer()
+                Text(plan.createdAt, style: .date)
+                    .font(.caption2)
+                    .foregroundStyle(.secondary)
+            }
+
+            VStack(alignment: .leading, spacing: 6) {
+                if let next {
+                    Text(next.title)
+                        .font(.headline)
+                    Text("\(next.durationMinutes) min • \(next.details)")
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
+                        .lineLimit(2)
+                } else {
+                    Text("All practices completed")
+                        .font(.headline)
+                    Text("Feel free to regenerate a new flow when you're ready.")
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
+                }
+            }
+
+            Button {
+                goRoutine = true
+            } label: {
+                Text(next == nil ? "VIEW ROUTINE" : "START NEXT")
+                    .font(.caption.bold())
+                    .foregroundStyle(.green)
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 10)
+                    .background(Color.white.opacity(0.65))
+                    .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+            }
+            .buttonStyle(.plain)
+            .frame(maxWidth: .infinity, alignment: .leading)
+        }
+        .padding(12)
+        .background(Color.white.opacity(0.65))
+        .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
     }
 }
