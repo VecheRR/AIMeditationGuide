@@ -17,6 +17,8 @@ struct BreathingSessionView: View {
     @State private var countdown = 3
     @State private var isCountingDown = true
     @State private var muteHints = false
+    @State private var didSave = false
+    @State private var showCompletion = false
 
     var body: some View {
         ZStack {
@@ -43,6 +45,21 @@ struct BreathingSessionView: View {
         }
         .onDisappear {
             vm.stop()
+        }
+        .onChange(of: vm.isFinished) { finished in
+            guard finished else { return }
+            saveBreathingLogIfNeeded()
+            showCompletion = true
+        }
+        .alert("Breathing complete", isPresented: $showCompletion) {
+            Button("Close") {
+                dismiss()
+            }
+            Button("Restart") {
+                restart()
+            }
+        } message: {
+            Text("Session saved to history")
         }
     }
 
@@ -152,6 +169,12 @@ struct BreathingSessionView: View {
                 Text("Remaining")
                     .font(.caption2)
                     .foregroundColor(.secondary)
+                if !muteHints {
+                    Text(vm.instruction)
+                        .font(.footnote.weight(.medium))
+                        .foregroundStyle(.black)
+                        .padding(.top, 2)
+                }
             }
 
             Spacer()
@@ -170,37 +193,12 @@ struct BreathingSessionView: View {
     }
 
     // MARK: - Helpers
-
-    private var phaseAnimDuration: Double {
-        // не идеально физически, но выглядит натурально
-        switch vm.phase {
-        case .inhale: return 1.6
-        case .hold: return 0.9
-        case .exhale: return 1.9
-        }
-    }
-
-    private var circleScaleOuter: CGFloat {
-        if isCountingDown { return 0.65 }
-        switch vm.phase {
-        case .inhale: return 1.05
-        case .hold: return 1.05
-        case .exhale: return 0.78
-        }
-    }
-
-    private var circleScaleInner: CGFloat {
-        if isCountingDown { return 0.9 }
-        switch vm.phase {
-        case .inhale: return 1.25
-        case .hold: return 1.25
-        case .exhale: return 0.85
-        }
-    }
-
     private func startCountdown() {
         isCountingDown = true
         countdown = 3
+        didSave = false
+        showCompletion = false
+        vm.prepareForStart()
 
         Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { t in
             if countdown <= 1 {
@@ -223,5 +221,12 @@ struct BreathingSessionView: View {
         let m = s / 60
         let r = s % 60
         return String(format: "%02d:%02d", m, r)
+    }
+
+    private func saveBreathingLogIfNeeded() {
+        guard !didSave, let duration = vm.duration, let mood = vm.mood else { return }
+        let log = BreathingLog(durationSeconds: duration.seconds, mood: mood.rawValue)
+        modelContext.insert(log)
+        didSave = true
     }
 }

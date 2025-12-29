@@ -22,6 +22,8 @@ final class BreathingViewModel: ObservableObject {
     @Published var totalRemaining: Int = 0
     @Published var isRunning = false
 
+    @Published var isFinished = false
+
     // NEW: для “анимация ровно на весь вдох/выдох”
     @Published var phaseDuration: Int = 1           // сколько секунд длится текущая фаза
     @Published var phaseProgress: Double = 0        // 0...1
@@ -29,7 +31,24 @@ final class BreathingViewModel: ObservableObject {
     private var pattern: BreathingPattern?
     private var timer: Timer?
 
+    private var initialTotal: Int { duration?.seconds ?? 0 }
+
     var canStart: Bool { mood != nil && duration != nil }
+
+    var instruction: String {
+        switch phase {
+        case .inhale:
+            return "Inhale slowly"
+        case .hold:
+            return "Hold gently"
+        case .exhale:
+            return "Exhale fully"
+        }
+    }
+
+    func prepareForStart() {
+        totalRemaining = initialTotal
+    }
 
     func start() {
         guard let mood, let duration else { return }
@@ -39,6 +58,7 @@ final class BreathingViewModel: ObservableObject {
 
         setPhase(.inhale)
         isRunning = true
+        isFinished = false
         startTimer()
     }
 
@@ -55,6 +75,7 @@ final class BreathingViewModel: ObservableObject {
         totalRemaining = 0
         phaseDuration = 1
         phaseProgress = 0
+        isFinished = false
     }
 
     private func startTimer() {
@@ -116,5 +137,8 @@ final class BreathingViewModel: ObservableObject {
 
     private func finish() {
         stop()
+        phaseRemaining = 0
+        totalRemaining = 0
+        isFinished = true
     }
 }
