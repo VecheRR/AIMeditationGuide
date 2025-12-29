@@ -190,30 +190,30 @@
 			path = Audio;
 			sourceTree = "<group>";
 		};
-		86E6EA972F02A45000532BE2 /* Storage */ = {
-			isa = PBXGroup;
-			children = (
-				86E6EAC42F02AC1800532BE2 /* Models.swift */,
-				86E6EAC32F02AC0A00532BE2 /* AppModelContainer.swift */,
-			);
-			path = Storage;
-			sourceTree = "<group>";
-		};
-		86E6EA982F02A45800532BE2 /* Features */ = {
-			isa = PBXGroup;
-			children = (
-				86E6EAA02F02A49600532BE2 /* History */,
-				86E6EA9F2F02A48300532BE2 /* Routine */,
-				86E6EA9E2F02A47B00532BE2 /* Breathing */,
-				86E6EA9D2F02A47600532BE2 /* Player */,
-				86E6EA9C2F02A47000532BE2 /* Generator */,
-				86E6EA9B2F02A46C00532BE2 /* Home */,
-				86E6EA9A2F02A46600532BE2 /* Paywall */,
-				86E6EA992F02A46000532BE2 /* Onboarding */,
-			);
-			path = Features;
-			sourceTree = "<group>";
-		};
+86E6EA972F02A45000532BE2 /* Storage */ = {
+isa = PBXGroup;
+children = (
+86E6EAC42F02AC1800532BE2 /* Models.swift */,
+86E6EAC32F02AC0A00532BE2 /* AppModelContainer.swift */,
+);
+path = Storage;
+sourceTree = "<group>";
+};
+86E6EA982F02A45800532BE2 /* Features */ = {
+isa = PBXGroup;
+children = (
+86E6EA9E2F02A47B00532BE2 /* Breathing */,
+86E6EA9C2F02A47000532BE2 /* Generator */,
+86E6EAA02F02A49600532BE2 /* History */,
+86E6EA9B2F02A46C00532BE2 /* Home */,
+86E6EA992F02A46000532BE2 /* Onboarding */,
+86E6EA9A2F02A46600532BE2 /* Paywall */,
+86E6EA9D2F02A47600532BE2 /* Player */,
+86E6EA9F2F02A48300532BE2 /* Routine */,
+);
+path = Features;
+sourceTree = "<group>";
+};
 		86E6EA992F02A46000532BE2 /* Onboarding */ = {
 			isa = PBXGroup;
 			children = (
