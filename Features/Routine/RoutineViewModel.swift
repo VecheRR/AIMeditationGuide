@@ -30,7 +30,7 @@ final class RoutineViewModel: ObservableObject {
         let descriptor = FetchDescriptor<RoutinePlan>(sortBy: [SortDescriptor(\.createdAt, order: .reverse)])
         if let latest = try? context.fetch(descriptor).first {
             plan = latest
-            highlightedItemID = latest.nextIncomplete?.id
+            highlightedItemID = latest.status == .done ? nil : latest.nextIncomplete?.id
         }
     }
 
@@ -45,7 +45,7 @@ final class RoutineViewModel: ObservableObject {
             let data = try JSONEncoder().encode(practices)
             guard let json = String(data: data, encoding: .utf8) else { return }
 
-            let newPlan = RoutinePlan(itemsJSON: json, isSaved: false)
+            let newPlan = RoutinePlan(itemsJSON: json, isSaved: false, status: .active)
             context.insert(newPlan)
             try context.save()
 
@@ -67,7 +67,8 @@ final class RoutineViewModel: ObservableObject {
     }
 
     func start() {
-        highlightedItemID = plan?.nextIncomplete?.id
+        guard let plan else { return }
+        highlightedItemID = plan.status == .done ? nil : plan.nextIncomplete?.id
     }
 
     func markDone(item: RoutineItem) {
@@ -75,6 +76,9 @@ final class RoutineViewModel: ObservableObject {
         if let index = currentItems.firstIndex(of: item) {
             currentItems[index].isCompleted = true
             plan?.items = currentItems
+            if plan?.nextIncomplete == nil {
+                plan?.status = .done
+            }
             highlightedItemID = plan?.nextIncomplete?.id
             try? context.save()
         }
@@ -85,8 +89,21 @@ final class RoutineViewModel: ObservableObject {
         if let index = currentItems.firstIndex(of: item) {
             currentItems[index].isCompleted = false
             plan?.items = currentItems
+            plan?.status = .active
             highlightedItemID = plan?.nextIncomplete?.id
             try? context.save()
         }
+    }
+
+    func markPlanDone() {
+        guard let context, var currentItems = plan?.items else { return }
+        for index in currentItems.indices {
+            currentItems[index].isCompleted = true
+        }
+
+        plan?.items = currentItems
+        plan?.status = .done
+        highlightedItemID = nil
+        try? context.save()
     }
 }

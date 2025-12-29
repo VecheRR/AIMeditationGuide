@@ -17,9 +17,11 @@ struct RoutineGeneratorService {
             RoutineItem(title: "Grounding Breath", details: "5 minutes of calm nasal breathing to center attention.", durationMinutes: 5),
             RoutineItem(title: "Body Scan", details: "Release tension scanning from head to toes with gentle attention.", durationMinutes: 8),
             RoutineItem(title: "Loving-Kindness", details: "Repeat compassionate phrases toward yourself and others.", durationMinutes: 7),
-            RoutineItem(title: "Gratitude Journal", details: "Write down three things you appreciate right now.", durationMinutes: 5)
+            RoutineItem(title: "Gratitude Journal", details: "Write down three things you appreciate right now.", durationMinutes: 5),
+            RoutineItem(title: "Mindful Walk", details: "Step outside for a short mindful walk focusing on sensations.", durationMinutes: 10)
         ]
 
-        return practices
+        let count = Int.random(in: 1...3)
+        return Array(practices.shuffled().prefix(count))
     }
 }
