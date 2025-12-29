@@ -1,0 +1,9 @@
+//
+//  Base.xcconfig
+//  AIMeditationGuide
+//
+//  Created by  Vladislav on 29.12.2025.
+//
+
+// Общие значения для Info.plist через build settings
+INFOPLIST_KEY_CFBundleDisplayName = AI Meditation

@@ -6,13 +6,95 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		86E6EA8A2F02A3DC00532BE2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 86E6EA892F02A3DC00532BE2 /* Assets.xcassets */; };
+		86E6EAA42F02A50100532BE2 /* river.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 86E6EAA32F02A50100532BE2 /* river.mp3 */; };
+		86E6EAA62F02A51300532BE2 /* birds.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 86E6EAA52F02A51300532BE2 /* birds.mp3 */; };
+		86E6EAA82F02A51E00532BE2 /* waves.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 86E6EAA72F02A51E00532BE2 /* waves.mp3 */; };
+		86E6EAB82F02A97400532BE2 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 86E6EAB72F02A97400532BE2 /* Config.xcconfig */; };
+		86E6EAC92F02AC9800532BE2 /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E6EAC82F02AC8200532BE2 /* HistoryView.swift */; };
+		86E6EACA2F02ACA000532BE2 /* GeneratorFlowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E6EABE2F02AA9100532BE2 /* GeneratorFlowView.swift */; };
+		86E6EACB2F02ACA000532BE2 /* GeneratorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E6EABD2F02AA7F00532BE2 /* GeneratorViewModel.swift */; };
+		86E6EACC2F02ACA000532BE2 /* GeneratedResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E6EAC02F02AABE00532BE2 /* GeneratedResultView.swift */; };
+		86E6EACD2F02ACA000532BE2 /* GeneratorModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E6EABC2F02AA6F00532BE2 /* GeneratorModels.swift */; };
+		86E6EACE2F02ACAB00532BE2 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E6EAC72F02AC7300532BE2 /* HomeView.swift */; };
+		86E6EACF2F02ACAB00532BE2 /* PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E6EAC62F02AC5700532BE2 /* PaywallView.swift */; };
+		86E6EAD02F02ACAB00532BE2 /* AppModelContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E6EAC32F02AC0A00532BE2 /* AppModelContainer.swift */; };
+		86E6EAD12F02ACAB00532BE2 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E6EAC52F02AC3900532BE2 /* OnboardingView.swift */; };
+		86E6EAD22F02ACAB00532BE2 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E6EAC42F02AC1800532BE2 /* Models.swift */; };
+		86E6EAD32F02ACAB00532BE2 /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E6EAC22F02ABF300532BE2 /* MainTabView.swift */; };
+		86E6EAD42F02ACAB00532BE2 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E6EAC12F02ABE100532BE2 /* RootView.swift */; };
+		86E6EAD52F02ACB100532BE2 /* AppConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E6EABA2F02AA1F00532BE2 /* AppConfig.swift */; };
+		86E6EAD62F02ACB100532BE2 /* OpenAIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E6EABB2F02AA3B00532BE2 /* OpenAIClient.swift */; };
+		86E6EAD72F02ACBA00532BE2 /* SelectList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E6EABF2F02AAAE00532BE2 /* SelectList.swift */; };
+		86E6EAD92F02AD4400532BE2 /* AppBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E6EAD82F02AD4000532BE2 /* AppBackground.swift */; };
+		86E6EADB2F02AD5200532BE2 /* PrimaryButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E6EADA2F02AD4F00532BE2 /* PrimaryButton.swift */; };
+		86E6EADD2F02AF4300532BE2 /* AudioPlayerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E6EADC2F02AF3C00532BE2 /* AudioPlayerService.swift */; };
+		86E6EADF2F02AF5500532BE2 /* PlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E6EADE2F02AF5200532BE2 /* PlayerView.swift */; };
+		86E6EAE12F02AF7D00532BE2 /* BackgroundPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E6EAE02F02AF7400532BE2 /* BackgroundPickerView.swift */; };
+		86E6EAE52F02B57A00532BE2 /* RoutineStubView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E6EAE42F02B57200532BE2 /* RoutineStubView.swift */; };
+		86E6EAE72F02B9BC00532BE2 /* OpenAITTSClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E6EAE62F02B9B900532BE2 /* OpenAITTSClient.swift */; };
+		86E6EAF42F02D75500532BE2 /* BreathingSessionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E6EAEE2F02D12C00532BE2 /* BreathingSessionView.swift */; };
+		86E6EAF52F02D75500532BE2 /* BreathingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E6EAF02F02D13B00532BE2 /* BreathingViewModel.swift */; };
+		86E6EAF62F02D75500532BE2 /* BreathingSetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E6EAE82F02D10C00532BE2 /* BreathingSetupView.swift */; };
+		86E6EAF72F02D75500532BE2 /* MoodPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E6EAEA2F02D11800532BE2 /* MoodPickerView.swift */; };
+		86E6EAF82F02D75500532BE2 /* BreathingPhase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E6EAF22F02D14300532BE2 /* BreathingPhase.swift */; };
+		86E6EAF92F02D75500532BE2 /* DurationPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E6EAEC2F02D12400532BE2 /* DurationPickerView.swift */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		86E6EA822F02A3DA00532BE2 /* AIMeditationGuide.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AIMeditationGuide.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		86E6EA892F02A3DC00532BE2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		86E6EAA32F02A50100532BE2 /* river.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = river.mp3; sourceTree = "<group>"; };
+		86E6EAA52F02A51300532BE2 /* birds.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = birds.mp3; sourceTree = "<group>"; };
+		86E6EAA72F02A51E00532BE2 /* waves.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = waves.mp3; sourceTree = "<group>"; };
+		86E6EAB72F02A97400532BE2 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
+		86E6EABA2F02AA1F00532BE2 /* AppConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConfig.swift; sourceTree = "<group>"; };
+		86E6EABB2F02AA3B00532BE2 /* OpenAIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenAIClient.swift; sourceTree = "<group>"; };
+		86E6EABC2F02AA6F00532BE2 /* GeneratorModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneratorModels.swift; sourceTree = "<group>"; };
+		86E6EABD2F02AA7F00532BE2 /* GeneratorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneratorViewModel.swift; sourceTree = "<group>"; };
+		86E6EABE2F02AA9100532BE2 /* GeneratorFlowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneratorFlowView.swift; sourceTree = "<group>"; };
+		86E6EABF2F02AAAE00532BE2 /* SelectList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectList.swift; sourceTree = "<group>"; };
+		86E6EAC02F02AABE00532BE2 /* GeneratedResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneratedResultView.swift; sourceTree = "<group>"; };
+		86E6EAC12F02ABE100532BE2 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		86E6EAC22F02ABF300532BE2 /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
+		86E6EAC32F02AC0A00532BE2 /* AppModelContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppModelContainer.swift; sourceTree = "<group>"; };
+		86E6EAC42F02AC1800532BE2 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		86E6EAC52F02AC3900532BE2 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		86E6EAC62F02AC5700532BE2 /* PaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallView.swift; sourceTree = "<group>"; };
+		86E6EAC72F02AC7300532BE2 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		86E6EAC82F02AC8200532BE2 /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
+		86E6EAD82F02AD4000532BE2 /* AppBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppBackground.swift; sourceTree = "<group>"; };
+		86E6EADA2F02AD4F00532BE2 /* PrimaryButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimaryButton.swift; sourceTree = "<group>"; };
+		86E6EADC2F02AF3C00532BE2 /* AudioPlayerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerService.swift; sourceTree = "<group>"; };
+		86E6EADE2F02AF5200532BE2 /* PlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerView.swift; sourceTree = "<group>"; };
+		86E6EAE02F02AF7400532BE2 /* BackgroundPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundPickerView.swift; sourceTree = "<group>"; };
+		86E6EAE42F02B57200532BE2 /* RoutineStubView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutineStubView.swift; sourceTree = "<group>"; };
+		86E6EAE62F02B9B900532BE2 /* OpenAITTSClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenAITTSClient.swift; sourceTree = "<group>"; };
+		86E6EAE82F02D10C00532BE2 /* BreathingSetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreathingSetupView.swift; sourceTree = "<group>"; };
+		86E6EAEA2F02D11800532BE2 /* MoodPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoodPickerView.swift; sourceTree = "<group>"; };
+		86E6EAEC2F02D12400532BE2 /* DurationPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DurationPickerView.swift; sourceTree = "<group>"; };
+		86E6EAEE2F02D12C00532BE2 /* BreathingSessionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreathingSessionView.swift; sourceTree = "<group>"; };
+		86E6EAF02F02D13B00532BE2 /* BreathingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreathingViewModel.swift; sourceTree = "<group>"; };
+		86E6EAF22F02D14300532BE2 /* BreathingPhase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreathingPhase.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		86E6EAB42F02A77400532BE2 /* Exceptions for "AIMeditationGuide" folder in "AIMeditationGuide" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 86E6EA812F02A3DA00532BE2 /* AIMeditationGuide */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		86E6EA842F02A3DA00532BE2 /* AIMeditationGuide */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				86E6EAB42F02A77400532BE2 /* Exceptions for "AIMeditationGuide" folder in "AIMeditationGuide" target */,
+			);
 			path = AIMeditationGuide;
 			sourceTree = "<group>";
 		};
@@ -32,6 +114,11 @@
 		86E6EA792F02A3DA00532BE2 = {
 			isa = PBXGroup;
 			children = (
+				86E6EAA12F02A49E00532BE2 /* Resources */,
+				86E6EA982F02A45800532BE2 /* Features */,
+				86E6EA932F02A43800532BE2 /* Core */,
+				86E6EA922F02A43300532BE2 /* Config */,
+				86E6EA912F02A42E00532BE2 /* App */,
 				86E6EA842F02A3DA00532BE2 /* AIMeditationGuide */,
 				86E6EA832F02A3DA00532BE2 /* Products */,
 			);
@@ -43,6 +130,186 @@
 				86E6EA822F02A3DA00532BE2 /* AIMeditationGuide.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		86E6EA912F02A42E00532BE2 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				86E6EAC22F02ABF300532BE2 /* MainTabView.swift */,
+				86E6EAC12F02ABE100532BE2 /* RootView.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		86E6EA922F02A43300532BE2 /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				86E6EAB72F02A97400532BE2 /* Config.xcconfig */,
+			);
+			path = Config;
+			sourceTree = "<group>";
+		};
+		86E6EA932F02A43800532BE2 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				86E6EAB92F02AA1600532BE2 /* Networking */,
+				86E6EA972F02A45000532BE2 /* Storage */,
+				86E6EA962F02A44B00532BE2 /* Audio */,
+				86E6EA952F02A44500532BE2 /* Components */,
+				86E6EA942F02A44000532BE2 /* Theme */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		86E6EA942F02A44000532BE2 /* Theme */ = {
+			isa = PBXGroup;
+			children = (
+				86E6EAD82F02AD4000532BE2 /* AppBackground.swift */,
+			);
+			path = Theme;
+			sourceTree = "<group>";
+		};
+		86E6EA952F02A44500532BE2 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				86E6EADA2F02AD4F00532BE2 /* PrimaryButton.swift */,
+				86E6EABF2F02AAAE00532BE2 /* SelectList.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		86E6EA962F02A44B00532BE2 /* Audio */ = {
+			isa = PBXGroup;
+			children = (
+				86E6EADC2F02AF3C00532BE2 /* AudioPlayerService.swift */,
+			);
+			path = Audio;
+			sourceTree = "<group>";
+		};
+		86E6EA972F02A45000532BE2 /* Storage */ = {
+			isa = PBXGroup;
+			children = (
+				86E6EAC42F02AC1800532BE2 /* Models.swift */,
+				86E6EAC32F02AC0A00532BE2 /* AppModelContainer.swift */,
+			);
+			path = Storage;
+			sourceTree = "<group>";
+		};
+		86E6EA982F02A45800532BE2 /* Features */ = {
+			isa = PBXGroup;
+			children = (
+				86E6EAA02F02A49600532BE2 /* History */,
+				86E6EA9F2F02A48300532BE2 /* Routine */,
+				86E6EA9E2F02A47B00532BE2 /* Breathing */,
+				86E6EA9D2F02A47600532BE2 /* Player */,
+				86E6EA9C2F02A47000532BE2 /* Generator */,
+				86E6EA9B2F02A46C00532BE2 /* Home */,
+				86E6EA9A2F02A46600532BE2 /* Paywall */,
+				86E6EA992F02A46000532BE2 /* Onboarding */,
+			);
+			path = Features;
+			sourceTree = "<group>";
+		};
+		86E6EA992F02A46000532BE2 /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				86E6EAC52F02AC3900532BE2 /* OnboardingView.swift */,
+			);
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
+		86E6EA9A2F02A46600532BE2 /* Paywall */ = {
+			isa = PBXGroup;
+			children = (
+				86E6EAC62F02AC5700532BE2 /* PaywallView.swift */,
+			);
+			path = Paywall;
+			sourceTree = "<group>";
+		};
+		86E6EA9B2F02A46C00532BE2 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				86E6EAC72F02AC7300532BE2 /* HomeView.swift */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		86E6EA9C2F02A47000532BE2 /* Generator */ = {
+			isa = PBXGroup;
+			children = (
+				86E6EAC02F02AABE00532BE2 /* GeneratedResultView.swift */,
+				86E6EABE2F02AA9100532BE2 /* GeneratorFlowView.swift */,
+				86E6EABD2F02AA7F00532BE2 /* GeneratorViewModel.swift */,
+				86E6EABC2F02AA6F00532BE2 /* GeneratorModels.swift */,
+			);
+			path = Generator;
+			sourceTree = "<group>";
+		};
+		86E6EA9D2F02A47600532BE2 /* Player */ = {
+			isa = PBXGroup;
+			children = (
+				86E6EAE02F02AF7400532BE2 /* BackgroundPickerView.swift */,
+				86E6EADE2F02AF5200532BE2 /* PlayerView.swift */,
+			);
+			path = Player;
+			sourceTree = "<group>";
+		};
+		86E6EA9E2F02A47B00532BE2 /* Breathing */ = {
+			isa = PBXGroup;
+			children = (
+				86E6EAF22F02D14300532BE2 /* BreathingPhase.swift */,
+				86E6EAF02F02D13B00532BE2 /* BreathingViewModel.swift */,
+				86E6EAEE2F02D12C00532BE2 /* BreathingSessionView.swift */,
+				86E6EAEC2F02D12400532BE2 /* DurationPickerView.swift */,
+				86E6EAEA2F02D11800532BE2 /* MoodPickerView.swift */,
+				86E6EAE82F02D10C00532BE2 /* BreathingSetupView.swift */,
+			);
+			path = Breathing;
+			sourceTree = "<group>";
+		};
+		86E6EA9F2F02A48300532BE2 /* Routine */ = {
+			isa = PBXGroup;
+			children = (
+				86E6EAE42F02B57200532BE2 /* RoutineStubView.swift */,
+			);
+			path = Routine;
+			sourceTree = "<group>";
+		};
+		86E6EAA02F02A49600532BE2 /* History */ = {
+			isa = PBXGroup;
+			children = (
+				86E6EAC82F02AC8200532BE2 /* HistoryView.swift */,
+			);
+			path = History;
+			sourceTree = "<group>";
+		};
+		86E6EAA12F02A49E00532BE2 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				86E6EA892F02A3DC00532BE2 /* Assets.xcassets */,
+				86E6EAA22F02A4A700532BE2 /* Sounds */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		86E6EAA22F02A4A700532BE2 /* Sounds */ = {
+			isa = PBXGroup;
+			children = (
+				86E6EAA72F02A51E00532BE2 /* waves.mp3 */,
+				86E6EAA52F02A51300532BE2 /* birds.mp3 */,
+				86E6EAA32F02A50100532BE2 /* river.mp3 */,
+			);
+			path = Sounds;
+			sourceTree = "<group>";
+		};
+		86E6EAB92F02AA1600532BE2 /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				86E6EAE62F02B9B900532BE2 /* OpenAITTSClient.swift */,
+				86E6EABB2F02AA3B00532BE2 /* OpenAIClient.swift */,
+				86E6EABA2F02AA1F00532BE2 /* AppConfig.swift */,
+			);
+			path = Networking;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -109,6 +376,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				86E6EAA82F02A51E00532BE2 /* waves.mp3 in Resources */,
+				86E6EAB82F02A97400532BE2 /* Config.xcconfig in Resources */,
+				86E6EAA42F02A50100532BE2 /* river.mp3 in Resources */,
+				86E6EAA62F02A51300532BE2 /* birds.mp3 in Resources */,
+				86E6EA8A2F02A3DC00532BE2 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -119,6 +391,34 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				86E6EAE12F02AF7D00532BE2 /* BackgroundPickerView.swift in Sources */,
+				86E6EAD52F02ACB100532BE2 /* AppConfig.swift in Sources */,
+				86E6EAE72F02B9BC00532BE2 /* OpenAITTSClient.swift in Sources */,
+				86E6EAD62F02ACB100532BE2 /* OpenAIClient.swift in Sources */,
+				86E6EACE2F02ACAB00532BE2 /* HomeView.swift in Sources */,
+				86E6EACF2F02ACAB00532BE2 /* PaywallView.swift in Sources */,
+				86E6EAD02F02ACAB00532BE2 /* AppModelContainer.swift in Sources */,
+				86E6EAE52F02B57A00532BE2 /* RoutineStubView.swift in Sources */,
+				86E6EAD72F02ACBA00532BE2 /* SelectList.swift in Sources */,
+				86E6EAD12F02ACAB00532BE2 /* OnboardingView.swift in Sources */,
+				86E6EAD92F02AD4400532BE2 /* AppBackground.swift in Sources */,
+				86E6EAD22F02ACAB00532BE2 /* Models.swift in Sources */,
+				86E6EADF2F02AF5500532BE2 /* PlayerView.swift in Sources */,
+				86E6EAF42F02D75500532BE2 /* BreathingSessionView.swift in Sources */,
+				86E6EAF52F02D75500532BE2 /* BreathingViewModel.swift in Sources */,
+				86E6EAF62F02D75500532BE2 /* BreathingSetupView.swift in Sources */,
+				86E6EAF72F02D75500532BE2 /* MoodPickerView.swift in Sources */,
+				86E6EAF82F02D75500532BE2 /* BreathingPhase.swift in Sources */,
+				86E6EAF92F02D75500532BE2 /* DurationPickerView.swift in Sources */,
+				86E6EAD32F02ACAB00532BE2 /* MainTabView.swift in Sources */,
+				86E6EAD42F02ACAB00532BE2 /* RootView.swift in Sources */,
+				86E6EAC92F02AC9800532BE2 /* HistoryView.swift in Sources */,
+				86E6EACA2F02ACA000532BE2 /* GeneratorFlowView.swift in Sources */,
+				86E6EACB2F02ACA000532BE2 /* GeneratorViewModel.swift in Sources */,
+				86E6EADD2F02AF4300532BE2 /* AudioPlayerService.swift in Sources */,
+				86E6EACC2F02ACA000532BE2 /* GeneratedResultView.swift in Sources */,
+				86E6EADB2F02AD5200532BE2 /* PrimaryButton.swift in Sources */,
+				86E6EACD2F02ACA000532BE2 /* GeneratorModels.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -127,6 +427,7 @@
 /* Begin XCBuildConfiguration section */
 		86E6EA8B2F02A3DC00532BE2 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 86E6EAB72F02A97400532BE2 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -191,6 +492,7 @@
 		};
 		86E6EA8C2F02A3DC00532BE2 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 86E6EAB72F02A97400532BE2 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -256,6 +558,7 @@
 				DEVELOPMENT_TEAM = H49G8BG8ZM;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = AIMeditationGuide/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -288,6 +591,7 @@
 				DEVELOPMENT_TEAM = H49G8BG8ZM;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = AIMeditationGuide/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
