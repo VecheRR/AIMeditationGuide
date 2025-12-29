@@ -32,7 +32,12 @@ final class AudioPlayerService: ObservableObject {
     }
 
     /// targetSeconds — сколько минут выбрал пользователь * 60
-    func load(voiceURL: URL?, background: GenBackground, targetSeconds: TimeInterval) throws {
+    func load(
+        voiceURL: URL?,
+        background: GenBackground,
+        backgroundURL: URL? = nil,
+        targetSeconds: TimeInterval
+    ) throws {
         stop()
 
         targetDuration = max(targetSeconds, 1)
@@ -45,7 +50,7 @@ final class AudioPlayerService: ObservableObject {
             voicePlayer?.volume = voiceVolume
         }
 
-        if background != .none, let url = SoundLibrary.url(for: background) {
+        if background != .none, let url = backgroundURL ?? SoundLibrary.url(for: background) {
             bgPlayer = try AVAudioPlayer(contentsOf: url)
             bgPlayer?.numberOfLoops = -1
             bgPlayer?.prepareToPlay()
