@@ -18,7 +18,6 @@ struct HistoryView: View {
     @State private var selected: MeditationSession?
     @State private var sessionToDelete: MeditationSession?
     @State private var breathingToDelete: BreathingLog?
-    @State private var playbackBackground: GenBackground = .none
 
     enum Segment: String, CaseIterable {
         case meditations = "MEDITATIONS"
@@ -39,7 +38,6 @@ struct HistoryView: View {
                                 ForEach(sessions) { s in
                                     Button {
                                         selected = s
-                                        playbackBackground = s.background
                                     } label: {
                                         historyCard(session: s)
                                     }
@@ -74,15 +72,7 @@ struct HistoryView: View {
                 set: { if !$0 { selected = nil } }
             )) {
                 if let selected {
-                    PlayerView(
-                        title: selected.title,
-                        summary: selected.summary,
-                        durationMinutes: selected.durationMinutes,
-                        voiceURL: selected.voiceURL,
-                        storedBackground: selected.background,
-                        backgroundFileURL: selected.backgroundURL,
-                        background: $playbackBackground
-                    )
+                    MeditationPlayerView(session: selected)
                 }
             }
             .alert("Delete meditation?", isPresented: Binding(
