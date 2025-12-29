@@ -38,11 +38,15 @@ Config/         – Build configs (Secrets excluded from Git)
 ## Project Status ✅🛠️
 
 ### ✅ Completed (MVP core)
+- [x] Breathing exercise flow
+  - [x] Setup screens (mood, duration)
+  - [x] Animated breathing session (inhale / exhale loop)
+  - [x] Proper breathing timing logic
 - [x] SwiftUI project structure (App / Core / Features)
 - [x] Navigation architecture (RootView, TabView, fullScreenCover flows)
 - [x] Onboarding flow
 - [x] Paywall screen (stub logic with AppStorage)
-- [x] Home screen layout
+- [x] Home screen layout (generator CTA, breathing shortcut, routine entry point, latest session CTA)
 - [x] Meditation generator flow
   - [x] Goal selection
   - [x] Duration selection
@@ -59,7 +63,8 @@ Config/         – Build configs (Secrets excluded from Git)
 - [x] Player UI (custom SwiftUI player)
 - [x] SwiftData integration
 - [x] Meditation history storage
-- [x] History list UI
+- [x] History list UI (meditations + breathing logs)
+- [x] History → Player playback (tap session opens full-screen player)
 - [x] Config management via `.xcconfig`
 - [x] Secrets excluded from Git
 - [x] Project pushed to GitHub
@@ -67,10 +72,6 @@ Config/         – Build configs (Secrets excluded from Git)
 ---
 
 ### 🟡 In Progress
-- [ ] Breathing exercise flow
-  - [x] Setup screens (mood, duration)
-  - [ ] Animated breathing session (inhale / exhale loop)
-  - [ ] Proper breathing timing logic
 - [ ] Design polish (spacing, typography consistency)
 - [ ] Background picker UX improvements
 - [ ] Proper duration handling (fill remaining time with background sound)
@@ -78,17 +79,15 @@ Config/         – Build configs (Secrets excluded from Git)
 ---
 
 ### 🔜 TODO (Next milestones)
-- [ ] Breathing animation synced with inhale/exhale duration
-- [ ] Save breathing sessions to history
-- [ ] Play meditation from History (tap → Player)
-- [ ] Persist generated voice files with sessions
-- [ ] Favorites / liked meditations
+- [ ] Backgrounds: smarter duration fill when voice is shorter than requested
+- [ ] Error handling & offline states (player resilience, retry flows)
+- [ ] Paywall logic with real subscription (StoreKit)
 - [ ] Daily routine generation (AI-based)
 - [ ] Routine progress tracking
+- [ ] Persist generated voice files with sessions
+- [ ] Favorites / liked meditations
 - [ ] Replace placeholder covers with generated or static visuals
 - [ ] Improve AI prompt quality (longer, more structured meditations)
-- [ ] Error handling & offline states
-- [ ] Paywall logic with real subscription (StoreKit)
 - [ ] App icon & launch screen
 - [ ] Accessibility (Dynamic Type, VoiceOver)
 - [ ] TestFlight build
