@@ -59,6 +59,22 @@ final class BreathingLog {
     }
 }
 
+struct RoutineItem: Identifiable, Codable, Hashable {
+    let id: UUID
+    var title: String
+    var details: String
+    var durationMinutes: Int
+    var isCompleted: Bool
+
+    init(id: UUID = UUID(), title: String, details: String, durationMinutes: Int, isCompleted: Bool = false) {
+        self.id = id
+        self.title = title
+        self.details = details
+        self.durationMinutes = durationMinutes
+        self.isCompleted = isCompleted
+    }
+}
+
 @Model
 final class RoutinePlan {
     @Attribute(.unique) var id: UUID
@@ -71,5 +87,27 @@ final class RoutinePlan {
         self.createdAt = .now
         self.itemsJSON = itemsJSON
         self.isSaved = isSaved
+    }
+}
+
+extension RoutinePlan {
+    var items: [RoutineItem] {
+        get {
+            guard let data = itemsJSON.data(using: .utf8),
+                  let items = try? JSONDecoder().decode([RoutineItem].self, from: data) else {
+                return []
+            }
+            return items
+        }
+        set {
+            if let data = try? JSONEncoder().encode(newValue),
+               let json = String(data: data, encoding: .utf8) {
+                itemsJSON = json
+            }
+        }
+    }
+
+    var nextIncomplete: RoutineItem? {
+        items.first(where: { !$0.isCompleted })
     }
 }
