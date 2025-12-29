@@ -25,7 +25,10 @@ struct HomeView: View {
 
     private var last: MeditationSession? { sessions.first }
     private var latestRoutine: RoutinePlan? { routines.first }
-    private var nextPractice: RoutineItem? { routines.first?.nextIncomplete }
+    private var nextPractice: RoutineItem? {
+        guard let plan = routines.first, plan.status != .done else { return nil }
+        return plan.nextIncomplete
+    }
 
     var body: some View {
         NavigationStack {
@@ -54,6 +57,10 @@ struct HomeView: View {
 
                     if let latestRoutine {
                         routineCard(plan: latestRoutine, next: nextPractice)
+                            .padding(.horizontal, 16)
+                            .padding(.top, 4)
+                    } else {
+                        routineSuggestionCard
                             .padding(.horizontal, 16)
                             .padding(.top, 4)
                     }
@@ -200,7 +207,13 @@ struct HomeView: View {
             }
 
             VStack(alignment: .leading, spacing: 6) {
-                if let next {
+                if plan.status == .done {
+                    Text("Routine completed")
+                        .font(.headline)
+                    Text("Regenerate a new set when you'd like another gentle nudge.")
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
+                } else if let next {
                     Text(next.title)
                         .font(.headline)
                     Text("\(next.durationMinutes) min • \(next.details)")
@@ -219,7 +232,38 @@ struct HomeView: View {
             Button {
                 goRoutine = true
             } label: {
-                Text(next == nil ? "VIEW ROUTINE" : "START NEXT")
+                Text(plan.status == .done ? "GENERATE NEW" : (next == nil ? "VIEW ROUTINE" : "START NEXT"))
+                    .font(.caption.bold())
+                    .foregroundStyle(.green)
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 10)
+                    .background(Color.white.opacity(0.65))
+                    .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+            }
+            .buttonStyle(.plain)
+            .frame(maxWidth: .infinity, alignment: .leading)
+        }
+        .padding(12)
+        .background(Color.white.opacity(0.65))
+        .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
+    }
+
+    private var routineSuggestionCard: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("Daily Routine")
+                .font(.caption)
+                .foregroundStyle(.secondary)
+
+            Text("No routine yet")
+                .font(.headline)
+            Text("Generate 1–3 quick practices to keep your habit alive today.")
+                .font(.footnote)
+                .foregroundStyle(.secondary)
+
+            Button {
+                goRoutine = true
+            } label: {
+                Text("CREATE ROUTINE")
                     .font(.caption.bold())
                     .foregroundStyle(.green)
                     .padding(.horizontal, 12)
