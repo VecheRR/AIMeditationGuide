@@ -11,6 +11,7 @@ import SwiftData
 struct HistoryView: View {
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \MeditationSession.createdAt, order: .reverse) private var sessions: [MeditationSession]
+    @Query(sort: \BreathingLog.createdAt, order: .reverse) private var breathingLogs: [BreathingLog]
 
     @State private var segment: Segment = .meditations
 
@@ -45,9 +46,14 @@ struct HistoryView: View {
                                     .buttonStyle(.plain)
                                 }
                             } else {
-                                Text("Breathing history позже")
-                                    .foregroundStyle(.secondary)
-                                    .padding(.top, 30)
+                                ForEach(breathingLogs) { log in
+                                    breathingCard(log: log)
+                                }
+                                if breathingLogs.isEmpty {
+                                    Text("No breathing sessions yet")
+                                        .foregroundStyle(.secondary)
+                                        .padding(.top, 30)
+                                }
                             }
                         }
                         .padding(.horizontal, 16)
@@ -120,6 +126,48 @@ struct HistoryView: View {
 
             Button {
                 modelContext.delete(session)
+            } label: {
+                Image(systemName: "trash")
+                    .foregroundStyle(.red)
+                    .padding(10)
+                    .background(Color.white.opacity(0.6))
+                    .clipShape(Circle())
+            }
+            .buttonStyle(.plain)
+        }
+        .padding(12)
+        .background(Color.white.opacity(0.65))
+        .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
+    }
+
+    private func breathingCard(log: BreathingLog) -> some View {
+        HStack(spacing: 12) {
+            RoundedRectangle(cornerRadius: 14)
+                .fill(Color.black.opacity(0.08))
+                .frame(width: 64, height: 64)
+                .overlay(
+                    Text("\(log.durationSeconds / 60) MIN")
+                        .font(.caption.bold())
+                        .foregroundStyle(.secondary)
+                )
+
+            VStack(alignment: .leading, spacing: 4) {
+                Text(log.mood)
+                    .font(.headline)
+
+                Text("Guided breathing")
+                    .font(.footnote)
+                    .foregroundStyle(.secondary)
+
+                Text(log.createdAt, style: .date)
+                    .font(.caption2)
+                    .foregroundStyle(.secondary)
+            }
+
+            Spacer()
+
+            Button {
+                modelContext.delete(log)
             } label: {
                 Image(systemName: "trash")
                     .foregroundStyle(.red)
