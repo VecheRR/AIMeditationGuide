@@ -16,8 +16,9 @@ struct HistoryView: View {
     @State private var segment: Segment = .meditations
 
     @State private var selected: MeditationSession?
-    @State private var openPlayer = false
-    @State private var bg: GenBackground = .none
+    @State private var sessionToDelete: MeditationSession?
+    @State private var breathingToDelete: BreathingLog?
+    @State private var playbackBackground: GenBackground = .none
 
     enum Segment: String, CaseIterable {
         case meditations = "MEDITATIONS"
@@ -38,12 +39,16 @@ struct HistoryView: View {
                                 ForEach(sessions) { s in
                                     Button {
                                         selected = s
-                                        bg = s.background
-                                        openPlayer = true
+                                        playbackBackground = s.background
                                     } label: {
                                         historyCard(session: s)
                                     }
                                     .buttonStyle(.plain)
+                                }
+                                if sessions.isEmpty {
+                                    Text("No meditation sessions yet")
+                                        .foregroundStyle(.secondary)
+                                        .padding(.top, 30)
                                 }
                             } else {
                                 ForEach(breathingLogs) { log in
@@ -64,14 +69,47 @@ struct HistoryView: View {
             }
             .navigationTitle("HISTORY")
             .navigationBarTitleDisplayMode(.inline)
-            .fullScreenCover(isPresented: $openPlayer) {
-                PlayerView(
-                    title: selected?.title ?? "Meditation",
-                    summary: selected?.summary ?? "",
-                    durationMinutes: selected?.durationMinutes ?? 5,
-                    voiceURL: selected?.voiceURL,
-                    background: $bg
-                )
+            .fullScreenCover(isPresented: Binding(
+                get: { selected != nil },
+                set: { if !$0 { selected = nil } }
+            )) {
+                if let selected {
+                    PlayerView(
+                        title: selected.title,
+                        summary: selected.summary,
+                        durationMinutes: selected.durationMinutes,
+                        voiceURL: selected.voiceURL,
+                        storedBackground: selected.background,
+                        backgroundFileURL: selected.backgroundURL,
+                        background: $playbackBackground
+                    )
+                }
+            }
+            .alert("Delete meditation?", isPresented: Binding(
+                get: { sessionToDelete != nil },
+                set: { if !$0 { sessionToDelete = nil } }
+            )) {
+                Button("Delete", role: .destructive) {
+                    if let sessionToDelete { modelContext.delete(sessionToDelete) }
+                    sessionToDelete = nil
+                }
+                Button("Cancel", role: .cancel) { sessionToDelete = nil }
+            } message: {
+                if let sessionToDelete {
+                    Text("Remove \(sessionToDelete.title) from history?")
+                }
+            }
+            .alert("Delete breathing log?", isPresented: Binding(
+                get: { breathingToDelete != nil },
+                set: { if !$0 { breathingToDelete = nil } }
+            )) {
+                Button("Delete", role: .destructive) {
+                    if let breathingToDelete { modelContext.delete(breathingToDelete) }
+                    breathingToDelete = nil
+                }
+                Button("Cancel", role: .cancel) { breathingToDelete = nil }
+            } message: {
+                Text("Remove breathing entry from history?")
             }
         }
     }
@@ -125,7 +163,7 @@ struct HistoryView: View {
             Spacer()
 
             Button {
-                modelContext.delete(session)
+                sessionToDelete = session
             } label: {
                 Image(systemName: "trash")
                     .foregroundStyle(.red)
@@ -167,7 +205,7 @@ struct HistoryView: View {
             Spacer()
 
             Button {
-                modelContext.delete(log)
+                breathingToDelete = log
             } label: {
                 Image(systemName: "trash")
                     .foregroundStyle(.red)

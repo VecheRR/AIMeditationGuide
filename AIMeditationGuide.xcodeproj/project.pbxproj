@@ -35,13 +35,14 @@
                0AB8C403D2214F1EAC92E0A8 /* RoutineViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54287CE24FA49FB92B50E09 /* RoutineViewModel.swift */; };
                71FE58AFD5AF42B6B7B20E45 /* RoutineGeneratorService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 231DA925C42740C0A08C23BA /* RoutineGeneratorService.swift */; };
                DB8662074078433D9D5E6895 /* RoutineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0F4E64AB5794403A5553AAC /* RoutineView.swift */; };
-		86E6EAE72F02B9BC00532BE2 /* OpenAITTSClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E6EAE62F02B9B900532BE2 /* OpenAITTSClient.swift */; };
-		86E6EAF42F02D75500532BE2 /* BreathingSessionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E6EAEE2F02D12C00532BE2 /* BreathingSessionView.swift */; };
-		86E6EAF52F02D75500532BE2 /* BreathingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E6EAF02F02D13B00532BE2 /* BreathingViewModel.swift */; };
-		86E6EAF62F02D75500532BE2 /* BreathingSetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E6EAE82F02D10C00532BE2 /* BreathingSetupView.swift */; };
-		86E6EAF72F02D75500532BE2 /* MoodPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E6EAEA2F02D11800532BE2 /* MoodPickerView.swift */; };
-		86E6EAF82F02D75500532BE2 /* BreathingPhase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E6EAF22F02D14300532BE2 /* BreathingPhase.swift */; };
-		86E6EAF92F02D75500532BE2 /* DurationPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E6EAEC2F02D12400532BE2 /* DurationPickerView.swift */; };
+                86E6EAE72F02B9BC00532BE2 /* OpenAITTSClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E6EAE62F02B9B900532BE2 /* OpenAITTSClient.swift */; };
+                86E6EAF42F02D75500532BE2 /* BreathingSessionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E6EAEE2F02D12C00532BE2 /* BreathingSessionView.swift */; };
+                86E6EAF52F02D75500532BE2 /* BreathingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E6EAF02F02D13B00532BE2 /* BreathingViewModel.swift */; };
+                86E6EAF62F02D75500532BE2 /* BreathingSetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E6EAE82F02D10C00532BE2 /* BreathingSetupView.swift */; };
+                86E6EAF72F02D75500532BE2 /* MoodPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E6EAEA2F02D11800532BE2 /* MoodPickerView.swift */; };
+                86E6EAF82F02D75500532BE2 /* BreathingPhase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E6EAF22F02D14300532BE2 /* BreathingPhase.swift */; };
+                86E6EAF92F02D75500532BE2 /* DurationPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E6EAEC2F02D12400532BE2 /* DurationPickerView.swift */; };
+                B5C9E024B7C54A8996D56C4E /* MeditationPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFEC76DC9DFC40FFB709B870 /* MeditationPlayerView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -74,13 +75,14 @@
                231DA925C42740C0A08C23BA /* RoutineGeneratorService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutineGeneratorService.swift; sourceTree = "<group>"; };
                B54287CE24FA49FB92B50E09 /* RoutineViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutineViewModel.swift; sourceTree = "<group>"; };
                D0F4E64AB5794403A5553AAC /* RoutineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutineView.swift; sourceTree = "<group>"; };
-		86E6EAE62F02B9B900532BE2 /* OpenAITTSClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenAITTSClient.swift; sourceTree = "<group>"; };
-		86E6EAE82F02D10C00532BE2 /* BreathingSetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreathingSetupView.swift; sourceTree = "<group>"; };
-		86E6EAEA2F02D11800532BE2 /* MoodPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoodPickerView.swift; sourceTree = "<group>"; };
-		86E6EAEC2F02D12400532BE2 /* DurationPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DurationPickerView.swift; sourceTree = "<group>"; };
-		86E6EAEE2F02D12C00532BE2 /* BreathingSessionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreathingSessionView.swift; sourceTree = "<group>"; };
-		86E6EAF02F02D13B00532BE2 /* BreathingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreathingViewModel.swift; sourceTree = "<group>"; };
-		86E6EAF22F02D14300532BE2 /* BreathingPhase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreathingPhase.swift; sourceTree = "<group>"; };
+                86E6EAE62F02B9B900532BE2 /* OpenAITTSClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenAITTSClient.swift; sourceTree = "<group>"; };
+                86E6EAE82F02D10C00532BE2 /* BreathingSetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreathingSetupView.swift; sourceTree = "<group>"; };
+                86E6EAEA2F02D11800532BE2 /* MoodPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoodPickerView.swift; sourceTree = "<group>"; };
+                86E6EAEC2F02D12400532BE2 /* DurationPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DurationPickerView.swift; sourceTree = "<group>"; };
+                86E6EAEE2F02D12C00532BE2 /* BreathingSessionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreathingSessionView.swift; sourceTree = "<group>"; };
+                86E6EAF02F02D13B00532BE2 /* BreathingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreathingViewModel.swift; sourceTree = "<group>"; };
+                86E6EAF22F02D14300532BE2 /* BreathingPhase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreathingPhase.swift; sourceTree = "<group>"; };
+                FFEC76DC9DFC40FFB709B870 /* MeditationPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeditationPlayerView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -281,14 +283,15 @@ sourceTree = "<group>";
                        path = Routine;
                        sourceTree = "<group>";
                };
-		86E6EAA02F02A49600532BE2 /* History */ = {
-			isa = PBXGroup;
-			children = (
-				86E6EAC82F02AC8200532BE2 /* HistoryView.swift */,
-			);
-			path = History;
-			sourceTree = "<group>";
-		};
+                86E6EAA02F02A49600532BE2 /* History */ = {
+                        isa = PBXGroup;
+                        children = (
+                                86E6EAC82F02AC8200532BE2 /* HistoryView.swift */,
+                                FFEC76DC9DFC40FFB709B870 /* MeditationPlayerView.swift */,
+                        );
+                        path = History;
+                        sourceTree = "<group>";
+                };
 		86E6EAA12F02A49E00532BE2 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -418,12 +421,13 @@ sourceTree = "<group>";
 				86E6EAF72F02D75500532BE2 /* MoodPickerView.swift in Sources */,
 				86E6EAF82F02D75500532BE2 /* BreathingPhase.swift in Sources */,
 				86E6EAF92F02D75500532BE2 /* DurationPickerView.swift in Sources */,
-				86E6EAD32F02ACAB00532BE2 /* MainTabView.swift in Sources */,
-				86E6EAD42F02ACAB00532BE2 /* RootView.swift in Sources */,
-				86E6EAC92F02AC9800532BE2 /* HistoryView.swift in Sources */,
-				86E6EACA2F02ACA000532BE2 /* GeneratorFlowView.swift in Sources */,
-				86E6EACB2F02ACA000532BE2 /* GeneratorViewModel.swift in Sources */,
-				86E6EADD2F02AF4300532BE2 /* AudioPlayerService.swift in Sources */,
+                                86E6EAD32F02ACAB00532BE2 /* MainTabView.swift in Sources */,
+                                86E6EAD42F02ACAB00532BE2 /* RootView.swift in Sources */,
+                                86E6EAC92F02AC9800532BE2 /* HistoryView.swift in Sources */,
+                                B5C9E024B7C54A8996D56C4E /* MeditationPlayerView.swift in Sources */,
+                                86E6EACA2F02ACA000532BE2 /* GeneratorFlowView.swift in Sources */,
+                                86E6EACB2F02ACA000532BE2 /* GeneratorViewModel.swift in Sources */,
+                                86E6EADD2F02AF4300532BE2 /* AudioPlayerService.swift in Sources */,
 				86E6EACC2F02ACA000532BE2 /* GeneratedResultView.swift in Sources */,
 				86E6EADB2F02AD5200532BE2 /* PrimaryButton.swift in Sources */,
 				86E6EACD2F02ACA000532BE2 /* GeneratorModels.swift in Sources */,

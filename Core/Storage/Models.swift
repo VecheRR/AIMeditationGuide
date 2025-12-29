@@ -18,16 +18,22 @@ final class MeditationSession {
 
     // NEW
     var voiceFileName: String?
+    var voiceFilePath: String?
     var backgroundRaw: String
+    var backgroundFilePath: String?
 
     init(durationMinutes: Int, title: String, summary: String, script: String,
-         voiceFileName: String?, backgroundRaw: String, createdAt: Date = Date()) {
+         voiceFileName: String?, voiceFilePath: String? = nil,
+         backgroundRaw: String, backgroundFilePath: String? = nil,
+         createdAt: Date = Date()) {
         self.durationMinutes = durationMinutes
         self.title = title
         self.summary = summary
         self.script = script
         self.voiceFileName = voiceFileName
+        self.voiceFilePath = voiceFilePath
         self.backgroundRaw = backgroundRaw
+        self.backgroundFilePath = backgroundFilePath
         self.createdAt = createdAt
     }
 }
@@ -38,9 +44,18 @@ extension MeditationSession {
     }
 
     var voiceURL: URL? {
+        if let path = voiceFilePath {
+            return URL(fileURLWithPath: path)
+        }
+
         guard let name = voiceFileName else { return nil }
         let dir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
         return dir.appendingPathComponent(name)
+    }
+
+    var backgroundURL: URL? {
+        guard let path = backgroundFilePath else { return nil }
+        return URL(fileURLWithPath: path)
     }
 }
 

@@ -75,6 +75,8 @@ struct GeneratedResultView: View {
         let minutes = vm.duration?.rawValue ?? 5
         let bgRaw = (vm.background ?? .none).rawValue
         let fileName = vm.voiceFileURL?.lastPathComponent
+        let voicePath = vm.voiceFileURL?.path
+        let backgroundPath = SoundLibrary.url(for: vm.background ?? .none)?.path
 
         let session = MeditationSession(
             durationMinutes: minutes,
@@ -82,7 +84,9 @@ struct GeneratedResultView: View {
             summary: gen.summary,
             script: gen.script,
             voiceFileName: fileName,
-            backgroundRaw: bgRaw
+            voiceFilePath: voicePath,
+            backgroundRaw: bgRaw,
+            backgroundFilePath: backgroundPath
         )
 
         modelContext.insert(session)

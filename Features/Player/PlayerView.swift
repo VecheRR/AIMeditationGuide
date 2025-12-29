@@ -14,6 +14,8 @@ struct PlayerView: View {
     let summary: String
     let durationMinutes: Int
     let voiceURL: URL?
+    let storedBackground: GenBackground? = nil
+    let backgroundFileURL: URL? = nil
     @Binding var background: GenBackground
 
     @StateObject private var audio = AudioPlayerService()
@@ -64,7 +66,12 @@ struct PlayerView: View {
         }
         .onAppear {
             let target = TimeInterval(durationMinutes * 60)
-            try? audio.load(voiceURL: voiceURL, background: background, targetSeconds: target)
+            try? audio.load(
+                voiceURL: voiceURL,
+                background: background,
+                backgroundURL: resolvedBackgroundURL(for: background),
+                targetSeconds: target
+            )
         }
         .sheet(isPresented: $showBgPicker) {
             BackgroundPickerView(selected: $background, volume: $audio.bgVolume)
@@ -75,7 +82,12 @@ struct PlayerView: View {
             let target = TimeInterval(durationMinutes * 60)
 
             // перезагрузить фон, но НЕ терять голос
-            try? audio.load(voiceURL: voiceURL, background: newValue, targetSeconds: target)
+            try? audio.load(
+                voiceURL: voiceURL,
+                background: newValue,
+                backgroundURL: resolvedBackgroundURL(for: newValue),
+                targetSeconds: target
+            )
 
             if wasPlaying { audio.play() }
         }
@@ -198,5 +210,13 @@ struct PlayerView: View {
         let m = total / 60
         let s = total % 60
         return String(format: "%02d:%02d", m, s)
+    }
+
+    private func resolvedBackgroundURL(for background: GenBackground) -> URL? {
+        if let storedBackground, storedBackground == background, let backgroundFileURL {
+            return backgroundFileURL
+        }
+
+        return SoundLibrary.url(for: background)
     }
 }
