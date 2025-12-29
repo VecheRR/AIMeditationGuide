@@ -80,12 +80,14 @@ final class RoutinePlan {
     var createdAt: Date
     var itemsJSON: String
     var isSaved: Bool
+    var statusRaw: String = RoutineStatus.active.rawValue
 
-    init(itemsJSON: String, isSaved: Bool = false) {
+    init(itemsJSON: String, isSaved: Bool = false, status: RoutineStatus = .active) {
         self.id = UUID()
         self.createdAt = .now
         self.itemsJSON = itemsJSON
         self.isSaved = isSaved
+        self.statusRaw = status.rawValue
     }
 }
 
@@ -108,5 +110,10 @@ extension RoutinePlan {
 
     var nextIncomplete: RoutineItem? {
         items.first(where: { !$0.isCompleted })
+    }
+
+    var status: RoutineStatus {
+        get { RoutineStatus(rawValue: statusRaw) ?? .active }
+        set { statusRaw = newValue.rawValue }
     }
 }

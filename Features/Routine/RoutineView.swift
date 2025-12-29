@@ -46,17 +46,22 @@ struct RoutineView: View {
                 .font(.footnote)
                 .foregroundStyle(.secondary)
 
+            if let plan = viewModel.plan {
+                statusBadge(status: plan.status)
+            }
+
             HStack(spacing: 10) {
-                headerButton(title: "Start", icon: "play.fill") { viewModel.start() }
+                headerButton(title: "Start", icon: "play.fill", isDisabled: viewModel.plan == nil || viewModel.plan?.status == .done) { viewModel.start() }
                 headerButton(title: "Regenerate", icon: "arrow.clockwise") {
                     Task { await viewModel.regenerate() }
                 }
-                headerButton(title: "Save", icon: "tray.and.arrow.down.fill") { viewModel.savePlan() }
+                headerButton(title: "Save", icon: "tray.and.arrow.down.fill", isDisabled: viewModel.plan == nil) { viewModel.savePlan() }
+                headerButton(title: "Mark Done", icon: "checkmark.circle.fill", isDisabled: viewModel.plan == nil || viewModel.plan?.status == .done) { viewModel.markPlanDone() }
             }
         }
     }
 
-    private func headerButton(title: String, icon: String, action: @escaping () -> Void) -> some View {
+    private func headerButton(title: String, icon: String, isDisabled: Bool = false, action: @escaping () -> Void) -> some View {
         Button(action: action) {
             HStack(spacing: 6) {
                 Image(systemName: icon)
@@ -64,11 +69,25 @@ struct RoutineView: View {
             }
             .padding(.horizontal, 12)
             .padding(.vertical, 10)
-            .background(Color.white.opacity(0.7))
+            .background(Color.white.opacity(isDisabled ? 0.4 : 0.7))
             .foregroundStyle(.black)
             .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
         }
         .buttonStyle(.plain)
+        .disabled(isDisabled)
+    }
+
+    private func statusBadge(status: RoutineStatus) -> some View {
+        HStack(spacing: 8) {
+            Image(systemName: status == .done ? "checkmark.seal.fill" : "bolt.fill")
+                .foregroundStyle(status == .done ? .green : .blue)
+            Text(status == .done ? "Marked as done" : "Active plan")
+                .font(.caption)
+        }
+        .padding(.horizontal, 10)
+        .padding(.vertical, 6)
+        .background(Color.white.opacity(0.65))
+        .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
     }
 
     private var loadingState: some View {
@@ -99,7 +118,9 @@ struct RoutineView: View {
 
     private func routineContent(plan: RoutinePlan) -> some View {
         VStack(alignment: .leading, spacing: 14) {
-            if let next = plan.nextIncomplete {
+            if plan.status == .done {
+                banner(text: "Routine marked as done. Regenerate when you're ready for a fresh flow.")
+            } else if let next = plan.nextIncomplete {
                 banner(text: "Next: \(next.title) • \(next.durationMinutes) min")
             } else {
                 banner(text: "Great job! All practices are done.")
