@@ -21,10 +21,12 @@ final class MeditationSession {
     var voiceFilePath: String?
     var backgroundRaw: String
     var backgroundFilePath: String?
+    var coverImageURLString: String?
 
     init(durationMinutes: Int, title: String, summary: String, script: String,
          voiceFileName: String?, voiceFilePath: String? = nil,
          backgroundRaw: String, backgroundFilePath: String? = nil,
+         coverImageURLString: String? = nil,
          createdAt: Date = Date()) {
         self.durationMinutes = durationMinutes
         self.title = title
@@ -34,6 +36,7 @@ final class MeditationSession {
         self.voiceFilePath = voiceFilePath
         self.backgroundRaw = backgroundRaw
         self.backgroundFilePath = backgroundFilePath
+        self.coverImageURLString = coverImageURLString
         self.createdAt = createdAt
     }
 }
@@ -56,6 +59,11 @@ extension MeditationSession {
     var backgroundURL: URL? {
         guard let path = backgroundFilePath else { return nil }
         return URL(fileURLWithPath: path)
+    }
+
+    var coverURL: URL? {
+        guard let coverImageURLString else { return nil }
+        return URL(string: coverImageURLString)
     }
 }
 

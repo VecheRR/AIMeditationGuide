@@ -89,6 +89,7 @@ struct HomeView: View {
                     summary: playerSession?.summary ?? "",
                     durationMinutes: playerSession?.durationMinutes ?? 5,
                     voiceURL: playerSession?.voiceURL,
+                    coverURL: playerSession?.coverURL,
                     background: $bg
                 )
             }
