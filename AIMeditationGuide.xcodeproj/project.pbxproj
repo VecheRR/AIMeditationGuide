@@ -13,6 +13,9 @@
 		8655BD4E2F03180B00BAEA89 /* RoutineGeneratorService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8655BD472F03180B00BAEA89 /* RoutineGeneratorService.swift */; };
 		8655BD502F03182D00BAEA89 /* BreathingStubView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8655BD4F2F03182D00BAEA89 /* BreathingStubView.swift */; };
 		8655BD522F03184A00BAEA89 /* MeditationPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8655BD512F03184A00BAEA89 /* MeditationPlayerView.swift */; };
+		8672DEB52F03DFCD00DF26B0 /* CoverPlaceholderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8672DEB42F03DFCD00DF26B0 /* CoverPlaceholderView.swift */; };
+		8672DEBD2F04026A00DF26B0 /* StoreKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8672DEBC2F04026A00DF26B0 /* StoreKitManager.swift */; };
+		8672DEBF2F04114000DF26B0 /* AIMeditation.storekit in Resources */ = {isa = PBXBuildFile; fileRef = 8672DEBE2F04114000DF26B0 /* AIMeditation.storekit */; };
 		86E6EA8A2F02A3DC00532BE2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 86E6EA892F02A3DC00532BE2 /* Assets.xcassets */; };
 		86E6EAA42F02A50100532BE2 /* river.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 86E6EAA32F02A50100532BE2 /* river.mp3 */; };
 		86E6EAA62F02A51300532BE2 /* birds.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 86E6EAA52F02A51300532BE2 /* birds.mp3 */; };
@@ -42,10 +45,10 @@
 		86E6EAF42F02D75500532BE2 /* BreathingSessionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E6EAEE2F02D12C00532BE2 /* BreathingSessionView.swift */; };
 		86E6EAF52F02D75500532BE2 /* BreathingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E6EAF02F02D13B00532BE2 /* BreathingViewModel.swift */; };
 		86E6EAF62F02D75500532BE2 /* BreathingSetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E6EAE82F02D10C00532BE2 /* BreathingSetupView.swift */; };
-                86E6EAF72F02D75500532BE2 /* MoodPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E6EAEA2F02D11800532BE2 /* MoodPickerView.swift */; };
-                86E6EAF82F02D75500532BE2 /* BreathingPhase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E6EAF22F02D14300532BE2 /* BreathingPhase.swift */; };
-                86E6EAF92F02D75500532BE2 /* DurationPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E6EAEC2F02D12400532BE2 /* DurationPickerView.swift */; };
-                B1F6EB112F04C00100AAAAAA /* KenBurnsCoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F6EB102F04C00100AAAAAA /* KenBurnsCoverView.swift */; };
+		86E6EAF72F02D75500532BE2 /* MoodPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E6EAEA2F02D11800532BE2 /* MoodPickerView.swift */; };
+		86E6EAF82F02D75500532BE2 /* BreathingPhase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E6EAF22F02D14300532BE2 /* BreathingPhase.swift */; };
+		86E6EAF92F02D75500532BE2 /* DurationPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E6EAEC2F02D12400532BE2 /* DurationPickerView.swift */; };
+		B1F6EB112F04C00100AAAAAA /* KenBurnsCoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F6EB102F04C00100AAAAAA /* KenBurnsCoverView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -55,6 +58,9 @@
 		8655BD4A2F03180B00BAEA89 /* RoutineViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutineViewModel.swift; sourceTree = "<group>"; };
 		8655BD4F2F03182D00BAEA89 /* BreathingStubView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreathingStubView.swift; sourceTree = "<group>"; };
 		8655BD512F03184A00BAEA89 /* MeditationPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeditationPlayerView.swift; sourceTree = "<group>"; };
+		8672DEB42F03DFCD00DF26B0 /* CoverPlaceholderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoverPlaceholderView.swift; sourceTree = "<group>"; };
+		8672DEBC2F04026A00DF26B0 /* StoreKitManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreKitManager.swift; sourceTree = "<group>"; };
+		8672DEBE2F04114000DF26B0 /* AIMeditation.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = AIMeditation.storekit; sourceTree = "<group>"; };
 		86E6EA822F02A3DA00532BE2 /* AIMeditationGuide.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AIMeditationGuide.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		86E6EA892F02A3DC00532BE2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		86E6EAA32F02A50100532BE2 /* river.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = river.mp3; sourceTree = "<group>"; };
@@ -85,10 +91,10 @@
 		86E6EAE82F02D10C00532BE2 /* BreathingSetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreathingSetupView.swift; sourceTree = "<group>"; };
 		86E6EAEA2F02D11800532BE2 /* MoodPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoodPickerView.swift; sourceTree = "<group>"; };
 		86E6EAEC2F02D12400532BE2 /* DurationPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DurationPickerView.swift; sourceTree = "<group>"; };
-                86E6EAEE2F02D12C00532BE2 /* BreathingSessionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreathingSessionView.swift; sourceTree = "<group>"; };
-                86E6EAF02F02D13B00532BE2 /* BreathingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreathingViewModel.swift; sourceTree = "<group>"; };
-                86E6EAF22F02D14300532BE2 /* BreathingPhase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreathingPhase.swift; sourceTree = "<group>"; };
-                B1F6EB102F04C00100AAAAAA /* KenBurnsCoverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KenBurnsCoverView.swift; sourceTree = "<group>"; };
+		86E6EAEE2F02D12C00532BE2 /* BreathingSessionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreathingSessionView.swift; sourceTree = "<group>"; };
+		86E6EAF02F02D13B00532BE2 /* BreathingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreathingViewModel.swift; sourceTree = "<group>"; };
+		86E6EAF22F02D14300532BE2 /* BreathingPhase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreathingPhase.swift; sourceTree = "<group>"; };
+		B1F6EB102F04C00100AAAAAA /* KenBurnsCoverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KenBurnsCoverView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -149,6 +155,7 @@
 			children = (
 				86E6EAC22F02ABF300532BE2 /* MainTabView.swift */,
 				86E6EAC12F02ABE100532BE2 /* RootView.swift */,
+				8672DEBE2F04114000DF26B0 /* AIMeditation.storekit */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -181,15 +188,16 @@
 			path = Theme;
 			sourceTree = "<group>";
 		};
-                86E6EA952F02A44500532BE2 /* Components */ = {
-                        isa = PBXGroup;
-                        children = (
-                                B1F6EB102F04C00100AAAAAA /* KenBurnsCoverView.swift */,
-                                86E6EADA2F02AD4F00532BE2 /* PrimaryButton.swift */,
-                                86E6EABF2F02AAAE00532BE2 /* SelectList.swift */,
-                        );
-                        path = Components;
-                        sourceTree = "<group>";
+		86E6EA952F02A44500532BE2 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				8672DEB42F03DFCD00DF26B0 /* CoverPlaceholderView.swift */,
+				B1F6EB102F04C00100AAAAAA /* KenBurnsCoverView.swift */,
+				86E6EADA2F02AD4F00532BE2 /* PrimaryButton.swift */,
+				86E6EABF2F02AAAE00532BE2 /* SelectList.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
 		};
 		86E6EA962F02A44B00532BE2 /* Audio */ = {
 			isa = PBXGroup;
@@ -234,6 +242,7 @@
 		86E6EA9A2F02A46600532BE2 /* Paywall */ = {
 			isa = PBXGroup;
 			children = (
+				8672DEBC2F04026A00DF26B0 /* StoreKitManager.swift */,
 				86E6EAC62F02AC5700532BE2 /* PaywallView.swift */,
 			);
 			path = Paywall;
@@ -394,6 +403,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8672DEBF2F04114000DF26B0 /* AIMeditation.storekit in Resources */,
 				86E6EAA82F02A51E00532BE2 /* waves.mp3 in Resources */,
 				86E6EAB82F02A97400532BE2 /* Config.xcconfig in Resources */,
 				86E6EAA42F02A50100532BE2 /* river.mp3 in Resources */,
@@ -432,14 +442,16 @@
 				86E6EAF82F02D75500532BE2 /* BreathingPhase.swift in Sources */,
 				8655BD522F03184A00BAEA89 /* MeditationPlayerView.swift in Sources */,
 				86E6EAF92F02D75500532BE2 /* DurationPickerView.swift in Sources */,
-                                86E6EAD32F02ACAB00532BE2 /* MainTabView.swift in Sources */,
-                                86E6EAD42F02ACAB00532BE2 /* RootView.swift in Sources */,
-                                86E6EAC92F02AC9800532BE2 /* HistoryView.swift in Sources */,
-                                B1F6EB112F04C00100AAAAAA /* KenBurnsCoverView.swift in Sources */,
-                                86E6EACA2F02ACA000532BE2 /* GeneratorFlowView.swift in Sources */,
-                                86E6EACB2F02ACA000532BE2 /* GeneratorViewModel.swift in Sources */,
-                                86E6EADD2F02AF4300532BE2 /* AudioPlayerService.swift in Sources */,
+				86E6EAD32F02ACAB00532BE2 /* MainTabView.swift in Sources */,
+				86E6EAD42F02ACAB00532BE2 /* RootView.swift in Sources */,
+				86E6EAC92F02AC9800532BE2 /* HistoryView.swift in Sources */,
+				8672DEB52F03DFCD00DF26B0 /* CoverPlaceholderView.swift in Sources */,
+				B1F6EB112F04C00100AAAAAA /* KenBurnsCoverView.swift in Sources */,
+				86E6EACA2F02ACA000532BE2 /* GeneratorFlowView.swift in Sources */,
+				86E6EACB2F02ACA000532BE2 /* GeneratorViewModel.swift in Sources */,
+				86E6EADD2F02AF4300532BE2 /* AudioPlayerService.swift in Sources */,
 				86E6EACC2F02ACA000532BE2 /* GeneratedResultView.swift in Sources */,
+				8672DEBD2F04026A00DF26B0 /* StoreKitManager.swift in Sources */,
 				8655BD502F03182D00BAEA89 /* BreathingStubView.swift in Sources */,
 				86E6EADB2F02AD5200532BE2 /* PrimaryButton.swift in Sources */,
 				86E6EACD2F02ACA000532BE2 /* GeneratorModels.swift in Sources */,

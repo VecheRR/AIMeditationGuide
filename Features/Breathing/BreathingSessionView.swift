@@ -20,13 +20,16 @@ struct BreathingSessionView: View {
     @State private var didSave = false
     @State private var showCompletion = false
 
+    @State private var countdownTimer: Timer?
+
     var body: some View {
         ZStack {
-            // Уникальнее, чем просто фон: слой + мягкий блёр
             AppBackground()
                 .overlay(Color.white.opacity(0.08).ignoresSafeArea())
 
             VStack {
+                topBar
+
                 Spacer()
 
                 breathingCircle
@@ -42,37 +45,54 @@ struct BreathingSessionView: View {
             startCountdown()
         }
         .onDisappear {
+            countdownTimer?.invalidate()
+            countdownTimer = nil
             vm.stop()
         }
-        .navigationBarBackButtonHidden()
+        // убираем системную навигацию (и Back тоже)
+        .navigationBarBackButtonHidden(true)
         .toolbar(.hidden, for: .navigationBar)
-        .onChange(of: vm.isFinished) { finished in
+
+        // iOS 17-safe вариант
+        .onChange(of: vm.isFinished) { _, finished in
             guard finished else { return }
             saveBreathingLogIfNeeded()
             showCompletion = true
         }
+
         .alert("Breathing complete", isPresented: $showCompletion) {
-            Button("Close") {
-                dismiss()
-            }
-            Button("Restart") {
-                restart()
-            }
+            Button("Close") { dismiss() }
+            Button("Restart") { restart() }
         } message: {
             Text("Session saved to history")
         }
     }
 
+    // MARK: - Top Bar (только одна кнопка закрыть)
+
+    private var topBar: some View {
+        HStack {
+            Button {
+                dismiss()
+            } label: {
+                Image(systemName: "xmark")
+                    .foregroundColor(.black)
+                    .padding(10)
+                    .background(Color.white.opacity(0.7))
+                    .clipShape(Circle())
+            }
+
+            Spacer()
+        }
+        .padding(.top, 4)
+    }
+
+    // MARK: - Center
+
     private var breathingCircle: some View {
         let label = isCountingDown ? "\(countdown)" : vm.phase.rawValue
-
-        // прогресс внутри фазы 0...1
         let p = isCountingDown ? 0.0 : vm.phaseProgress
 
-        // scale меняется плавно весь inhale/exhale
-        // inhale: 0.85 -> 1.20
-        // hold: держим 1.20
-        // exhale: 1.20 -> 0.85
         let innerScale: CGFloat
         let outerScale: CGFloat
 
@@ -93,7 +113,6 @@ struct BreathingSessionView: View {
             }
         }
 
-        // длительность анимации = длительность текущей фазы (в секундах)
         let anim = Animation.linear(duration: Double(max(vm.phaseDuration, 1)))
 
         return ZStack {
@@ -120,6 +139,8 @@ struct BreathingSessionView: View {
         }
     }
 
+    // MARK: - Bottom Bar
+
     private var bottomBar: some View {
         HStack {
             Button {
@@ -141,6 +162,7 @@ struct BreathingSessionView: View {
                 Text("Remaining")
                     .font(.caption2)
                     .foregroundColor(.secondary)
+
                 if !muteHints {
                     Text(vm.instruction)
                         .font(.footnote.weight(.medium))
@@ -165,21 +187,27 @@ struct BreathingSessionView: View {
     }
 
     // MARK: - Helpers
+
     private func startCountdown() {
+        countdownTimer?.invalidate()
+        countdownTimer = nil
+
         isCountingDown = true
         countdown = 3
         didSave = false
         showCompletion = false
+
         vm.prepareForStart()
 
-        Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { t in
+        countdownTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { t in
             if countdown <= 1 {
                 t.invalidate()
+                countdownTimer = nil
                 isCountingDown = false
                 vm.start()
-                return
+            } else {
+                countdown -= 1
             }
-            countdown -= 1
         }
     }
 
