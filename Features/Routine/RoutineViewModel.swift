@@ -33,6 +33,7 @@ final class RoutineViewModel: ObservableObject {
             plan = latest
             highlightedItemID = latest.status == .done ? nil : latest.nextIncomplete?.id
         }
+        refreshCompletionHistory()
     }
 
     func generate() async {
@@ -52,6 +53,7 @@ final class RoutineViewModel: ObservableObject {
 
             plan = newPlan
             highlightedItemID = newPlan.nextIncomplete?.id
+            refreshCompletionHistory()
         } catch {
             errorText = error.localizedDescription
         }
@@ -67,9 +69,19 @@ final class RoutineViewModel: ObservableObject {
         await generate()
     }
 
-    func start() {
-        guard let plan else { return }
-        highlightedItemID = plan.status == .done ? nil : plan.nextIncomplete?.id
+    func resetProgress() {
+        guard let context, var items = plan?.items else { return }
+
+        for index in items.indices {
+            items[index].isCompleted = false
+        }
+
+        plan?.items = items
+        plan?.status = .active
+        plan?.completedAt = nil
+        highlightedItemID = plan?.nextIncomplete?.id
+        try? context.save()
+        refreshCompletionHistory()
     }
 
     func markDone(item: RoutineItem) {
@@ -79,9 +91,11 @@ final class RoutineViewModel: ObservableObject {
             plan?.items = currentItems
             if plan?.nextIncomplete == nil {
                 plan?.status = .done
+                plan?.completedAt = .now
             }
             highlightedItemID = plan?.nextIncomplete?.id
             try? context.save()
+            refreshCompletionHistory()
         }
     }
 
@@ -91,8 +105,10 @@ final class RoutineViewModel: ObservableObject {
             currentItems[index].isCompleted = false
             plan?.items = currentItems
             plan?.status = .active
+            plan?.completedAt = nil
             highlightedItemID = plan?.nextIncomplete?.id
             try? context.save()
+            refreshCompletionHistory()
         }
     }
 
@@ -104,7 +120,38 @@ final class RoutineViewModel: ObservableObject {
 
         plan?.items = currentItems
         plan?.status = .done
+        plan?.completedAt = .now
         highlightedItemID = nil
         try? context.save()
+        refreshCompletionHistory()
+    }
+
+    @Published var completionHistory: [Date: Bool] = [:]
+
+    var canResetPlan: Bool {
+        guard let plan else { return false }
+        let hasCompletedItems = plan.items.contains(where: { $0.isCompleted })
+        return hasCompletedItems || plan.status == .done
+    }
+
+    private func refreshCompletionHistory() {
+        guard let context else { return }
+        let descriptor = FetchDescriptor<RoutinePlan>(sortBy: [SortDescriptor(\.createdAt, order: .reverse)])
+        let plans = (try? context.fetch(descriptor)) ?? []
+
+        let calendar = Calendar.current
+        var results: [Date: Bool] = [:]
+        let today = calendar.startOfDay(for: .now)
+
+        for offset in 0..<7 {
+            guard let day = calendar.date(byAdding: .day, value: -offset, to: today) else { continue }
+            let isDone = plans.contains { plan in
+                guard let completedAt = plan.completedAt else { return false }
+                return calendar.isDate(completedAt, inSameDayAs: day)
+            }
+            results[day] = isDone
+        }
+
+        completionHistory = results
     }
 }

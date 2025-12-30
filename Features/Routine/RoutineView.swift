@@ -17,6 +17,8 @@ struct RoutineView: View {
             VStack(alignment: .leading, spacing: 16) {
                 headerSection
 
+                progressCalendar
+
                 if let error = viewModel.errorText {
                     errorBanner(text: error)
                 }
@@ -51,7 +53,7 @@ struct RoutineView: View {
             }
 
             HStack(spacing: 10) {
-                headerButton(title: "Start", icon: "play.fill", isDisabled: viewModel.plan == nil || viewModel.plan?.status == .done) { viewModel.start() }
+                headerButton(title: "Reset Progress", icon: "gobackward", isDisabled: !viewModel.canResetPlan) { viewModel.resetProgress() }
                 headerButton(title: "Regenerate", icon: "arrow.clockwise") {
                     Task { await viewModel.regenerate() }
                 }
@@ -59,6 +61,36 @@ struct RoutineView: View {
                 headerButton(title: "Mark Done", icon: "checkmark.circle.fill", isDisabled: viewModel.plan == nil || viewModel.plan?.status == .done) { viewModel.markPlanDone() }
             }
         }
+    }
+
+    private var progressCalendar: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("This week")
+                .font(.caption.bold())
+                .foregroundStyle(.secondary)
+
+            HStack(spacing: 10) {
+                ForEach(dayEntries, id: \.day) { entry in
+                    VStack(spacing: 6) {
+                        Text(entry.short)
+                            .font(.caption2)
+                            .foregroundStyle(.secondary)
+                        Circle()
+                            .fill(entry.isDone ? Color.green : Color.black.opacity(0.1))
+                            .frame(width: 12, height: 12)
+                            .overlay(
+                                Circle()
+                                    .stroke(entry.isToday ? Color.blue : Color.clear, lineWidth: 2)
+                                    .frame(width: 18, height: 18)
+                            )
+                    }
+                    .frame(maxWidth: .infinity)
+                }
+            }
+        }
+        .padding(12)
+        .background(Color.white.opacity(0.6))
+        .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
     }
 
     private func headerButton(title: String, icon: String, isDisabled: Bool = false, action: @escaping () -> Void) -> some View {
@@ -231,4 +263,25 @@ struct RoutineView: View {
                 .stroke(viewModel.highlightedItemID == item.id ? Color.green : Color.clear, lineWidth: 2)
         )
     }
+
+    private var dayEntries: [DayEntry] {
+        let calendar = Calendar.current
+        let today = calendar.startOfDay(for: .now)
+
+        return (0..<7).compactMap { offset in
+            guard let day = calendar.date(byAdding: .day, value: -offset, to: today) else { return nil }
+            let weekdayIndex = max(calendar.component(.weekday, from: day) - 1, 0)
+            let short = calendar.shortWeekdaySymbols[weekdayIndex]
+            let isDone = viewModel.completionHistory[day] ?? false
+            return DayEntry(day: day, short: short.uppercased(), isDone: isDone, isToday: calendar.isDate(day, inSameDayAs: today))
+        }.reversed()
+    }
+}
+
+private struct DayEntry: Identifiable {
+    var id: Date { day }
+    let day: Date
+    let short: String
+    let isDone: Bool
+    let isToday: Bool
 }

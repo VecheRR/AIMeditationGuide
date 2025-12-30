@@ -145,7 +145,7 @@ struct HistoryView: View {
                     .foregroundStyle(.secondary)
                     .lineLimit(2)
 
-                Text(session.createdAt, style: .date)
+                Text(session.createdAt.formatted(date: .abbreviated, time: .shortened))
                     .font(.caption2)
                     .foregroundStyle(.secondary)
             }
@@ -187,7 +187,7 @@ struct HistoryView: View {
                     .font(.footnote)
                     .foregroundStyle(.secondary)
 
-                Text(log.createdAt, style: .date)
+                Text(log.createdAt.formatted(date: .abbreviated, time: .shortened))
                     .font(.caption2)
                     .foregroundStyle(.secondary)
             }

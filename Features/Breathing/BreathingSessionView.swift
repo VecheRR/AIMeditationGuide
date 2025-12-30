@@ -27,8 +27,6 @@ struct BreathingSessionView: View {
                 .overlay(Color.white.opacity(0.08).ignoresSafeArea())
 
             VStack {
-                topBar
-
                 Spacer()
 
                 breathingCircle
@@ -46,6 +44,18 @@ struct BreathingSessionView: View {
         .onDisappear {
             vm.stop()
         }
+        .navigationBarBackButtonHidden(true)
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                Button {
+                    vm.stop()
+                    dismiss()
+                } label: {
+                    Image(systemName: "xmark")
+                        .foregroundColor(.black)
+                }
+            }
+        }
         .onChange(of: vm.isFinished) { finished in
             guard finished else { return }
             saveBreathingLogIfNeeded()
@@ -61,34 +71,6 @@ struct BreathingSessionView: View {
         } message: {
             Text("Session saved to history")
         }
-    }
-
-    private var topBar: some View {
-        HStack {
-            Button {
-                vm.stop()
-                dismiss()
-            } label: {
-                Image(systemName: "xmark")
-                    .foregroundColor(.black)
-                    .padding(10)
-                    .background(Color.white.opacity(0.7))
-                    .clipShape(Circle())
-            }
-
-            Spacer()
-
-            Button {
-                restart()
-            } label: {
-                Image(systemName: "arrow.clockwise")
-                    .foregroundColor(.black)
-                    .padding(10)
-                    .background(Color.white.opacity(0.7))
-                    .clipShape(Circle())
-            }
-        }
-        .padding(.top, 8)
     }
 
     private var breathingCircle: some View {
