@@ -46,6 +46,8 @@ struct BreathingSessionView: View {
         .onDisappear {
             vm.stop()
         }
+        .navigationBarBackButtonHidden()
+        .toolbar(.hidden, for: .navigationBar)
         .onChange(of: vm.isFinished) { finished in
             guard finished else { return }
             saveBreathingLogIfNeeded()

@@ -41,13 +41,14 @@ final class AudioPlayerService: ObservableObject {
         stop()
 
         targetDuration = max(targetSeconds, 1)
-        duration = max(targetDuration, voicePlayer?.duration ?? 0)
+        duration = targetDuration
         currentTime = 0
 
         if let voiceURL {
             voicePlayer = try AVAudioPlayer(contentsOf: voiceURL)
             voicePlayer?.prepareToPlay()
             voicePlayer?.volume = voiceVolume
+            duration = max(targetDuration, voicePlayer?.duration ?? targetDuration)
         }
 
         if background != .none, let url = backgroundURL ?? SoundLibrary.url(for: background) {
@@ -93,7 +94,14 @@ final class AudioPlayerService: ObservableObject {
         // Двигаем голос, если он есть
         if let vp = voicePlayer {
             let voiceDur = max(vp.duration, 0)
-            vp.currentTime = min(clamped, voiceDur)
+            if clamped < voiceDur {
+                vp.currentTime = clamped
+                if isPlaying { vp.play() }
+            } else {
+                // если листаем дальше, чем длится озвучка, ставим её на конец и не перезапускаем с начала
+                vp.pause()
+                vp.currentTime = voiceDur
+            }
         }
 
         // И фон, чтобы луп совпадал с таймлайном
