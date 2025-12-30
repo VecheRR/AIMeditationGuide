@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		862BBF792F03C7EC000256E7 /* CoverPlaceholderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 862BBF782F03C7EC000256E7 /* CoverPlaceholderView.swift */; };
 		8655BD4B2F03180B00BAEA89 /* RoutineModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8655BD482F03180B00BAEA89 /* RoutineModels.swift */; };
 		8655BD4C2F03180B00BAEA89 /* RoutineViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8655BD4A2F03180B00BAEA89 /* RoutineViewModel.swift */; };
 		8655BD4D2F03180B00BAEA89 /* RoutineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8655BD492F03180B00BAEA89 /* RoutineView.swift */; };
@@ -48,6 +49,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		862BBF782F03C7EC000256E7 /* CoverPlaceholderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoverPlaceholderView.swift; sourceTree = "<group>"; };
 		8655BD472F03180B00BAEA89 /* RoutineGeneratorService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutineGeneratorService.swift; sourceTree = "<group>"; };
 		8655BD482F03180B00BAEA89 /* RoutineModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutineModels.swift; sourceTree = "<group>"; };
 		8655BD492F03180B00BAEA89 /* RoutineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutineView.swift; sourceTree = "<group>"; };
@@ -182,6 +184,7 @@
 		86E6EA952F02A44500532BE2 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				862BBF782F03C7EC000256E7 /* CoverPlaceholderView.swift */,
 				86E6EADA2F02AD4F00532BE2 /* PrimaryButton.swift */,
 				86E6EABF2F02AAAE00532BE2 /* SelectList.swift */,
 			);
@@ -438,6 +441,7 @@
 				86E6EACC2F02ACA000532BE2 /* GeneratedResultView.swift in Sources */,
 				8655BD502F03182D00BAEA89 /* BreathingStubView.swift in Sources */,
 				86E6EADB2F02AD5200532BE2 /* PrimaryButton.swift in Sources */,
+				862BBF792F03C7EC000256E7 /* CoverPlaceholderView.swift in Sources */,
 				86E6EACD2F02ACA000532BE2 /* GeneratorModels.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
