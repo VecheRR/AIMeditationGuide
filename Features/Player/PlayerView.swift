@@ -14,6 +14,7 @@ struct PlayerView: View {
     let summary: String
     let durationMinutes: Int
     let voiceURL: URL?
+    let coverURL: URL?
     let storedBackground: GenBackground? = nil
     let backgroundFileURL: URL? = nil
     @Binding var background: GenBackground
@@ -109,8 +110,12 @@ struct PlayerView: View {
 
     private var header: some View {
         VStack(alignment: .leading, spacing: 12) {
-            CoverPlaceholderView(title: title, accent: .blue, subtitle: "\(durationMinutes) min session")
-                .frame(height: 210)
+            KenBurnsCoverView(
+                imageURL: coverURL,
+                title: title,
+                subtitle: "\(durationMinutes) min session"
+            )
+            .frame(height: 210)
 
             VStack(alignment: .leading, spacing: 6) {
                 Text(title)

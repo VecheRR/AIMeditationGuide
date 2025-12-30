@@ -13,6 +13,11 @@ struct MeditationAIResponse: Decodable {
     let script: String
 }
 
+struct GeneratedImageResponse: Decodable {
+    struct DataItem: Decodable { let url: String }
+    let data: [DataItem]
+}
+
 final class OpenAIClient {
     private let apiKey: String
     private let model: String
@@ -102,5 +107,42 @@ final class OpenAIClient {
         }
 
         throw NSError(domain: "OpenAI.Decode", code: 3, userInfo: [NSLocalizedDescriptionKey: "Empty content"])
+    }
+
+    func generateMeditationCover(goal: String, durationMin: Int, voiceStyle: String, background: String) async throws -> URL? {
+        let prompt = """
+        Calming, cinematic illustration for a guided meditation cover.
+        Goal: \(goal).
+        Duration: \(durationMin) minutes.
+        Voice: \(voiceStyle) tone.
+        Background sound vibe: \(background).
+        Soft gradients, soothing nature elements, no text, high resolution.
+        """
+
+        let body: [String: Any] = [
+            "model": "gpt-image-1",
+            "prompt": prompt,
+            "size": "1024x1024",
+            "style": "vivid"
+        ]
+
+        var req = URLRequest(url: URL(string: "https://api.openai.com/v1/images/generations")!)
+        req.httpMethod = "POST"
+        req.setValue("Bearer \(apiKey)", forHTTPHeaderField: "Authorization")
+        req.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        req.httpBody = try JSONSerialization.data(withJSONObject: body)
+
+        let (data, resp) = try await URLSession.shared.data(for: req)
+        guard let http = resp as? HTTPURLResponse, (200...299).contains(http.statusCode) else {
+            let text = String(data: data, encoding: .utf8) ?? "Unknown error"
+            throw NSError(domain: "OpenAI.Image", code: 4, userInfo: [NSLocalizedDescriptionKey: text])
+        }
+
+        let root = try JSONDecoder().decode(GeneratedImageResponse.self, from: data)
+        if let urlString = root.data.first?.url {
+            return URL(string: urlString)
+        }
+
+        return nil
     }
 }
