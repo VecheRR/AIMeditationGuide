@@ -15,8 +15,9 @@
 		8655BD522F03184A00BAEA89 /* MeditationPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8655BD512F03184A00BAEA89 /* MeditationPlayerView.swift */; };
 		8672DEB52F03DFCD00DF26B0 /* CoverPlaceholderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8672DEB42F03DFCD00DF26B0 /* CoverPlaceholderView.swift */; };
 		8672DEBD2F04026A00DF26B0 /* StoreKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8672DEBC2F04026A00DF26B0 /* StoreKitManager.swift */; };
-		8672DEBF2F04114000DF26B0 /* AIMeditation.storekit in Resources */ = {isa = PBXBuildFile; fileRef = 8672DEBE2F04114000DF26B0 /* AIMeditation.storekit */; };
-		86E6EA8A2F02A3DC00532BE2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 86E6EA892F02A3DC00532BE2 /* Assets.xcassets */; };
+                8672DEBF2F04114000DF26B0 /* AIMeditation.storekit in Resources */ = {isa = PBXBuildFile; fileRef = 8672DEBE2F04114000DF26B0 /* AIMeditation.storekit */; };
+                B1LOCAL012F05C00000AAAAAA /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = B1LOCAL002F05BFF800AAAAAA /* Localizable.strings */; };
+                86E6EA8A2F02A3DC00532BE2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 86E6EA892F02A3DC00532BE2 /* Assets.xcassets */; };
 		86E6EAA42F02A50100532BE2 /* river.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 86E6EAA32F02A50100532BE2 /* river.mp3 */; };
 		86E6EAA62F02A51300532BE2 /* birds.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 86E6EAA52F02A51300532BE2 /* birds.mp3 */; };
 		86E6EAA82F02A51E00532BE2 /* waves.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 86E6EAA72F02A51E00532BE2 /* waves.mp3 */; };
@@ -93,8 +94,10 @@
 		86E6EAEC2F02D12400532BE2 /* DurationPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DurationPickerView.swift; sourceTree = "<group>"; };
 		86E6EAEE2F02D12C00532BE2 /* BreathingSessionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreathingSessionView.swift; sourceTree = "<group>"; };
 		86E6EAF02F02D13B00532BE2 /* BreathingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreathingViewModel.swift; sourceTree = "<group>"; };
-		86E6EAF22F02D14300532BE2 /* BreathingPhase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreathingPhase.swift; sourceTree = "<group>"; };
-		B1F6EB102F04C00100AAAAAA /* KenBurnsCoverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KenBurnsCoverView.swift; sourceTree = "<group>"; };
+                86E6EAF22F02D14300532BE2 /* BreathingPhase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreathingPhase.swift; sourceTree = "<group>"; };
+                B1LOCAL032F05C01E00AAAAAA /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+                B1LOCAL042F05C02700AAAAAA /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
+                B1F6EB102F04C00100AAAAAA /* KenBurnsCoverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KenBurnsCoverView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -310,12 +313,13 @@
 			path = History;
 			sourceTree = "<group>";
 		};
-		86E6EAA12F02A49E00532BE2 /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				86E6EA892F02A3DC00532BE2 /* Assets.xcassets */,
-				86E6EAA22F02A4A700532BE2 /* Sounds */,
-			);
+                86E6EAA12F02A49E00532BE2 /* Resources */ = {
+                        isa = PBXGroup;
+                        children = (
+                                B1LOCAL002F05BFF800AAAAAA /* Localizable.strings */,
+                                86E6EA892F02A3DC00532BE2 /* Assets.xcassets */,
+                                86E6EAA22F02A4A700532BE2 /* Sounds */,
+                        );
 			path = Resources;
 			sourceTree = "<group>";
 		};
@@ -382,10 +386,11 @@
 			buildConfigurationList = 86E6EA7D2F02A3DA00532BE2 /* Build configuration list for PBXProject "AIMeditationGuide" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
-			knownRegions = (
-				en,
-				Base,
-			);
+                        knownRegions = (
+                                en,
+                                ru,
+                                Base,
+                        );
 			mainGroup = 86E6EA792F02A3DA00532BE2;
 			minimizedProjectReferenceProxies = 1;
 			preferredProjectObjectVersion = 77;
@@ -395,17 +400,30 @@
 			targets = (
 				86E6EA812F02A3DA00532BE2 /* AIMeditationGuide */,
 			);
-		};
+                };
 /* End PBXProject section */
 
+/* Begin PBXVariantGroup section */
+                B1LOCAL002F05BFF800AAAAAA /* Localizable.strings */ = {
+                        isa = PBXVariantGroup;
+                        children = (
+                                B1LOCAL032F05C01E00AAAAAA /* en */,
+                                B1LOCAL042F05C02700AAAAAA /* ru */,
+                        );
+                        name = Localizable.strings;
+                        sourceTree = "<group>";
+                };
+/* End PBXVariantGroup section */
+
 /* Begin PBXResourcesBuildPhase section */
-		86E6EA802F02A3DA00532BE2 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				8672DEBF2F04114000DF26B0 /* AIMeditation.storekit in Resources */,
-				86E6EAA82F02A51E00532BE2 /* waves.mp3 in Resources */,
-				86E6EAB82F02A97400532BE2 /* Config.xcconfig in Resources */,
+                86E6EA802F02A3DA00532BE2 /* Resources */ = {
+                        isa = PBXResourcesBuildPhase;
+                        buildActionMask = 2147483647;
+                        files = (
+                                B1LOCAL012F05C00000AAAAAA /* Localizable.strings in Resources */,
+                                8672DEBF2F04114000DF26B0 /* AIMeditation.storekit in Resources */,
+                                86E6EAA82F02A51E00532BE2 /* waves.mp3 in Resources */,
+                                86E6EAB82F02A97400532BE2 /* Config.xcconfig in Resources */,
 				86E6EAA42F02A50100532BE2 /* river.mp3 in Resources */,
 				86E6EAA62F02A51300532BE2 /* birds.mp3 in Resources */,
 				86E6EA8A2F02A3DC00532BE2 /* Assets.xcassets in Resources */,
