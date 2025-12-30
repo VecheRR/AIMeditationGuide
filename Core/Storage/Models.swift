@@ -43,7 +43,7 @@ final class MeditationSession {
 
 extension MeditationSession {
     var background: GenBackground {
-        GenBackground(rawValue: backgroundRaw) ?? .none
+        GenBackground.from(raw: backgroundRaw)
     }
 
     var voiceURL: URL? {

@@ -31,8 +31,14 @@ enum GenVoice: String, CaseIterable, Identifiable {
 
 enum GenBackground: String, CaseIterable, Identifiable {
     case nature = "Nature"
-    case ambient = "Waves"
+    case ambient = "Ambient music"
     case rain = "Rain"
     case none = "None"
     var id: String { rawValue }
+
+    /// Accept legacy stored values (e.g., "Waves") to keep previously saved sessions working.
+    static func from(raw: String) -> GenBackground {
+        if raw == "Waves" { return .ambient }
+        return GenBackground(rawValue: raw) ?? .none
+    }
 }

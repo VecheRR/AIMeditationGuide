@@ -47,6 +47,8 @@ struct HomeView: View {
                         .font(.system(size: 34, weight: .semibold))
                         .frame(maxWidth: .infinity, alignment: .center)
 
+                    miniSuggestion
+
                     VStack(spacing: 10) {
                         actionButton(title: "GENERATE MEDITATION", icon: "sparkles") { showGenerator = true }
                         actionButton(title: "BREATHING EXERCISE", icon: "wind") { goBreathing = true }
@@ -90,7 +92,10 @@ struct HomeView: View {
                     durationMinutes: playerSession?.durationMinutes ?? 5,
                     voiceURL: playerSession?.voiceURL,
                     coverURL: playerSession?.coverURL,
-                    background: $bg
+                    background: $bg,
+                    onSave: nil,
+                    isAlreadySaved: true,
+                    onFinishEarly: { openPlayer = false }
                 )
             }
         }
@@ -112,6 +117,33 @@ struct HomeView: View {
             .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
         }
         .buttonStyle(.plain)
+    }
+
+    private var miniSuggestion: some View {
+        let suggestion = miniRecommendation()
+
+        return HStack(alignment: .center, spacing: 12) {
+            Image(systemName: "lightbulb")
+                .font(.title3.weight(.semibold))
+                .foregroundStyle(.yellow)
+
+            VStack(alignment: .leading, spacing: 4) {
+                Text("AI suggestion")
+                    .font(.caption.bold())
+                    .foregroundStyle(.secondary)
+                Text(suggestion)
+                    .font(.subheadline)
+                    .foregroundStyle(.primary)
+                    .lineLimit(3)
+            }
+
+            Spacer(minLength: 8)
+        }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 12)
+        .background(Color.white.opacity(0.7))
+        .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+        .padding(.horizontal, 16)
     }
 
     private func todayCard(_ s: MeditationSession) -> some View {
@@ -193,6 +225,18 @@ struct HomeView: View {
         playerSession = session
         bg = session.background
         openPlayer = true
+    }
+
+    private func miniRecommendation() -> String {
+        if let nextPractice {
+            return "Next up: \(nextPractice.title) — take \(nextPractice.durationMinutes) minutes to keep your routine on track."
+        }
+
+        if let last {
+            return "Great job completing a \(last.durationMinutes)-minute session. Try a quick 5-minute breathing break to stay balanced."
+        }
+
+        return "Start with a 5-minute session to set your intention, then follow with a calming breathing exercise."
     }
 
     private func routineCard(plan: RoutinePlan, next: RoutineItem?) -> some View {
