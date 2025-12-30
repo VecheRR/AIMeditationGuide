@@ -26,12 +26,12 @@ struct GeneratedResultView: View {
 
             ScrollView {
                 VStack(spacing: 18) {
-                    CoverPlaceholderView(
+                    KenBurnsCoverView(
+                        imageURL: vm.coverImageURL,
                         title: title,
-                        accent: .purple,
                         subtitle: "\(durationValue) min guided session"
                     )
-                    .frame(height: 200)
+                    .frame(height: 220)
                     .padding(.horizontal, 16)
 
                     VStack(alignment: .leading, spacing: 12) {
@@ -88,6 +88,7 @@ struct GeneratedResultView: View {
                 summary: summary,
                 durationMinutes: vm.duration?.rawValue ?? 5,
                 voiceURL: vm.voiceFileURL,
+                coverURL: vm.coverImageURL,
                 background: $bg
             )
         }
@@ -109,7 +110,8 @@ struct GeneratedResultView: View {
             voiceFileName: fileName,
             voiceFilePath: voicePath,
             backgroundRaw: bgRaw,
-            backgroundFilePath: backgroundPath
+            backgroundFilePath: backgroundPath,
+            coverImageURLString: vm.coverImageURL?.absoluteString
         )
 
         modelContext.insert(session)

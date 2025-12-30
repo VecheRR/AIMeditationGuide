@@ -18,6 +18,7 @@ final class GeneratorViewModel: ObservableObject {
     @Published var isLoading = false
     @Published var errorText: String?
     @Published var generated: MeditationAIResponse?
+    @Published var coverImageURL: URL?
 
     private let tts = OpenAITTSClient()
     @Published var voiceFileURL: URL?
@@ -29,7 +30,7 @@ final class GeneratorViewModel: ObservableObject {
     }
 
     func generate() async {
-        guard let goal, let duration, let voice else { return }
+        guard let goal, let duration, let voice, let background else { return }
         errorText = nil
         isLoading = true
         defer { isLoading = false }
@@ -41,7 +42,15 @@ final class GeneratorViewModel: ObservableObject {
                 voiceStyle: voice.rawValue
             )
             generated = res
-            
+
+            // Try to create a matching cover while we synthesize the voice
+            coverImageURL = try? await client.generateMeditationCover(
+                goal: goal.rawValue,
+                durationMin: duration.rawValue,
+                voiceStyle: voice.rawValue,
+                background: background.rawValue
+            )
+
             // Текст для озвучки — используем script
             self.voiceFileURL = nil
             let voiceURL = try await tts.synthesizeToFile(text: res.script)

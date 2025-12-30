@@ -24,6 +24,7 @@ struct MeditationPlayerView: View {
             summary: session.summary,
             durationMinutes: session.durationMinutes,
             voiceURL: session.voiceURL,
+            coverURL: session.coverURL,
             background: $background
         )
     }
