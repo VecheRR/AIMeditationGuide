@@ -41,7 +41,7 @@ final class AudioPlayerService: ObservableObject {
         stop()
 
         targetDuration = max(targetSeconds, 1)
-        duration = targetDuration
+        duration = max(targetDuration, voicePlayer?.duration ?? 0)
         currentTime = 0
 
         if let voiceURL {
@@ -52,7 +52,12 @@ final class AudioPlayerService: ObservableObject {
 
         if background != .none, let url = backgroundURL ?? SoundLibrary.url(for: background) {
             bgPlayer = try AVAudioPlayer(contentsOf: url)
-            bgPlayer?.numberOfLoops = -1
+            if let duration = bgPlayer?.duration, duration > 0 {
+                let loopsNeeded = Int(ceil(targetDuration / duration))
+                bgPlayer?.numberOfLoops = max(loopsNeeded - 1, 0)
+            } else {
+                bgPlayer?.numberOfLoops = -1
+            }
             bgPlayer?.prepareToPlay()
             bgPlayer?.volume = bgVolume
         }
@@ -89,6 +94,13 @@ final class AudioPlayerService: ObservableObject {
         if let vp = voicePlayer {
             let voiceDur = max(vp.duration, 0)
             vp.currentTime = min(clamped, voiceDur)
+        }
+
+        // И фон, чтобы луп совпадал с таймлайном
+        if let bp = bgPlayer, bp.duration > 0 {
+            let remainder = clamped.truncatingRemainder(dividingBy: bp.duration)
+            bp.currentTime = remainder
+            if isPlaying { bp.play() }
         }
     }
 

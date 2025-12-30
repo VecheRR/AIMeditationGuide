@@ -16,28 +16,39 @@ struct BackgroundPickerView: View {
     private let grid = [GridItem(.flexible()), GridItem(.flexible())]
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 14) {
-            Text("BACKGROUND SOUNDS")
-                .font(.caption.bold())
-                .foregroundStyle(.secondary)
-                .padding(.top, 10)
+        ScrollView {
+            VStack(alignment: .leading, spacing: 16) {
+                VStack(alignment: .leading, spacing: 6) {
+                    Text("BACKGROUND SOUNDS")
+                        .font(.caption.bold())
+                        .foregroundStyle(.secondary)
+                        .padding(.top, 6)
 
-            LazyVGrid(columns: grid, spacing: 12) {
-                tile(.none, icon: "speaker.slash.fill")
-                tile(.nature, icon: "leaf.fill")
-                tile(.ambient, icon: "music.note")
-                tile(.rain, icon: "cloud.rain.fill")
+                    Text("Pick an ambience that lasts through the whole session.")
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
+                        .accessibilityHint("Changes background loop without stopping the voice track")
+                }
+
+                LazyVGrid(columns: grid, spacing: 12) {
+                    tile(.none, icon: "speaker.slash.fill")
+                    tile(.nature, icon: "leaf.fill")
+                    tile(.ambient, icon: "music.note")
+                    tile(.rain, icon: "cloud.rain.fill")
+                }
+
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("Background Volume")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+
+                    Slider(value: $volume, in: 0...1)
+                        .tint(.accentColor)
+                        .accessibilityLabel("Background volume")
+                }
             }
-
-            Text("Background Volume")
-                .font(.caption)
-                .foregroundStyle(.secondary)
-                .padding(.top, 6)
-
-            Slider(value: $volume, in: 0...1)
-            Spacer()
+            .padding(16)
         }
-        .padding(16)
         .background(AppBackground().ignoresSafeArea())
     }
 
@@ -52,17 +63,18 @@ struct BackgroundPickerView: View {
                 Text(bg.rawValue)
                     .font(.caption.bold())
             }
-            .foregroundStyle(.black)
+            .foregroundStyle(.primary)
             .frame(maxWidth: .infinity, minHeight: 110)
-            .background(Color.white.opacity(0.75))
-            .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
+            .background(
+                RoundedRectangle(cornerRadius: 18, style: .continuous)
+                    .fill(.regularMaterial)
+            )
             .overlay {
-                if selected == bg {
-                    RoundedRectangle(cornerRadius: 18, style: .continuous)
-                        .stroke(Color.black.opacity(0.6), lineWidth: 2)
-                }
+                RoundedRectangle(cornerRadius: 18, style: .continuous)
+                    .strokeBorder(selected == bg ? Color.accentColor : Color.primary.opacity(0.1), lineWidth: selected == bg ? 2 : 1)
             }
         }
         .buttonStyle(.plain)
+        .accessibilityLabel(Text("Background \(bg.rawValue)"))
     }
 }
