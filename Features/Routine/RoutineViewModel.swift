@@ -43,7 +43,7 @@ final class RoutineViewModel: ObservableObject {
         defer { isLoading = false }
 
         do {
-            let practices = try await generator.generateRoutine()
+            let practices = try await generator.generateRoutine(context: makeGenerationContext())
             let data = try JSONEncoder().encode(practices)
             guard let json = String(data: data, encoding: .utf8) else { return }
 
@@ -146,5 +146,30 @@ final class RoutineViewModel: ObservableObject {
         }
 
         completionHistory = results
+    }
+
+    private func makeGenerationContext() -> RoutineGenerationContext {
+        guard let context else { return .basic() }
+
+        let descriptor = FetchDescriptor<RoutinePlan>(sortBy: [SortDescriptor(\.createdAt, order: .reverse)])
+        let plans = (try? context.fetch(descriptor)) ?? []
+
+        let recentPracticeItems: [RoutineGenerationContext.RecentPractice] = plans
+            .prefix(3)
+            .flatMap { plan in
+                plan.items.map { item in
+                    RoutineGenerationContext.RecentPractice(
+                        title: item.title,
+                        completed: item.isCompleted,
+                        durationMinutes: item.durationMinutes
+                    )
+                }
+            }
+
+        return RoutineGenerationContext(
+            referenceDate: .now,
+            goals: ["calm focus", "consistent routine"],
+            recentPractices: Array(recentPracticeItems.prefix(10))
+        )
     }
 }

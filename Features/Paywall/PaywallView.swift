@@ -6,12 +6,11 @@
 //
 
 import SwiftUI
+import StoreKit
 
 struct PaywallView: View {
-    let onClose: () -> Void
-    @State private var selectedPlan: PaywallPlan.ID = PaywallPlan.defaultSelection
-
-    private let plans = PaywallPlan.defaultPlans
+    @EnvironmentObject private var store: StoreKitManager
+    @State private var selectedProductID: String?
 
     private let perks: [String] = [
         "Unlimited AI-generated meditations",
@@ -25,18 +24,6 @@ struct PaywallView: View {
             AppBackground()
 
             VStack(spacing: 18) {
-                HStack {
-                    Spacer()
-                    Button(action: onClose) {
-                        Image(systemName: "xmark")
-                            .font(.footnote.weight(.bold))
-                            .padding(10)
-                            .background(Color.white.opacity(0.7))
-                            .clipShape(Circle())
-                    }
-                    .buttonStyle(.plain)
-                }
-
                 VStack(spacing: 10) {
                     Text("Unlock AI Meditation")
                         .font(.system(size: 30, weight: .semibold))
@@ -52,13 +39,24 @@ struct PaywallView: View {
                 VStack(spacing: 12) {
                     perksCard
                     planPicker
+
+                    if let error = store.errorMessage, !error.isEmpty {
+                        Text(error)
+                            .font(.footnote)
+                            .foregroundStyle(.red)
+                            .multilineTextAlignment(.center)
+                            .frame(maxWidth: .infinity)
+                    }
                 }
 
                 VStack(spacing: 12) {
-                    PrimaryButton(title: "START FREE TRIAL") { onClose() }
+                    PrimaryButton(title: primaryButtonTitle) {
+                        Task { await purchaseSelected() }
+                    }
+                    .disabled(store.isProcessingPurchase || selectedProductID == nil)
 
-                    Button(action: onClose) {
-                        Text("Maybe later")
+                    Button(action: { Task { await store.restorePurchases() } }) {
+                        Text("Restore purchases")
                             .font(.footnote.weight(.semibold))
                             .foregroundStyle(.secondary)
                     }
@@ -122,17 +120,17 @@ struct PaywallView: View {
                 .foregroundStyle(.secondary)
 
             VStack(spacing: 10) {
-                ForEach(plans) { plan in
+                ForEach(store.products, id: \.id) { product in
                     Button {
-                        selectedPlan = plan.id
+                        selectedProductID = product.id
                     } label: {
                         HStack(alignment: .center, spacing: 12) {
                             VStack(alignment: .leading, spacing: 4) {
                                 HStack(spacing: 8) {
-                                    Text(plan.title.uppercased())
+                                    Text(product.displayName.uppercased())
                                         .font(.caption.weight(.semibold))
-                                    if let note = plan.note {
-                                        Text(note)
+                                    if let badge = badge(for: product) {
+                                        Text(badge)
                                             .font(.caption2.weight(.heavy))
                                             .padding(.horizontal, 8)
                                             .padding(.vertical, 4)
@@ -140,9 +138,9 @@ struct PaywallView: View {
                                             .clipShape(Capsule())
                                     }
                                 }
-                                Text(plan.price)
+                                Text(product.displayPrice)
                                     .font(.title3.weight(.semibold))
-                                if let detail = plan.detail {
+                                if let detail = detail(for: product) {
                                     Text(detail)
                                         .font(.caption)
                                         .foregroundStyle(.secondary)
@@ -151,7 +149,7 @@ struct PaywallView: View {
 
                             Spacer()
 
-                            Image(systemName: selectedPlan == plan.id ? "largecircle.fill.circle" : "circle")
+                            Image(systemName: selectedProductID == product.id ? "largecircle.fill.circle" : "circle")
                                 .font(.title3)
                                 .foregroundStyle(.black)
                         }
@@ -162,31 +160,52 @@ struct PaywallView: View {
                                 .fill(Color.white.opacity(0.72))
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 18, style: .continuous)
-                                        .stroke(selectedPlan == plan.id ? Color.black : Color.black.opacity(0.08), lineWidth: 1.2)
+                                        .stroke(selectedProductID == product.id ? Color.black : Color.black.opacity(0.08), lineWidth: 1.2)
                                 )
                         )
                     }
                     .buttonStyle(.plain)
                 }
+
+                if store.products.isEmpty {
+                    ProgressView()
+                        .frame(maxWidth: .infinity)
+                }
             }
         }
+        .task { if selectedProductID == nil { selectedProductID = store.products.first?.id } }
     }
-}
 
-private struct PaywallPlan: Identifiable {
-    let id = UUID()
-    let title: String
-    let price: String
-    let note: String?
-    let detail: String?
+    private var primaryButtonTitle: String {
+        if store.isProcessingPurchase { return "Processing..." }
+        if let product = store.products.first(where: { $0.id == selectedProductID }),
+           let offer = product.subscription?.introductoryOffer {
+            return "Start \(offer.displayPrice) trial"
+        }
+        return "Continue"
+    }
 
-    static let defaultPlans: [PaywallPlan] = [
-        .init(title: "Annual", price: "$39.99", note: "BEST VALUE", detail: "Just $3.3 per month"),
-        .init(title: "Monthly", price: "$6.99", note: "7-day trial", detail: "Cancel anytime"),
-        .init(title: "Lifetime", price: "$79.99", note: "One-time purchase", detail: "Access forever")
-    ]
+    private func badge(for product: Product) -> String? {
+        if product.id.lowercased().contains("annual") { return "BEST VALUE" }
+        if product.id.lowercased().contains("monthly") { return "FLEXIBLE" }
+        if product.id.lowercased().contains("lifetime") { return "ONE-TIME" }
+        return nil
+    }
 
-    static var defaultSelection: PaywallPlan.ID {
-        defaultPlans.first?.id ?? UUID()
+    private func detail(for product: Product) -> String? {
+        if let subscription = product.subscription {
+            let unit = subscription.subscriptionPeriod.unit
+            switch unit {
+            case .month: return "Cancel anytime"
+            case .year: return "Save vs monthly"
+            default: return nil
+            }
+        }
+        return "Lifetime access"
+    }
+
+    private func purchaseSelected() async {
+        guard let product = store.products.first(where: { $0.id == selectedProductID }) else { return }
+        await store.purchase(product: product)
     }
 }
