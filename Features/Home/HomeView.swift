@@ -9,11 +9,13 @@ import SwiftUI
 import SwiftData
 
 struct HomeView: View {
+    // Data
     @Query(sort: \MeditationSession.createdAt, order: .reverse)
     private var sessions: [MeditationSession]
     @Query(sort: \RoutinePlan.createdAt, order: .reverse)
     private var routines: [RoutinePlan]
 
+    // Navigation
     @State private var goBreathing = false
     @State private var goRoutine = false
     @State private var showGenerator = false
@@ -23,6 +25,11 @@ struct HomeView: View {
     @State private var playerSession: MeditationSession?
     @State private var bg: GenBackground = .none
 
+    // Name
+    @AppStorage("userName") private var userName: String = ""
+    @State private var showNamePrompt = false
+
+    // Derived
     private var last: MeditationSession? { sessions.first }
     private var latestRoutine: RoutinePlan? { routines.first }
     private var nextPractice: RoutineItem? {
@@ -35,56 +42,28 @@ struct HomeView: View {
             ZStack {
                 AppBackground()
 
-                VStack(alignment: .leading, spacing: 14) {
-                    Spacer().frame(height: 10)
+                ScrollView(.vertical, showsIndicators: false) {
+                    VStack(spacing: 18) {
+                        header
 
-                    Text("Hello, Vitalii")
-                        .font(.footnote)
-                        .foregroundStyle(.secondary)
-                        .frame(maxWidth: .infinity, alignment: .center)
+                        quickActionsCard
 
-                    Text("How are you\nfeeling today?")
-                        .font(.system(size: 34, weight: .semibold))
-                        .frame(maxWidth: .infinity, alignment: .center)
+                        if let last {
+                            todaySection(last)
+                        }
 
-                    miniSuggestion
+                        recommendedSection
 
-                    VStack(spacing: 10) {
-                        actionButton(title: "GENERATE MEDITATION", icon: "sparkles") { showGenerator = true }
-                        actionButton(title: "BREATHING EXERCISE", icon: "wind") { goBreathing = true }
-                        actionButton(title: "DAILY ROUTINE", icon: "leaf") { goRoutine = true }
+                        Spacer().frame(height: 18)
                     }
-                    .padding(.horizontal, 16)
-                    .padding(.top, 6)
-
-                    if let latestRoutine {
-                        routineCard(plan: latestRoutine, next: nextPractice)
-                            .padding(.horizontal, 16)
-                            .padding(.top, 4)
-                    } else {
-                        routineSuggestionCard
-                            .padding(.horizontal, 16)
-                            .padding(.top, 4)
-                    }
-
-                    if let last {
-                        todayCard(last)
-                            .padding(.horizontal, 16)
-                            .padding(.top, 6)
-                    }
-
-                    Spacer()
+                    .padding(.horizontal, 18)
+                    .padding(.top, 18)
+                    .padding(.bottom, 40)
                 }
             }
-            .navigationDestination(isPresented: $goBreathing) {
-                BreathingSetupView()
-            }
-            .navigationDestination(isPresented: $goRoutine) {
-                RoutineView()
-            }
-            .fullScreenCover(isPresented: $showGenerator) {
-                GeneratorFlowView()
-            }
+            .navigationDestination(isPresented: $goBreathing) { BreathingSetupView() }
+            .navigationDestination(isPresented: $goRoutine) { RoutineView() }
+            .fullScreenCover(isPresented: $showGenerator) { GeneratorFlowView() }
             .fullScreenCover(isPresented: $openPlayer) {
                 PlayerView(
                     title: playerSession?.title ?? "Meditation",
@@ -98,229 +77,299 @@ struct HomeView: View {
                     onFinishEarly: { openPlayer = false }
                 )
             }
+            .onAppear {
+                if userName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                    showNamePrompt = true
+                }
+            }
+            .sheet(isPresented: $showNamePrompt) {
+                NamePromptView(name: $userName)
+                    .presentationDetents([.medium])
+                    .presentationDragIndicator(.visible)
+            }
+        }
+    }
+}
+
+// MARK: - UI blocks
+private extension HomeView {
+
+    var header: some View {
+        VStack(spacing: 8) {
+            greetingText
+                .frame(maxWidth: .infinity, alignment: .center)
+                .font(.system(size: 18, weight: .regular, design: .serif))
+                .foregroundStyle(.black.opacity(0.75))
+                .padding(.top, 6)
+
+            // "How are you" — serif italic
+            // "feeling" — жирный sans
+            // "today?" — serif italic
+            HStack(spacing: 8) {
+                Text("How are you")
+                    .font(.custom("Amstelvar-Italic", size: 48))
+                    .kerning(-1.5)
+                    .foregroundStyle(.black)
+
+                Spacer()
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+
+            HStack(spacing: 8) {
+                Text("feeling")
+                    .font(.custom("FunnelDisplay-Regular", size: 48))
+                    .kerning(-1.5)
+                    .foregroundStyle(.black)
+
+                Text("today?")
+                    .font(.custom("Amstelvar-Italic", size: 48))
+                    .kerning(-1.5)
+                    .foregroundStyle(.black)
+
+                Spacer()
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
         }
     }
 
-    private func actionButton(title: String, icon: String, action: @escaping () -> Void) -> some View {
-        Button(action: action) {
-            HStack(spacing: 10) {
-                Image(systemName: icon)
-                    .frame(width: 22)
-                Text(title)
-                    .font(.caption.bold())
+    var quickActionsCard: some View {
+        VStack(spacing: 10) {
+            actionRow(title: "GENERATE MEDITATION", icon: "sparkles", tint: .purple) {
+                showGenerator = true
+            }
+            actionRow(title: "BREATHING EXERCISE", icon: "wind", tint: .blue) {
+                goBreathing = true
+            }
+            actionRow(title: "DAILY ROUTINE", icon: "leaf", tint: .green) {
+                goRoutine = true
+            }
+        }
+        .padding(14)
+        .background(glassCard)
+    }
+
+    func todaySection(_ s: MeditationSession) -> some View {
+        VStack(alignment: .leading, spacing: 10) {
+            HStack {
+                Text("Today’s Meditation")
+                    .font(.system(size: 18, weight: .semibold))
+                    .foregroundStyle(.black)
+
+                Spacer()
+
+                Text(s.createdAt, style: .date)
+                    .font(.system(size: 14, weight: .regular))
+                    .foregroundStyle(.black.opacity(0.55))
+            }
+
+            todayCard(s)
+        }
+        .padding(.top, 6)
+    }
+
+    func todayCard(_ s: MeditationSession) -> some View {
+        Button {
+            open(session: s)
+        } label: {
+            HStack(spacing: 14) {
+                coverThumb(for: s)
+                    .frame(width: 78, height: 78)
+                    .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
+
+                VStack(alignment: .leading, spacing: 6) {
+                    Text("\(s.durationMinutes) MINUTES")
+                        .font(.system(size: 18, weight: .semibold))
+                        .foregroundStyle(.black)
+
+                    Text(s.summary.isEmpty ? "Take a quick meditation break" : s.summary)
+                        .font(.system(size: 15, weight: .regular))
+                        .foregroundStyle(.black.opacity(0.6))
+                        .lineLimit(2)
+
+                    // маленький бейдж как на макете
+                    HStack(spacing: 8) {
+                        Image(systemName: "leaf")
+                            .font(.system(size: 12, weight: .semibold))
+                            .foregroundStyle(.green)
+
+                        Text(latestRoutine != nil ? "DAILY ROUTINE" : "MEDITATION")
+                            .font(.system(size: 12, weight: .semibold))
+                            .foregroundStyle(.green)
+                    }
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 6)
+                    .background(Color.green.opacity(0.12))
+                    .clipShape(Capsule())
+                }
+
                 Spacer()
             }
-            .foregroundStyle(.black)
-            .padding(.vertical, 14)
-            .padding(.horizontal, 14)
-            .background(Color.white.opacity(0.75))
-            .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
+            .padding(14)
+            .background(
+                RoundedRectangle(cornerRadius: 24, style: .continuous)
+                    .fill(Color.white.opacity(0.75))
+            )
         }
         .buttonStyle(.plain)
     }
 
-    private var miniSuggestion: some View {
-        let suggestion = miniRecommendation()
+    var recommendedSection: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text("Recommended Sessions")
+                .font(.system(size: 18, weight: .semibold))
+                .foregroundStyle(.black)
 
-        return HStack(alignment: .center, spacing: 12) {
-            Image(systemName: "lightbulb")
-                .font(.title3.weight(.semibold))
-                .foregroundStyle(.yellow)
-
-            VStack(alignment: .leading, spacing: 4) {
-                Text("AI suggestion")
-                    .font(.caption.bold())
-                    .foregroundStyle(.secondary)
-                Text(suggestion)
-                    .font(.subheadline)
-                    .foregroundStyle(.primary)
-                    .lineLimit(3)
-            }
-
-            Spacer(minLength: 8)
-        }
-        .padding(.horizontal, 16)
-        .padding(.vertical, 12)
-        .background(Color.white.opacity(0.7))
-        .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
-        .padding(.horizontal, 16)
-    }
-
-    private func todayCard(_ s: MeditationSession) -> some View {
-        VStack(alignment: .leading, spacing: 10) {
-            HStack {
-                Text("Today's Meditation")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-                Spacer()
-                Text(s.createdAt, style: .date)
-                    .font(.caption2)
-                    .foregroundStyle(.secondary)
-            }
-
-            HStack(spacing: 12) {
-                RoundedRectangle(cornerRadius: 14)
-                    .fill(Color.black.opacity(0.08))
-                    .frame(width: 64, height: 64)
-                    .overlay(
-                        Text("\(s.durationMinutes) MIN")
-                            .font(.caption.bold())
-                            .foregroundStyle(.secondary)
-                    )
-
-                VStack(alignment: .leading, spacing: 4) {
-                    Text("\(s.durationMinutes) MINUTES")
-                        .font(.headline)
-                    Text(s.summary)
-                        .font(.footnote)
-                        .foregroundStyle(.secondary)
-                        .lineLimit(2)
-                }
-
-                Spacer()
-
-                VStack(spacing: 8) {
-                    Button {
-                        open(session: s)
-                    } label: {
-                        Text("CONTINUE")
-                            .font(.caption.bold())
-                            .foregroundStyle(.green)
-                            .padding(.horizontal, 12)
-                            .padding(.vertical, 10)
-                            .background(Color.white.opacity(0.65))
-                            .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 12) {
+                    // Заглушки, пока у тебя нет массива рекомендаций
+                    recommendedCard(title: "Breathing", subtitle: "3 min reset", icon: "wind", tint: .blue) {
+                        goBreathing = true
                     }
-                    .buttonStyle(.plain)
-
-                    Button {
-                        replay(session: s)
-                    } label: {
-                        Text("REPLAY")
-                            .font(.caption.bold())
-                            .foregroundStyle(.black)
-                            .padding(.horizontal, 12)
-                            .padding(.vertical, 10)
-                            .background(Color.white.opacity(0.65))
-                            .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+                    recommendedCard(title: "Routine", subtitle: nextPracticeSubtitle, icon: "leaf", tint: .green) {
+                        goRoutine = true
                     }
-                    .buttonStyle(.plain)
+                    recommendedCard(title: "Meditation", subtitle: "5 min focus", icon: "sparkles", tint: .purple) {
+                        showGenerator = true
+                    }
                 }
+                .padding(.vertical, 4)
             }
         }
-        .padding(12)
-        .background(Color.white.opacity(0.65))
-        .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
+        .padding(.top, 6)
     }
 
-    private func open(session: MeditationSession) {
-        playerSession = session
-        bg = session.background
-        openPlayer = true
-    }
-
-    private func replay(session: MeditationSession) {
-        // Пока делаем как "open", но если захочешь, можно прокинуть флаг
-        // и в AudioPlayerService делать seek(0) на onAppear.
-        playerSession = session
-        bg = session.background
-        openPlayer = true
-    }
-
-    private func miniRecommendation() -> String {
+    var nextPracticeSubtitle: String {
         if let nextPractice {
-            return "Next up: \(nextPractice.title) — take \(nextPractice.durationMinutes) minutes to keep your routine on track."
+            return "\(nextPractice.durationMinutes) min • \(nextPractice.title)"
         }
-
-        if let last {
-            return "Great job completing a \(last.durationMinutes)-minute session. Try a quick 5-minute breathing break to stay balanced."
+        if let latestRoutine, latestRoutine.status == .done {
+            return "Completed • generate new"
         }
-
-        return "Start with a 5-minute session to set your intention, then follow with a calming breathing exercise."
+        return "1–3 practices"
     }
 
-    private func routineCard(plan: RoutinePlan, next: RoutineItem?) -> some View {
-        VStack(alignment: .leading, spacing: 8) {
-            HStack {
-                Text("Daily Routine")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-                Spacer()
-                Text(plan.createdAt, style: .date)
-                    .font(.caption2)
-                    .foregroundStyle(.secondary)
-            }
+    func recommendedCard(title: String, subtitle: String, icon: String, tint: Color, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            VStack(alignment: .leading, spacing: 10) {
+                HStack(spacing: 10) {
+                    Image(systemName: icon)
+                        .font(.system(size: 16, weight: .semibold))
+                        .foregroundStyle(tint)
 
-            VStack(alignment: .leading, spacing: 6) {
-                if plan.status == .done {
-                    Text("Routine completed")
-                        .font(.headline)
-                    Text("Regenerate a new set when you'd like another gentle nudge.")
-                        .font(.footnote)
-                        .foregroundStyle(.secondary)
-                } else if let next {
-                    Text(next.title)
-                        .font(.headline)
-                    Text("\(next.durationMinutes) min • \(next.details)")
-                        .font(.footnote)
-                        .foregroundStyle(.secondary)
-                        .lineLimit(2)
-                } else {
-                    Text("All practices completed")
-                        .font(.headline)
-                    Text("Feel free to regenerate a new flow when you're ready.")
-                        .font(.footnote)
-                        .foregroundStyle(.secondary)
+                    Text(title.uppercased())
+                        .font(.system(size: 12, weight: .semibold))
+                        .foregroundStyle(.black.opacity(0.7))
+
+                    Spacer()
+                }
+
+                Text(subtitle)
+                    .font(.system(size: 16, weight: .semibold))
+                    .foregroundStyle(.black)
+                    .lineLimit(2)
+
+                Spacer(minLength: 0)
+            }
+            .frame(width: 170, height: 110)
+            .padding(14)
+            .background(
+                RoundedRectangle(cornerRadius: 26, style: .continuous)
+                    .fill(Color.white.opacity(0.72))
+            )
+        }
+        .buttonStyle(.plain)
+    }
+
+    func actionRow(title: String, icon: String, tint: Color, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            HStack(spacing: 12) {
+                ZStack {
+                    Circle()
+                        .fill(tint.opacity(0.12))
+                        .frame(width: 36, height: 36)
+
+                    Image(systemName: icon)
+                        .font(.system(size: 16, weight: .semibold))
+                        .foregroundStyle(tint)
+                }
+
+                Text(title)
+                    .font(.system(size: 14, weight: .semibold))
+                    .foregroundStyle(.black)
+
+                Spacer()
+            }
+            .padding(.vertical, 12)
+            .padding(.horizontal, 10)
+            .background(
+                RoundedRectangle(cornerRadius: 18, style: .continuous)
+                    .fill(Color.white.opacity(0.7))
+            )
+        }
+        .buttonStyle(.plain)
+    }
+
+    var glassCard: some View {
+        RoundedRectangle(cornerRadius: 30, style: .continuous)
+            .fill(Color.white.opacity(0.55))
+            .overlay(
+                RoundedRectangle(cornerRadius: 30, style: .continuous)
+                    .stroke(Color.white.opacity(0.35), lineWidth: 1)
+            )
+    }
+
+    func coverThumb(for s: MeditationSession) -> some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: 18, style: .continuous)
+                .fill(Color.black.opacity(0.08))
+
+            if let url = s.coverURL {
+                AsyncImage(url: url) { img in
+                    img.resizable().scaledToFill()
+                } placeholder: {
+                    Color.black.opacity(0.05)
                 }
             }
 
-            Button {
-                goRoutine = true
-            } label: {
-                Text(plan.status == .done ? "GENERATE NEW" : (next == nil ? "VIEW ROUTINE" : "START NEXT"))
-                    .font(.caption.bold())
-                    .foregroundStyle(.green)
-                    .padding(.horizontal, 12)
-                    .padding(.vertical, 10)
-                    .background(Color.white.opacity(0.65))
-                    .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+            VStack {
+                Spacer()
+                Text("\(s.durationMinutes) MIN")
+                    .font(.system(size: 12, weight: .semibold))
+                    .foregroundStyle(.white)
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 6)
+                    .background(Color.black.opacity(0.35))
+                    .clipShape(Capsule())
+                    .padding(8)
             }
-            .buttonStyle(.plain)
-            .frame(maxWidth: .infinity, alignment: .leading)
         }
-        .padding(12)
-        .background(Color.white.opacity(0.65))
-        .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
     }
 
-    private var routineSuggestionCard: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text("Daily Routine")
-                .font(.caption)
-                .foregroundStyle(.secondary)
+    private var greetingText: some View {
+        let n = userName.trimmingCharacters(in: .whitespacesAndNewlines)
 
-            Text("No routine yet")
-                .font(.headline)
-            Text("Generate 1–3 quick practices to keep your habit alive today.")
-                .font(.footnote)
-                .foregroundStyle(.secondary)
-
-            Button {
-                goRoutine = true
-            } label: {
-                Text("CREATE ROUTINE")
-                    .font(.caption.bold())
-                    .foregroundStyle(.green)
-                    .padding(.horizontal, 12)
-                    .padding(.vertical, 10)
-                    .background(Color.white.opacity(0.65))
-                    .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+        return Group {
+            if n.isEmpty {
+                Text("Hello")
+                    .font(.custom("Amstelvar-Italic", size: 20))
+                    .foregroundStyle(.secondary)
+            } else {
+                (
+                    Text("Hello, ")
+                        .font(.custom("Amstelvar-Italic", size: 20))
+                        .foregroundStyle(.secondary)
+                    +
+                    Text(n)
+                        .font(.custom("FunnelDisplay-Bold", size: 20))
+                        .foregroundStyle(.secondary)
+                )
             }
-            .buttonStyle(.plain)
-            .frame(maxWidth: .infinity, alignment: .leading)
         }
-        .padding(12)
-        .background(Color.white.opacity(0.65))
-        .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
+    }
+
+    func open(session: MeditationSession) {
+        playerSession = session
+        bg = session.background
+        openPlayer = true
     }
 }

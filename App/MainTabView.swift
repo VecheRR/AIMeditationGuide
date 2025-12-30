@@ -15,6 +15,9 @@ struct MainTabView: View {
 
             HistoryView()
                 .tabItem { Label("History", systemImage: "clock.fill") }
+
+            SettingsView()
+                .tabItem { Label("Settings", systemImage: "gearshape.fill") }
         }
     }
 }
