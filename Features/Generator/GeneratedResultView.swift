@@ -13,6 +13,7 @@ struct GeneratedResultView: View {
 
     @State private var openPlayer = false
     @State private var bg: GenBackground = .nature
+    @State private var didSave = false
 
     @Environment(\.modelContext) private var modelContext
 
@@ -71,8 +72,10 @@ struct GeneratedResultView: View {
 
                         PrimaryButton(title: "SAVE TO HISTORY") {
                             saveToHistory()
+                            didSave = true
                         }
                         .accessibilityLabel("Save meditation to history")
+                        .disabled(didSave || vm.generated == nil)
                     }
                     .padding(.bottom, 20)
                     .padding(.horizontal, 16)
@@ -89,7 +92,13 @@ struct GeneratedResultView: View {
                 durationMinutes: vm.duration?.rawValue ?? 5,
                 voiceURL: vm.voiceFileURL,
                 coverURL: vm.coverImageURL,
-                background: $bg
+                background: $bg,
+                onSave: {
+                    saveToHistory()
+                    didSave = true
+                },
+                isAlreadySaved: didSave,
+                onFinishEarly: { openPlayer = false }
             )
         }
     }

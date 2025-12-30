@@ -19,6 +19,32 @@ struct HistoryView: View {
     @State private var sessionToDelete: MeditationSession?
     @State private var breathingToDelete: BreathingLog?
 
+    private var totalMeditationMinutes: Int {
+        sessions.reduce(into: 0) { $0 += $1.durationMinutes }
+    }
+
+    private var weeklyMinutes: Int {
+        let weekAgo = Calendar.current.date(byAdding: .day, value: -6, to: .now) ?? .now
+        return sessions
+            .filter { $0.createdAt >= weekAgo }
+            .reduce(into: 0) { $0 += $1.durationMinutes }
+    }
+
+    private var streakDays: Int {
+        let calendar = Calendar.current
+        let grouped = Set(sessions.map { calendar.startOfDay(for: $0.createdAt) })
+        var streak = 0
+        var current = calendar.startOfDay(for: .now)
+
+        while grouped.contains(current) {
+            streak += 1
+            guard let prev = calendar.date(byAdding: .day, value: -1, to: current) else { break }
+            current = prev
+        }
+
+        return streak
+    }
+
     enum Segment: String, CaseIterable {
         case meditations = "MEDITATIONS"
         case breathing = "BREATHING"
@@ -31,6 +57,8 @@ struct HistoryView: View {
 
                 VStack(spacing: 12) {
                     picker
+
+                    stats
 
                     ScrollView {
                         VStack(spacing: 10) {
@@ -123,6 +151,52 @@ struct HistoryView: View {
         .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
         .padding(.horizontal, 16)
         .padding(.top, 8)
+    }
+
+    private var stats: some View {
+        VStack(spacing: 12) {
+            HStack(spacing: 10) {
+                statCard(title: "Total minutes", value: "\(totalMeditationMinutes)", caption: "Meditations")
+                statCard(title: "Daily streak", value: "\(streakDays)", caption: "days")
+            }
+
+            VStack(alignment: .leading, spacing: 8) {
+                HStack { 
+                    Text("Weekly progress")
+                        .font(.caption.bold())
+                        .foregroundStyle(.secondary)
+                    Spacer()
+                    Text("\(weeklyMinutes) / 70 min")
+                        .font(.caption.bold())
+                        .foregroundStyle(.secondary)
+                }
+
+                ProgressView(value: min(Double(weeklyMinutes) / 70.0, 1.0))
+                    .tint(.green)
+            }
+            .padding(12)
+            .background(Color.white.opacity(0.65))
+            .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
+        }
+        .padding(.horizontal, 16)
+        .padding(.top, 4)
+    }
+
+    private func statCard(title: String, value: String, caption: String) -> some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Text(title)
+                .font(.caption.bold())
+                .foregroundStyle(.secondary)
+            Text(value)
+                .font(.title2.weight(.semibold))
+            Text(caption)
+                .font(.footnote)
+                .foregroundStyle(.secondary)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(12)
+        .background(Color.white.opacity(0.65))
+        .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
     }
 
     private func historyCard(session: MeditationSession) -> some View {

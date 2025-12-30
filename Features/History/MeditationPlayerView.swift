@@ -25,7 +25,10 @@ struct MeditationPlayerView: View {
             durationMinutes: session.durationMinutes,
             voiceURL: session.voiceURL,
             coverURL: session.coverURL,
-            background: $background
+            background: $background,
+            onSave: nil,
+            isAlreadySaved: true,
+            onFinishEarly: nil
         )
     }
 }

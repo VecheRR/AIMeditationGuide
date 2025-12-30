@@ -18,9 +18,14 @@ struct PlayerView: View {
     let storedBackground: GenBackground? = nil
     let backgroundFileURL: URL? = nil
     @Binding var background: GenBackground
+    let onSave: (() -> Void)?
+    let isAlreadySaved: Bool
+    let onFinishEarly: (() -> Void)?
 
     @StateObject private var audio = AudioPlayerService()
     @State private var showBgPicker = false
+    @State private var didSaveFromPlayer = false
+    @State private var showFinishConfirmation = false
 
     var body: some View {
         ZStack {
@@ -64,6 +69,7 @@ struct PlayerView: View {
                 targetSeconds: target
             )
         }
+        .onDisappear { audio.stop() }
         .sheet(isPresented: $showBgPicker) {
             BackgroundPickerView(selected: $background, volume: $audio.bgVolume)
                 .presentationDetents([.medium])
@@ -81,6 +87,16 @@ struct PlayerView: View {
             )
 
             if wasPlaying { audio.play() }
+        }
+        .alert("Finish early?", isPresented: $showFinishConfirmation) {
+            Button("Finish", role: .destructive) {
+                audio.stop()
+                dismiss()
+                onFinishEarly?()
+            }
+            Button("Cancel", role: .cancel) { showFinishConfirmation = false }
+        } message: {
+            Text("Your session will stop and won’t auto-save unless you save manually.")
         }
     }
 
@@ -216,15 +232,43 @@ struct PlayerView: View {
             Spacer()
 
             Button {
-                // потом: share
+                showFinishConfirmation = true
             } label: {
-                Image(systemName: "square.and.arrow.up")
-                    .foregroundStyle(.primary)
-                    .padding(10)
-                    .background(.ultraThinMaterial)
-                    .clipShape(Circle())
+                HStack(spacing: 6) {
+                    Image(systemName: "stop.circle")
+                    Text("Finish Early")
+                }
+                .font(.caption.bold())
+                .foregroundStyle(.primary)
+                .padding(.horizontal, 12)
+                .padding(.vertical, 10)
+                .background(.ultraThinMaterial)
+                .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
             }
-            .accessibilityLabel("Share session")
+            .accessibilityLabel("Finish session early")
+
+            Spacer()
+
+            if let onSave {
+                Button {
+                    guard !isAlreadySaved && !didSaveFromPlayer else { return }
+                    onSave()
+                    didSaveFromPlayer = true
+                } label: {
+                    HStack(spacing: 6) {
+                        Image(systemName: didSaveFromPlayer || isAlreadySaved ? "checkmark" : "tray.and.arrow.down")
+                        Text(didSaveFromPlayer || isAlreadySaved ? "Saved" : "Save to History")
+                    }
+                    .font(.caption.bold())
+                    .foregroundStyle(.primary)
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 10)
+                    .background(.ultraThinMaterial)
+                    .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+                }
+                .accessibilityLabel("Save meditation to history")
+                .disabled(isAlreadySaved || didSaveFromPlayer)
+            }
         }
         .padding(.top, 12)
     }
