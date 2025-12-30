@@ -77,7 +77,7 @@ struct KenBurnsCoverView: View {
     }
 
     private var placeholder: some View {
-        CoverPlaceholderView(title: title, accent: Color.purple, subtitle: subtitle)
+        CoverPlaceholderView(title: title, accent: .purple, subtitle: subtitle)
     }
 }
 

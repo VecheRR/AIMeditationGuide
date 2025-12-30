@@ -45,8 +45,7 @@
                 86E6EAF72F02D75500532BE2 /* MoodPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E6EAEA2F02D11800532BE2 /* MoodPickerView.swift */; };
                 86E6EAF82F02D75500532BE2 /* BreathingPhase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E6EAF22F02D14300532BE2 /* BreathingPhase.swift */; };
                 86E6EAF92F02D75500532BE2 /* DurationPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E6EAEC2F02D12400532BE2 /* DurationPickerView.swift */; };
-B1F6EB112F04C00100AAAAAA /* KenBurnsCoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F6EB102F04C00100AAAAAA /* KenBurnsCoverView.swift */; };
-B1F6EB142F04C0AA00AAAAAA /* CoverPlaceholderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F6EB132F04C0AA00AAAAAA /* CoverPlaceholderView.swift */; };
+                B1F6EB112F04C00100AAAAAA /* KenBurnsCoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F6EB102F04C00100AAAAAA /* KenBurnsCoverView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -88,9 +87,8 @@ B1F6EB142F04C0AA00AAAAAA /* CoverPlaceholderView.swift in Sources */ = {isa = PB
 		86E6EAEC2F02D12400532BE2 /* DurationPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DurationPickerView.swift; sourceTree = "<group>"; };
                 86E6EAEE2F02D12C00532BE2 /* BreathingSessionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreathingSessionView.swift; sourceTree = "<group>"; };
                 86E6EAF02F02D13B00532BE2 /* BreathingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreathingViewModel.swift; sourceTree = "<group>"; };
-86E6EAF22F02D14300532BE2 /* BreathingPhase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreathingPhase.swift; sourceTree = "<group>"; };
-B1F6EB102F04C00100AAAAAA /* KenBurnsCoverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KenBurnsCoverView.swift; sourceTree = "<group>"; };
-B1F6EB132F04C0AA00AAAAAA /* CoverPlaceholderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoverPlaceholderView.swift; sourceTree = "<group>"; };
+                86E6EAF22F02D14300532BE2 /* BreathingPhase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreathingPhase.swift; sourceTree = "<group>"; };
+                B1F6EB102F04C00100AAAAAA /* KenBurnsCoverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KenBurnsCoverView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -183,13 +181,12 @@ B1F6EB132F04C0AA00AAAAAA /* CoverPlaceholderView.swift */ = {isa = PBXFileRefere
 			path = Theme;
 			sourceTree = "<group>";
 		};
-86E6EA952F02A44500532BE2 /* Components */ = {
-isa = PBXGroup;
-children = (
-B1F6EB132F04C0AA00AAAAAA /* CoverPlaceholderView.swift */,
-B1F6EB102F04C00100AAAAAA /* KenBurnsCoverView.swift */,
-86E6EADA2F02AD4F00532BE2 /* PrimaryButton.swift */,
-86E6EABF2F02AAAE00532BE2 /* SelectList.swift */,
+                86E6EA952F02A44500532BE2 /* Components */ = {
+                        isa = PBXGroup;
+                        children = (
+                                B1F6EB102F04C00100AAAAAA /* KenBurnsCoverView.swift */,
+                                86E6EADA2F02AD4F00532BE2 /* PrimaryButton.swift */,
+                                86E6EABF2F02AAAE00532BE2 /* SelectList.swift */,
                         );
                         path = Components;
                         sourceTree = "<group>";
@@ -439,15 +436,14 @@ B1F6EB102F04C00100AAAAAA /* KenBurnsCoverView.swift */,
                                 86E6EAD42F02ACAB00532BE2 /* RootView.swift in Sources */,
                                 86E6EAC92F02AC9800532BE2 /* HistoryView.swift in Sources */,
                                 B1F6EB112F04C00100AAAAAA /* KenBurnsCoverView.swift in Sources */,
-86E6EACA2F02ACA000532BE2 /* GeneratorFlowView.swift in Sources */,
-86E6EACB2F02ACA000532BE2 /* GeneratorViewModel.swift in Sources */,
-86E6EADD2F02AF4300532BE2 /* AudioPlayerService.swift in Sources */,
-86E6EACC2F02ACA000532BE2 /* GeneratedResultView.swift in Sources */,
-8655BD502F03182D00BAEA89 /* BreathingStubView.swift in Sources */,
-86E6EADB2F02AD5200532BE2 /* PrimaryButton.swift in Sources */,
-B1F6EB142F04C0AA00AAAAAA /* CoverPlaceholderView.swift in Sources */,
-86E6EACD2F02ACA000532BE2 /* GeneratorModels.swift in Sources */,
-);
+                                86E6EACA2F02ACA000532BE2 /* GeneratorFlowView.swift in Sources */,
+                                86E6EACB2F02ACA000532BE2 /* GeneratorViewModel.swift in Sources */,
+                                86E6EADD2F02AF4300532BE2 /* AudioPlayerService.swift in Sources */,
+				86E6EACC2F02ACA000532BE2 /* GeneratedResultView.swift in Sources */,
+				8655BD502F03182D00BAEA89 /* BreathingStubView.swift in Sources */,
+				86E6EADB2F02AD5200532BE2 /* PrimaryButton.swift in Sources */,
+				86E6EACD2F02ACA000532BE2 /* GeneratorModels.swift in Sources */,
+			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
