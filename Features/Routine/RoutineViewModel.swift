@@ -69,9 +69,8 @@ final class RoutineViewModel: ObservableObject {
         await generate()
     }
 
-    func resetProgress() {
+    func start() {
         guard let context, var items = plan?.items else { return }
-
         for index in items.indices {
             items[index].isCompleted = false
         }
@@ -127,12 +126,6 @@ final class RoutineViewModel: ObservableObject {
     }
 
     @Published var completionHistory: [Date: Bool] = [:]
-
-    var canResetPlan: Bool {
-        guard let plan else { return false }
-        let hasCompletedItems = plan.items.contains(where: { $0.isCompleted })
-        return hasCompletedItems || plan.status == .done
-    }
 
     private func refreshCompletionHistory() {
         guard let context else { return }

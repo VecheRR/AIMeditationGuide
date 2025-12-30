@@ -53,7 +53,7 @@ struct RoutineView: View {
             }
 
             HStack(spacing: 10) {
-                headerButton(title: "Reset Progress", icon: "gobackward", isDisabled: !viewModel.canResetPlan) { viewModel.resetProgress() }
+                headerButton(title: "Start", icon: "play.fill", isDisabled: viewModel.plan == nil) { viewModel.start() }
                 headerButton(title: "Regenerate", icon: "arrow.clockwise") {
                     Task { await viewModel.regenerate() }
                 }

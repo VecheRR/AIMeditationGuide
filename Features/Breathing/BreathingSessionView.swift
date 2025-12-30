@@ -44,18 +44,8 @@ struct BreathingSessionView: View {
         .onDisappear {
             vm.stop()
         }
-        .navigationBarBackButtonHidden(true)
-        .toolbar {
-            ToolbarItem(placement: .topBarLeading) {
-                Button {
-                    vm.stop()
-                    dismiss()
-                } label: {
-                    Image(systemName: "xmark")
-                        .foregroundColor(.black)
-                }
-            }
-        }
+        .navigationBarBackButtonHidden()
+        .toolbar(.hidden, for: .navigationBar)
         .onChange(of: vm.isFinished) { finished in
             guard finished else { return }
             saveBreathingLogIfNeeded()
