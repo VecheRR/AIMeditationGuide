@@ -28,6 +28,61 @@ final class OpenAIClient {
         self.model = model
     }
 
+    func chatJSON<T: Decodable>(system: String, user: String, temperature: Double = 0.3) async throws -> T {
+        let body: [String: Any] = [
+            "model": model,
+            "messages": [
+                ["role": "system", "content": system],
+                ["role": "user", "content": user]
+            ],
+            "response_format": ["type": "json_object"],
+            "temperature": temperature
+        ]
+
+        var req = URLRequest(url: URL(string: "https://api.openai.com/v1/chat/completions")!)
+        req.httpMethod = "POST"
+        req.setValue("Bearer \(apiKey)", forHTTPHeaderField: "Authorization")
+        req.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        req.httpBody = try JSONSerialization.data(withJSONObject: body)
+
+        let (data, resp) = try await URLSession.shared.data(for: req)
+        guard let http = resp as? HTTPURLResponse, (200...299).contains(http.statusCode) else {
+            let text = String(data: data, encoding: .utf8) ?? "Unknown error"
+            throw NSError(domain: "OpenAI", code: 1, userInfo: [NSLocalizedDescriptionKey: text])
+        }
+
+        struct Root: Decodable {
+            struct Choice: Decodable {
+                struct Msg: Decodable { let content: String }
+                let message: Msg
+            }
+            let choices: [Choice]
+        }
+
+        let root = try JSONDecoder().decode(Root.self, from: data)
+        let content = root.choices.first?.message.content ?? ""
+
+        if let jsonData = content.data(using: .utf8) {
+            do {
+                return try JSONDecoder().decode(T.self, from: jsonData)
+            } catch {
+                if let start = content.firstIndex(of: "{"),
+                   let end = content.lastIndex(of: "}") {
+                    let sliced = String(content[start...end])
+                    let slicedData = Data(sliced.utf8)
+                    return try JSONDecoder().decode(T.self, from: slicedData)
+                }
+                throw NSError(
+                    domain: "OpenAI.Decode",
+                    code: 2,
+                    userInfo: [NSLocalizedDescriptionKey: "Failed to decode response. Content:\n\(content)\nError: \(error)"]
+                )
+            }
+        }
+
+        throw NSError(domain: "OpenAI.Decode", code: 3, userInfo: [NSLocalizedDescriptionKey: "Empty content"])
+    }
+
     func generateMeditation(goal: String, durationMin: Int, voiceStyle: String) async throws -> MeditationAIResponse {
         let system = """
         You are an expert meditation coach.

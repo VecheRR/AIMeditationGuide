@@ -6,19 +6,22 @@
 //
 
 import SwiftUI
+import StoreKit
 
 struct RootView: View {
     @AppStorage("hasOnboarded") private var hasOnboarded = false
-    @AppStorage("isPro") private var isPro = false
+    @StateObject private var store = StoreKitManager.shared
 
     var body: some View {
         Group {
             if !hasOnboarded {
                 OnboardingView(onFinish: { hasOnboarded = true })
-            } else if !isPro {
-                PaywallView(onClose: { isPro = true })
+            } else if !store.hasEntitlement {
+                PaywallView()
+                    .environmentObject(store)
             } else {
                 MainTabView()
+                    .environmentObject(store)
             }
         }
     }
