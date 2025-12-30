@@ -81,6 +81,7 @@ final class RoutinePlan {
     var itemsJSON: String
     var isSaved: Bool
     var statusRaw: String = RoutineStatus.active.rawValue
+    var completedAt: Date?
 
     init(itemsJSON: String, isSaved: Bool = false, status: RoutineStatus = .active) {
         self.id = UUID()
@@ -88,6 +89,7 @@ final class RoutinePlan {
         self.itemsJSON = itemsJSON
         self.isSaved = isSaved
         self.statusRaw = status.rawValue
+        self.completedAt = nil
     }
 }
 
