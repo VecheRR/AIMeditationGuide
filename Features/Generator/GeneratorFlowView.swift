@@ -22,34 +22,40 @@ struct GeneratorFlowView: View {
             ZStack {
                 AppBackground()
 
-                VStack(spacing: 14) {
-                    Spacer().frame(height: 10)
+                ScrollView {
+                    VStack(spacing: 18) {
+                        VStack(spacing: 12) {
+                            Image(systemName: "sparkles")
+                                .font(.system(size: 56, weight: .semibold))
+                                .padding(.top, 6)
 
-                    Image(systemName: "sparkles")
-                        .font(.system(size: 64))
-                        .padding(.top, 10)
+                            Text("Fill in the details below to\ngenerate a meditation")
+                                .font(.subheadline)
+                                .foregroundStyle(.secondary)
+                                .multilineTextAlignment(.center)
+                                .padding(.horizontal, 16)
+                        }
+                        .frame(maxWidth: .infinity)
 
-                    Text("Fill in the details below to\ngenerate a meditation")
-                        .font(.subheadline)
-                        .foregroundStyle(.secondary)
-                        .multilineTextAlignment(.center)
+                        VStack(spacing: 12) {
+                            row(title: "Meditation Goal", value: vm.goal?.rawValue ?? "") { showGoal = true }
+                            row(title: "Duration", value: vm.duration?.title ?? "") { showDuration = true }
+                            row(title: "Voice Style", value: vm.voice?.rawValue ?? "") { showVoice = true }
+                            row(title: "Background Sound", value: vm.background?.rawValue ?? "") { showBg = true }
+                        }
+                        .padding(.horizontal, 16)
 
-                    VStack(spacing: 10) {
-                        row(title: "Meditation Goal", value: vm.goal?.rawValue ?? "") { showGoal = true }
-                        row(title: "Duration", value: vm.duration?.title ?? "") { showDuration = true }
-                        row(title: "Voice Style", value: vm.voice?.rawValue ?? "") { showVoice = true }
-                        row(title: "Background Sound", value: vm.background?.rawValue ?? "") { showBg = true }
+                        if let err = vm.errorText {
+                            Text(err)
+                                .font(.footnote)
+                                .foregroundStyle(.red)
+                                .padding(.horizontal, 16)
+                        }
                     }
-                    .padding(.horizontal, 16)
-                    .padding(.top, 8)
+                    .padding(.vertical, 24)
+                }
 
-                    if let err = vm.errorText {
-                        Text(err)
-                            .font(.footnote)
-                            .foregroundStyle(.red)
-                            .padding(.horizontal, 16)
-                    }
-
+                VStack {
                     Spacer()
 
                     PrimaryButton(
@@ -108,19 +114,40 @@ struct GeneratorFlowView: View {
 
     private func row(title: String, value: String, action: @escaping () -> Void) -> some View {
         Button(action: action) {
-            HStack {
+            HStack(alignment: .center, spacing: 12) {
                 VStack(alignment: .leading, spacing: 4) {
-                    Text(title).font(.subheadline).foregroundStyle(.secondary)
-                    if !value.isEmpty { Text(value).font(.headline) }
+                    Text(title)
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+
+                    Text(value.isEmpty ? "Tap to choose" : value)
+                        .font(.headline)
+                        .foregroundStyle(.primary)
+                        .lineLimit(2)
+                        .minimumScaleFactor(0.9)
                 }
-                Spacer()
-                Image(systemName: "chevron.right").foregroundStyle(.secondary)
+
+                Spacer(minLength: 8)
+
+                Image(systemName: "chevron.right")
+                    .foregroundStyle(.secondary)
+                    .font(.body.weight(.semibold))
+                    .accessibilityHidden(true)
             }
-            .padding()
-            .background(Color.white.opacity(0.6))
-            .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(14)
+            .background(
+                RoundedRectangle(cornerRadius: 18, style: .continuous)
+                    .fill(.regularMaterial)
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: 18, style: .continuous)
+                    .strokeBorder(Color.primary.opacity(0.08))
+            )
         }
+        .contentShape(Rectangle())
         .buttonStyle(.plain)
-        .foregroundStyle(.black)
+        .foregroundStyle(.primary)
+        .accessibilityLabel(Text("\(title). \(value.isEmpty ? "Not selected" : value)"))
     }
 }

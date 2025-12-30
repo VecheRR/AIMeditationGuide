@@ -24,38 +24,28 @@ struct PlayerView: View {
     var body: some View {
         ZStack {
             AppBackground()
-                .overlay(Color.black.opacity(0.08).ignoresSafeArea())
+                .overlay(Color.black.opacity(0.05).ignoresSafeArea())
 
-            VStack {
+            VStack(spacing: 16) {
                 topBar
 
-                Spacer()
+                header
+
+                Spacer(minLength: 8)
 
                 controls
                 timeline
 
                 VStack(spacing: 10) {
-                    HStack {
-                        Text("Voice")
-                            .font(.caption)
-                            .foregroundStyle(.white.opacity(0.85))
-                        Slider(value: Binding(
-                            get: { Double(audio.voiceVolume) },
-                            set: { audio.voiceVolume = Float($0) }
-                        ), in: 0...1)
-                        .tint(.white)
-                    }
+                    volumeSlider(title: "Voice", value: Binding(
+                        get: { Double(audio.voiceVolume) },
+                        set: { audio.voiceVolume = Float($0) }
+                    ))
 
-                    HStack {
-                        Text("Background")
-                            .font(.caption)
-                            .foregroundStyle(.white.opacity(0.85))
-                        Slider(value: Binding(
-                            get: { Double(audio.bgVolume) },
-                            set: { audio.bgVolume = Float($0) }
-                        ), in: 0...1)
-                        .tint(.white)
-                    }
+                    volumeSlider(title: "Background", value: Binding(
+                        get: { Double(audio.bgVolume) },
+                        set: { audio.bgVolume = Float($0) }
+                    ))
                 }
                 .padding(.top, 8)
 
@@ -97,22 +87,45 @@ struct PlayerView: View {
         HStack {
             Button { dismiss() } label: {
                 Image(systemName: "xmark")
-                    .foregroundStyle(.white)
+                    .foregroundStyle(.primary)
                     .padding(10)
-                    .background(Color.black.opacity(0.25))
+                    .background(.ultraThinMaterial)
                     .clipShape(Circle())
             }
+            .accessibilityLabel("Close player")
             Spacer()
             Button {
                 // потом: like/favorite
             } label: {
                 Image(systemName: "heart")
-                    .foregroundStyle(.white)
+                    .foregroundStyle(.primary)
                     .padding(10)
-                    .background(Color.black.opacity(0.25))
+                    .background(.ultraThinMaterial)
                     .clipShape(Circle())
             }
+            .accessibilityLabel("Save to favorites")
         }
+    }
+
+    private var header: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            CoverPlaceholderView(title: title, accent: .blue, subtitle: "\(durationMinutes) min session")
+                .frame(height: 210)
+
+            VStack(alignment: .leading, spacing: 6) {
+                Text(title)
+                    .font(.title3.weight(.semibold))
+                    .foregroundStyle(.primary)
+                    .lineLimit(2)
+                    .minimumScaleFactor(0.9)
+
+                Text(summary.isEmpty ? "Relax and follow the guidance." : summary)
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+                    .multilineTextAlignment(.leading)
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
 
     private var controls: some View {
@@ -121,32 +134,36 @@ struct PlayerView: View {
                 // потом: voice options
             } label: {
                 Image(systemName: "waveform")
-                    .foregroundStyle(.white)
+                    .foregroundStyle(.primary)
                     .padding(12)
-                    .background(Color.black.opacity(0.25))
+                    .background(.ultraThinMaterial)
                     .clipShape(Circle())
             }
+            .accessibilityLabel("Voice options")
 
             Button {
                 audio.isPlaying ? audio.pause() : audio.play()
             } label: {
                 Image(systemName: audio.isPlaying ? "pause.fill" : "play.fill")
                     .font(.system(size: 22, weight: .bold))
-                    .foregroundStyle(.white)
+                    .foregroundStyle(.primary)
                     .frame(width: 72, height: 72)
-                    .background(Color.black.opacity(0.35))
+                    .background(.ultraThinMaterial)
                     .clipShape(Circle())
             }
+            .accessibilityLabel(audio.isPlaying ? "Pause" : "Play")
+            .accessibilityHint("Controls both voice and background")
 
             Button {
                 // потом: timer
             } label: {
                 Image(systemName: "timer")
-                    .foregroundStyle(.white)
+                    .foregroundStyle(.primary)
                     .padding(12)
-                    .background(Color.black.opacity(0.25))
+                    .background(.ultraThinMaterial)
                     .clipShape(Circle())
             }
+            .accessibilityLabel("Timer options")
         }
     }
 
@@ -159,7 +176,7 @@ struct PlayerView: View {
                 ),
                 in: 0...audio.duration
             )
-            .tint(.white)
+            .tint(.accentColor)
 
             HStack {
                 Text(timeString(audio.currentTime))
@@ -167,7 +184,7 @@ struct PlayerView: View {
                 Text(timeString(audio.duration))
             }
             .font(.caption)
-            .foregroundStyle(.white.opacity(0.85))
+            .foregroundStyle(.secondary)
         }
         .padding(.top, 12)
     }
@@ -183,12 +200,13 @@ struct PlayerView: View {
                         .textCase(.lowercase)
                 }
                 .font(.caption.bold())
-                .foregroundStyle(.white)
+                .foregroundStyle(.primary)
                 .padding(.horizontal, 12)
                 .padding(.vertical, 10)
-                .background(Color.black.opacity(0.25))
+                .background(.ultraThinMaterial)
                 .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
             }
+            .accessibilityLabel("Background sound: \(background.rawValue)")
 
             Spacer()
 
@@ -196,13 +214,27 @@ struct PlayerView: View {
                 // потом: share
             } label: {
                 Image(systemName: "square.and.arrow.up")
-                    .foregroundStyle(.white)
+                    .foregroundStyle(.primary)
                     .padding(10)
-                    .background(Color.black.opacity(0.25))
+                    .background(.ultraThinMaterial)
                     .clipShape(Circle())
             }
+            .accessibilityLabel("Share session")
         }
         .padding(.top, 12)
+    }
+
+    private func volumeSlider(title: String, value: Binding<Double>) -> some View {
+        HStack(spacing: 10) {
+            Text(title)
+                .font(.caption)
+                .foregroundStyle(.secondary)
+                .frame(width: 90, alignment: .leading)
+
+            Slider(value: value, in: 0...1)
+                .tint(.accentColor)
+                .accessibilityLabel(Text("\(title) volume"))
+        }
     }
 
     private func timeString(_ t: TimeInterval) -> String {

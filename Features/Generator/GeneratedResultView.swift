@@ -17,52 +17,75 @@ struct GeneratedResultView: View {
     @Environment(\.modelContext) private var modelContext
 
     var body: some View {
+        let title = vm.generated?.title ?? "Meditation"
+        let summary = vm.generated?.summary ?? ""
+        let durationValue = vm.duration?.rawValue ?? 5
+
         ZStack {
             AppBackground()
 
-            VStack(spacing: 14) {
-                Spacer().frame(height: 10)
+            ScrollView {
+                VStack(spacing: 18) {
+                    CoverPlaceholderView(
+                        title: title,
+                        accent: .purple,
+                        subtitle: "\(durationValue) min guided session"
+                    )
+                    .frame(height: 200)
+                    .padding(.horizontal, 16)
 
-                RoundedRectangle(cornerRadius: 18)
-                    .fill(Color.black.opacity(0.12))
-                    .frame(height: 180)
-                    .overlay(Text("Cover").font(.headline).foregroundStyle(.secondary))
+                    VStack(alignment: .leading, spacing: 12) {
+                        Text("SUMMARY")
+                            .font(.caption.bold())
+                            .foregroundStyle(.secondary)
+                            .accessibilityHidden(true)
 
-                VStack(alignment: .leading, spacing: 8) {
-                    Text("\((vm.duration?.rawValue ?? 0)) MINUTES")
-                        .font(.headline)
+                        Text(summary.isEmpty ? "Your meditation script will appear here." : summary)
+                            .font(.body)
+                            .foregroundStyle(.primary)
+                            .multilineTextAlignment(.leading)
 
-                    Text(vm.generated?.summary ?? "")
-                        .font(.subheadline)
+                        HStack {
+                            Label("\(durationValue) min", systemImage: "clock")
+                            Label(vm.background?.rawValue ?? "No background", systemImage: "music.note")
+                        }
+                        .font(.footnote)
                         .foregroundStyle(.secondary)
+                        .accessibilityElement(children: .combine)
+                        .accessibilityLabel("Duration \(durationValue) minutes. Background \(vm.background?.rawValue ?? "No background")")
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(16)
+                    .background(
+                        RoundedRectangle(cornerRadius: 18, style: .continuous)
+                            .fill(.regularMaterial)
+                    )
+                    .padding(.horizontal, 16)
 
-                    Text("\(vm.duration?.rawValue ?? 0) min")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
+                    VStack(spacing: 12) {
+                        PrimaryButton(title: "START") {
+                            bg = vm.background ?? .none
+                            openPlayer = true
+                        }
+                        .accessibilityLabel("Start meditation")
+
+                        PrimaryButton(title: "SAVE TO HISTORY") {
+                            saveToHistory()
+                        }
+                        .accessibilityLabel("Save meditation to history")
+                    }
+                    .padding(.bottom, 20)
+                    .padding(.horizontal, 16)
                 }
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.horizontal, 16)
-
-                Spacer()
-
-                PrimaryButton(title: "START") {
-                    bg = vm.background ?? .nature
-                    openPlayer = true
-                }
-
-                PrimaryButton(title: "SAVE TO HISTORY") {
-                    saveToHistory()
-                }
-                .padding(.horizontal, 16)
-                .padding(.bottom, 16)
+                .padding(.vertical, 18)
             }
         }
         .navigationTitle("MEDITATION")
         .navigationBarTitleDisplayMode(.inline)
         .fullScreenCover(isPresented: $openPlayer) {
             PlayerView(
-                title: vm.generated?.title ?? "Meditation",
-                summary: vm.generated?.summary ?? "",
+                title: title,
+                summary: summary,
                 durationMinutes: vm.duration?.rawValue ?? 5,
                 voiceURL: vm.voiceFileURL,
                 background: $bg
