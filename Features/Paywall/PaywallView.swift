@@ -12,11 +12,12 @@ struct PaywallView: View {
     @EnvironmentObject private var store: StoreKitManager
     @State private var selectedProductID: String?
 
-    private let perks: [String] = [
-        "Unlimited AI-generated meditations",
-        "Full library of ambient backgrounds",
-        "History & progress tracking",
-        "Breathing exercises and routines"
+    // Храним ключи, а не английские строки
+    private let perkKeys: [String] = [
+        "paywall_perk_unlimited",
+        "paywall_perk_backgrounds",
+        "paywall_perk_history",
+        "paywall_perk_breathing"
     ]
 
     var body: some View {
@@ -25,10 +26,11 @@ struct PaywallView: View {
 
             VStack(spacing: 18) {
                 VStack(spacing: 10) {
-                    Text("Unlock AI Meditation")
+                    Text(String(localized: "paywall_title"))
                         .font(.system(size: 30, weight: .semibold))
                         .multilineTextAlignment(.center)
-                    Text("Try premium for deeper guidance, soothing sounds, and mindful routines.")
+
+                    Text(String(localized: "paywall_subtitle"))
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
                         .multilineTextAlignment(.center)
@@ -41,6 +43,7 @@ struct PaywallView: View {
                     planPicker
 
                     if let error = store.errorMessage, !error.isEmpty {
+                        // Ошибка StoreKit/SDK — это системный текст, не локализуем
                         Text(error)
                             .font(.footnote)
                             .foregroundStyle(.red)
@@ -56,14 +59,14 @@ struct PaywallView: View {
                     .disabled(store.isProcessingPurchase || selectedProductID == nil)
 
                     Button(action: { Task { await store.restorePurchases() } }) {
-                        Text("Restore purchases")
+                        Text(String(localized: "paywall_restore"))
                             .font(.footnote.weight(.semibold))
                             .foregroundStyle(.secondary)
                     }
                 }
                 .padding(.bottom, 12)
 
-                Text("You won't be charged today. Cancel anytime during the trial. After the trial, your chosen plan renews automatically.")
+                Text(String(localized: "paywall_disclaimer"))
                     .font(.caption2)
                     .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)
@@ -81,15 +84,17 @@ struct PaywallView: View {
                     Circle()
                         .fill(Color.green.opacity(0.12))
                         .frame(width: 74, height: 74)
+
                     Image(systemName: "star.fill")
                         .font(.system(size: 26, weight: .bold))
                         .foregroundStyle(.green)
                 }
 
                 VStack(alignment: .leading, spacing: 4) {
-                    Text("Premium features")
+                    Text(String(localized: "paywall_perks_title"))
                         .font(.headline)
-                    Text("Build a calming ritual with full access.")
+
+                    Text(String(localized: "paywall_perks_subtitle"))
                         .font(.footnote)
                         .foregroundStyle(.secondary)
                 }
@@ -97,11 +102,11 @@ struct PaywallView: View {
             }
 
             VStack(alignment: .leading, spacing: 8) {
-                ForEach(perks, id: \.self) { item in
+                ForEach(perkKeys, id: \.self) { key in
                     HStack(spacing: 10) {
                         Image(systemName: "checkmark.circle.fill")
                             .foregroundStyle(.green)
-                        Text(item)
+                        Text(LocalizedStringKey(key))
                             .font(.footnote)
                     }
                 }
@@ -115,7 +120,7 @@ struct PaywallView: View {
 
     private var planPicker: some View {
         VStack(alignment: .leading, spacing: 10) {
-            Text("Choose your plan")
+            Text(String(localized: "paywall_choose_plan"))
                 .font(.subheadline.weight(.semibold))
                 .foregroundStyle(.secondary)
 
@@ -129,6 +134,7 @@ struct PaywallView: View {
                                 HStack(spacing: 8) {
                                     Text(product.displayName.uppercased())
                                         .font(.caption.weight(.semibold))
+
                                     if let badge = badge(for: product) {
                                         Text(badge)
                                             .font(.caption2.weight(.heavy))
@@ -138,8 +144,10 @@ struct PaywallView: View {
                                             .clipShape(Capsule())
                                     }
                                 }
+
                                 Text(product.displayPrice)
                                     .font(.title3.weight(.semibold))
+
                                 if let detail = detail(for: product) {
                                     Text(detail)
                                         .font(.caption)
@@ -160,7 +168,10 @@ struct PaywallView: View {
                                 .fill(Color.white.opacity(0.72))
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 18, style: .continuous)
-                                        .stroke(selectedProductID == product.id ? Color.black : Color.black.opacity(0.08), lineWidth: 1.2)
+                                        .stroke(
+                                            selectedProductID == product.id ? Color.black : Color.black.opacity(0.08),
+                                            lineWidth: 1.2
+                                        )
                                 )
                         )
                     }
@@ -173,35 +184,48 @@ struct PaywallView: View {
                 }
             }
         }
-        .task { if selectedProductID == nil { selectedProductID = store.products.first?.id } }
+        .task {
+            if selectedProductID == nil {
+                selectedProductID = store.products.first?.id
+            }
+        }
     }
 
     private var primaryButtonTitle: String {
-        if store.isProcessingPurchase { return "Processing..." }
+        if store.isProcessingPurchase { return String(localized: "paywall_processing") }
+
         if let product = store.products.first(where: { $0.id == selectedProductID }),
            let offer = product.subscription?.introductoryOffer {
-            return "Start \(offer.displayPrice) trial"
+            // "Start %@ trial"
+            return String(
+                format: NSLocalizedString("paywall_start_trial_fmt", comment: ""),
+                offer.displayPrice
+            )
         }
-        return "Continue"
+
+        return String(localized: "paywall_continue")
     }
 
     private func badge(for product: Product) -> String? {
-        if product.id.lowercased().contains("annual") { return "BEST VALUE" }
-        if product.id.lowercased().contains("monthly") { return "FLEXIBLE" }
-        if product.id.lowercased().contains("lifetime") { return "ONE-TIME" }
+        let id = product.id.lowercased()
+        if id.contains("annual") { return String(localized: "paywall_badge_best_value") }
+        if id.contains("monthly") { return String(localized: "paywall_badge_flexible") }
+        if id.contains("lifetime") { return String(localized: "paywall_badge_one_time") }
         return nil
     }
 
     private func detail(for product: Product) -> String? {
         if let subscription = product.subscription {
-            let unit = subscription.subscriptionPeriod.unit
-            switch unit {
-            case .month: return "Cancel anytime"
-            case .year: return "Save vs monthly"
-            default: return nil
+            switch subscription.subscriptionPeriod.unit {
+            case .month:
+                return String(localized: "paywall_detail_cancel_anytime")
+            case .year:
+                return String(localized: "paywall_detail_save_vs_monthly")
+            default:
+                return nil
             }
         }
-        return "Lifetime access"
+        return String(localized: "paywall_detail_lifetime_access")
     }
 
     private func purchaseSelected() async {

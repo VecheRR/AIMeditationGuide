@@ -29,7 +29,7 @@ struct GeneratorFlowView: View {
                                 .font(.system(size: 56, weight: .semibold))
                                 .padding(.top, 6)
 
-                            Text("Fill in the details below to\ngenerate a meditation")
+                            Text("gen_flow_hint") // локализация
                                 .font(.subheadline)
                                 .foregroundStyle(.secondary)
                                 .multilineTextAlignment(.center)
@@ -38,15 +38,15 @@ struct GeneratorFlowView: View {
                         .frame(maxWidth: .infinity)
 
                         VStack(spacing: 12) {
-                            row(title: "Meditation Goal", value: vm.goal?.rawValue ?? "") { showGoal = true }
-                            row(title: "Duration", value: vm.duration?.title ?? "") { showDuration = true }
-                            row(title: "Voice Style", value: vm.voice?.rawValue ?? "") { showVoice = true }
-                            row(title: "Background Sound", value: vm.background?.rawValue ?? "") { showBg = true }
+                            row(titleKey: "gen_goal_title", value: vm.goal?.rawValue ?? "") { showGoal = true }
+                            row(titleKey: "gen_duration_title", value: vm.duration?.title ?? "") { showDuration = true }
+                            row(titleKey: "gen_voice_title", value: vm.voice?.rawValue ?? "") { showVoice = true }
+                            row(titleKey: "gen_bg_title", value: vm.background?.rawValue ?? "") { showBg = true }
                         }
                         .padding(.horizontal, 16)
 
                         if let err = vm.errorText {
-                            Text(err)
+                            Text(err) // обычно это системная ошибка, можно не локализовать
                                 .font(.footnote)
                                 .foregroundStyle(.red)
                                 .padding(.horizontal, 16)
@@ -59,7 +59,7 @@ struct GeneratorFlowView: View {
                     Spacer()
 
                     PrimaryButton(
-                        title: vm.isLoading ? "GENERATING..." : "GENERATE",
+                        title: vm.isLoading ? String(localized: "gen_btn_generating") : String(localized: "gen_btn_generate"),
                         isEnabled: vm.canGenerate && !vm.isLoading
                     ) {
                         Task {
@@ -71,7 +71,7 @@ struct GeneratorFlowView: View {
                     .padding(.bottom, 16)
                 }
             }
-            .navigationTitle("GENERATE MEDITATION")
+            .navigationTitle(String(localized: "gen_nav_title"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
@@ -83,28 +83,28 @@ struct GeneratorFlowView: View {
             }
             .sheet(isPresented: $showGoal) {
                 SelectList(
-                    title: "MEDITATION GOAL",
-                    items: GenGoal.allCases.map { $0.rawValue },
+                    title: String(localized: "gen_sheet_goal_title"),
+                    items: GenGoal.allCases.map { $0.rawValue }, // ⚠️ ниже напишу, как локализовать значения
                     selected: vm.goal?.rawValue
                 ) { v in vm.goal = GenGoal(rawValue: v) }
             }
             .sheet(isPresented: $showDuration) {
                 SelectList(
-                    title: "DURATION",
+                    title: String(localized: "gen_sheet_duration_title"),
                     items: GenDuration.allCases.map { $0.title },
                     selected: vm.duration?.title
                 ) { v in vm.duration = GenDuration.allCases.first(where: { $0.title == v }) }
             }
             .sheet(isPresented: $showVoice) {
                 SelectList(
-                    title: "VOICE STYLE",
+                    title: String(localized: "gen_sheet_voice_title"),
                     items: GenVoice.allCases.map { $0.rawValue },
                     selected: vm.voice?.rawValue
                 ) { v in vm.voice = GenVoice(rawValue: v) }
             }
             .sheet(isPresented: $showBg) {
                 SelectList(
-                    title: "BACKGROUND SOUND",
+                    title: String(localized: "gen_sheet_bg_title"),
                     items: GenBackground.allCases.map { $0.rawValue },
                     selected: vm.background?.rawValue
                 ) { v in vm.background = GenBackground(rawValue: v) }
@@ -112,15 +112,15 @@ struct GeneratorFlowView: View {
         }
     }
 
-    private func row(title: String, value: String, action: @escaping () -> Void) -> some View {
+    private func row(titleKey: String, value: String, action: @escaping () -> Void) -> some View {
         Button(action: action) {
             HStack(alignment: .center, spacing: 12) {
                 VStack(alignment: .leading, spacing: 4) {
-                    Text(title)
+                    Text(LocalizedStringKey(titleKey))
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
 
-                    Text(value.isEmpty ? "Tap to choose" : value)
+                    Text(value.isEmpty ? String(localized: "gen_row_tap_to_choose") : value)
                         .font(.headline)
                         .foregroundStyle(.primary)
                         .lineLimit(2)
@@ -148,6 +148,13 @@ struct GeneratorFlowView: View {
         .contentShape(Rectangle())
         .buttonStyle(.plain)
         .foregroundStyle(.primary)
-        .accessibilityLabel(Text("\(title). \(value.isEmpty ? "Not selected" : value)"))
+        // Accessibility — тоже локализуем через ключи, чтобы не было английского в русском UI
+        .accessibilityLabel(
+            Text(
+                value.isEmpty
+                ? LocalizedStringKey("\(titleKey). gen_row_not_selected")
+                : LocalizedStringKey("\(titleKey). \(value)")
+            )
+        )
     }
 }

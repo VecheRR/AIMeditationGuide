@@ -10,7 +10,7 @@ import SwiftUI
 struct BackgroundPickerView: View {
     @Binding var selected: GenBackground
     @Binding var volume: Float
-    
+
     @Environment(\.dismiss) private var dismiss
 
     private let grid = [GridItem(.flexible()), GridItem(.flexible())]
@@ -18,16 +18,17 @@ struct BackgroundPickerView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
+
                 VStack(alignment: .leading, spacing: 6) {
-                    Text("BACKGROUND SOUNDS")
+                    Text(String(localized: "bg_picker_title"))
                         .font(.caption.bold())
                         .foregroundStyle(.secondary)
                         .padding(.top, 6)
 
-                    Text("Pick an ambience that lasts through the whole session.")
+                    Text(String(localized: "bg_picker_subtitle"))
                         .font(.footnote)
                         .foregroundStyle(.secondary)
-                        .accessibilityHint("Changes background loop without stopping the voice track")
+                        .accessibilityHint(Text(String(localized: "bg_picker_a11y_hint")))
                 }
 
                 LazyVGrid(columns: grid, spacing: 12) {
@@ -38,13 +39,13 @@ struct BackgroundPickerView: View {
                 }
 
                 VStack(alignment: .leading, spacing: 8) {
-                    Text("Background Volume")
+                    Text(String(localized: "bg_picker_volume_title"))
                         .font(.caption)
                         .foregroundStyle(.secondary)
 
                     Slider(value: $volume, in: 0...1)
                         .tint(.accentColor)
-                        .accessibilityLabel("Background volume")
+                        .accessibilityLabel(Text(String(localized: "bg_picker_volume_a11y")))
                 }
             }
             .padding(16)
@@ -53,14 +54,17 @@ struct BackgroundPickerView: View {
     }
 
     private func tile(_ bg: GenBackground, icon: String) -> some View {
-        Button {
+        let bgName = localizedBackgroundName(bg)
+
+        return Button {
             selected = bg
             dismiss()
         } label: {
             VStack(spacing: 10) {
                 Image(systemName: icon)
                     .font(.system(size: 22, weight: .semibold))
-                Text(bg.rawValue)
+
+                Text(bgName)
                     .font(.caption.bold())
             }
             .foregroundStyle(.primary)
@@ -71,10 +75,33 @@ struct BackgroundPickerView: View {
             )
             .overlay {
                 RoundedRectangle(cornerRadius: 18, style: .continuous)
-                    .strokeBorder(selected == bg ? Color.accentColor : Color.primary.opacity(0.1), lineWidth: selected == bg ? 2 : 1)
+                    .strokeBorder(
+                        selected == bg ? Color.accentColor : Color.primary.opacity(0.1),
+                        lineWidth: selected == bg ? 2 : 1
+                    )
             }
         }
         .buttonStyle(.plain)
-        .accessibilityLabel(Text("Background \(bg.rawValue)"))
+        .accessibilityLabel(
+            Text(
+                String(
+                    format: NSLocalizedString("bg_picker_a11y_background_fmt", comment: ""),
+                    bgName
+                )
+            )
+        )
+    }
+
+    private func localizedBackgroundName(_ bg: GenBackground) -> String {
+        switch bg {
+        case .none:
+            return String(localized: "bg_none")
+        case .nature:
+            return String(localized: "bg_nature")
+        case .ambient:
+            return String(localized: "bg_ambient")
+        case .rain:
+            return String(localized: "bg_rain")
+        }
     }
 }

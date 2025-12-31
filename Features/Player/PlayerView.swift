@@ -34,7 +34,6 @@ struct PlayerView: View {
 
             VStack(spacing: 16) {
                 topBar
-
                 header
 
                 Spacer(minLength: 8)
@@ -43,15 +42,21 @@ struct PlayerView: View {
                 timeline
 
                 VStack(spacing: 10) {
-                    volumeSlider(title: "Voice", value: Binding(
-                        get: { Double(audio.voiceVolume) },
-                        set: { audio.voiceVolume = Float($0) }
-                    ))
+                    volumeSlider(
+                        titleKey: "player_volume_voice",
+                        value: Binding(
+                            get: { Double(audio.voiceVolume) },
+                            set: { audio.voiceVolume = Float($0) }
+                        )
+                    )
 
-                    volumeSlider(title: "Background", value: Binding(
-                        get: { Double(audio.bgVolume) },
-                        set: { audio.bgVolume = Float($0) }
-                    ))
+                    volumeSlider(
+                        titleKey: "player_volume_background",
+                        value: Binding(
+                            get: { Double(audio.bgVolume) },
+                            set: { audio.bgVolume = Float($0) }
+                        )
+                    )
                 }
                 .padding(.top, 8)
 
@@ -78,7 +83,6 @@ struct PlayerView: View {
             let wasPlaying = audio.isPlaying
             let target = TimeInterval(durationMinutes * 60)
 
-            // перезагрузить фон, но НЕ терять голос
             try? audio.load(
                 voiceURL: voiceURL,
                 background: newValue,
@@ -88,15 +92,17 @@ struct PlayerView: View {
 
             if wasPlaying { audio.play() }
         }
-        .alert("Finish early?", isPresented: $showFinishConfirmation) {
-            Button("Finish", role: .destructive) {
+        .alert(String(localized: "player_finish_title"), isPresented: $showFinishConfirmation) {
+            Button(String(localized: "player_finish_btn_finish"), role: .destructive) {
                 audio.stop()
                 dismiss()
                 onFinishEarly?()
             }
-            Button("Cancel", role: .cancel) { showFinishConfirmation = false }
+            Button(String(localized: "player_finish_btn_cancel"), role: .cancel) {
+                showFinishConfirmation = false
+            }
         } message: {
-            Text("Your session will stop and won’t auto-save unless you save manually.")
+            Text(String(localized: "player_finish_message"))
         }
     }
 
@@ -109,8 +115,10 @@ struct PlayerView: View {
                     .background(.ultraThinMaterial)
                     .clipShape(Circle())
             }
-            .accessibilityLabel("Close player")
+            .accessibilityLabel(Text(String(localized: "player_a11y_close")))
+
             Spacer()
+
             Button {
                 // потом: like/favorite
             } label: {
@@ -120,16 +128,21 @@ struct PlayerView: View {
                     .background(.ultraThinMaterial)
                     .clipShape(Circle())
             }
-            .accessibilityLabel("Save to favorites")
+            .accessibilityLabel(Text(String(localized: "player_a11y_favorites")))
         }
     }
 
     private var header: some View {
-        VStack(alignment: .leading, spacing: 12) {
+        let subtitle = String(
+            format: NSLocalizedString("player_cover_subtitle_minutes", comment: "e.g. 10 min session"),
+            durationMinutes
+        )
+
+        return VStack(alignment: .leading, spacing: 12) {
             KenBurnsCoverView(
                 imageURL: coverURL,
                 title: title,
-                subtitle: "\(durationMinutes) min session"
+                subtitle: subtitle
             )
             .frame(height: 210)
 
@@ -140,7 +153,7 @@ struct PlayerView: View {
                     .lineLimit(2)
                     .minimumScaleFactor(0.9)
 
-                Text(summary.isEmpty ? "Relax and follow the guidance." : summary)
+                Text(summary.isEmpty ? String(localized: "player_summary_fallback") : summary)
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
                     .multilineTextAlignment(.leading)
@@ -160,7 +173,7 @@ struct PlayerView: View {
                     .background(.ultraThinMaterial)
                     .clipShape(Circle())
             }
-            .accessibilityLabel("Voice options")
+            .accessibilityLabel(Text(String(localized: "player_a11y_voice_options")))
 
             Button {
                 audio.isPlaying ? audio.pause() : audio.play()
@@ -172,8 +185,8 @@ struct PlayerView: View {
                     .background(.ultraThinMaterial)
                     .clipShape(Circle())
             }
-            .accessibilityLabel(audio.isPlaying ? "Pause" : "Play")
-            .accessibilityHint("Controls both voice and background")
+            .accessibilityLabel(Text(audio.isPlaying ? String(localized: "player_a11y_pause") : String(localized: "player_a11y_play")))
+            .accessibilityHint(Text(String(localized: "player_a11y_play_hint")))
 
             Button {
                 // потом: timer
@@ -184,7 +197,7 @@ struct PlayerView: View {
                     .background(.ultraThinMaterial)
                     .clipShape(Circle())
             }
-            .accessibilityLabel("Timer options")
+            .accessibilityLabel(Text(String(localized: "player_a11y_timer_options")))
         }
     }
 
@@ -211,13 +224,14 @@ struct PlayerView: View {
     }
 
     private var bottomBar: some View {
-        HStack {
-            Button {
-                showBgPicker = true
-            } label: {
+        let bgName = background.rawValue.lowercased()
+        let bgA11y = String(format: NSLocalizedString("player_a11y_background_fmt", comment: "Background sound: %s"), bgName)
+
+        return HStack {
+            Button { showBgPicker = true } label: {
                 HStack(spacing: 8) {
                     Image(systemName: "music.note")
-                    Text(background.rawValue)
+                    Text(bgName)
                         .textCase(.lowercase)
                 }
                 .font(.caption.bold())
@@ -227,16 +241,14 @@ struct PlayerView: View {
                 .background(.ultraThinMaterial)
                 .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
             }
-            .accessibilityLabel("Background sound: \(background.rawValue)")
+            .accessibilityLabel(Text(bgA11y))
 
             Spacer()
 
-            Button {
-                showFinishConfirmation = true
-            } label: {
+            Button { showFinishConfirmation = true } label: {
                 HStack(spacing: 6) {
                     Image(systemName: "stop.circle")
-                    Text("Finish Early")
+                    Text(String(localized: "player_btn_finish_early"))
                 }
                 .font(.caption.bold())
                 .foregroundStyle(.primary)
@@ -245,7 +257,7 @@ struct PlayerView: View {
                 .background(.ultraThinMaterial)
                 .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
             }
-            .accessibilityLabel("Finish session early")
+            .accessibilityLabel(Text(String(localized: "player_a11y_finish_early")))
 
             Spacer()
 
@@ -256,8 +268,8 @@ struct PlayerView: View {
                     didSaveFromPlayer = true
                 } label: {
                     HStack(spacing: 6) {
-                        Image(systemName: didSaveFromPlayer || isAlreadySaved ? "checkmark" : "tray.and.arrow.down")
-                        Text(didSaveFromPlayer || isAlreadySaved ? "Saved" : "Save to History")
+                        Image(systemName: (didSaveFromPlayer || isAlreadySaved) ? "checkmark" : "tray.and.arrow.down")
+                        Text((didSaveFromPlayer || isAlreadySaved) ? String(localized: "player_btn_saved") : String(localized: "player_btn_save_history"))
                     }
                     .font(.caption.bold())
                     .foregroundStyle(.primary)
@@ -266,23 +278,23 @@ struct PlayerView: View {
                     .background(.ultraThinMaterial)
                     .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
                 }
-                .accessibilityLabel("Save meditation to history")
+                .accessibilityLabel(Text(String(localized: "player_a11y_save_history")))
                 .disabled(isAlreadySaved || didSaveFromPlayer)
             }
         }
         .padding(.top, 12)
     }
 
-    private func volumeSlider(title: String, value: Binding<Double>) -> some View {
+    private func volumeSlider(titleKey: String, value: Binding<Double>) -> some View {
         HStack(spacing: 10) {
-            Text(title)
+            Text(String(localized: String.LocalizationValue(titleKey)))
                 .font(.caption)
                 .foregroundStyle(.secondary)
                 .frame(width: 90, alignment: .leading)
 
             Slider(value: value, in: 0...1)
                 .tint(.accentColor)
-                .accessibilityLabel(Text("\(title) volume"))
+                .accessibilityLabel(Text(String(format: NSLocalizedString("player_a11y_volume_fmt", comment: "%s volume"), NSLocalizedString(titleKey, comment: ""))))
         }
     }
 
@@ -297,7 +309,6 @@ struct PlayerView: View {
         if let storedBackground, storedBackground == background, let backgroundFileURL {
             return backgroundFileURL
         }
-
         return SoundLibrary.url(for: background)
     }
 }

@@ -2,8 +2,6 @@
 //  MoodPickerView.swift
 //  AIMeditationGuide
 //
-//  Created by Vladislav on 29.12.2025.
-//
 
 import SwiftUI
 
@@ -20,7 +18,7 @@ struct MoodPickerView: View {
 
                 VStack(spacing: 10) {
                     ForEach(BreathingMood.allCases, id: \.self) { mood in
-                        pill(title: mood.rawValue, isSelected: selected == mood) {
+                        pill(title: mood.titleKey, isSelected: selected == mood) {
                             selected = mood
                             dismiss()
                         }
@@ -30,15 +28,14 @@ struct MoodPickerView: View {
 
                 Spacer()
             }
+            .padding(.top, 8)
         }
     }
 
     private var header: some View {
         HStack {
-            Button {
-                dismiss()
-            } label: {
-                Image(systemName: "chevron.left")
+            Button { dismiss() } label: {
+                Image(systemName: "xmark")
                     .foregroundStyle(.black)
                     .padding(10)
                     .background(Color.white.opacity(0.7))
@@ -47,7 +44,7 @@ struct MoodPickerView: View {
 
             Spacer()
 
-            Text("MOOD CHECK-IN")
+            Text("bre_setup_mood_title")
                 .font(.caption.bold())
                 .foregroundStyle(.secondary)
 
@@ -56,31 +53,23 @@ struct MoodPickerView: View {
             Color.clear.frame(width: 32)
         }
         .padding(.horizontal, 16)
-        .padding(.top, 10)
     }
 
-    private func pill(title: String, isSelected: Bool, action: @escaping () -> Void) -> some View {
+    private func pill(title: LocalizedStringKey, isSelected: Bool, action: @escaping () -> Void) -> some View {
         Button(action: action) {
             HStack {
                 Text(title)
-                    .font(.body.weight(.medium))
+                    .font(.body.weight(.semibold))
                     .foregroundStyle(.black)
 
                 Spacer()
 
-                if isSelected {
-                    Image(systemName: "checkmark.circle.fill")
-                        .foregroundStyle(.black)
-                }
+                Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
+                    .foregroundStyle(.black.opacity(isSelected ? 0.9 : 0.25))
             }
-            .padding(.vertical, 16)
-            .padding(.horizontal, 18)
-            .background(Color.white.opacity(isSelected ? 0.9 : 0.75))
-            .overlay(
-                RoundedRectangle(cornerRadius: 22, style: .continuous)
-                    .stroke(isSelected ? Color.black.opacity(0.35) : Color.clear, lineWidth: 1.5)
-            )
-            .clipShape(RoundedRectangle(cornerRadius: 22, style: .continuous))
+            .padding(14)
+            .background(Color.white.opacity(0.75))
+            .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
         }
         .buttonStyle(.plain)
     }

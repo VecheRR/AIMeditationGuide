@@ -29,68 +29,53 @@ struct BreathingSessionView: View {
 
             VStack {
                 topBar
-
                 Spacer()
-
                 breathingCircle
-
                 Spacer()
-
                 bottomBar
             }
             .padding(.horizontal, 16)
             .padding(.vertical, 12)
         }
-        .onAppear {
-            startCountdown()
-        }
+        .onAppear { startCountdown() }
         .onDisappear {
             countdownTimer?.invalidate()
             countdownTimer = nil
             vm.stop()
         }
-        // убираем системную навигацию (и Back тоже)
         .navigationBarBackButtonHidden(true)
         .toolbar(.hidden, for: .navigationBar)
 
-        // iOS 17-safe вариант
         .onChange(of: vm.isFinished) { _, finished in
             guard finished else { return }
             saveBreathingLogIfNeeded()
             showCompletion = true
         }
 
-        .alert("Breathing complete", isPresented: $showCompletion) {
-            Button("Close") { dismiss() }
-            Button("Restart") { restart() }
+        .alert("bre_complete_title", isPresented: $showCompletion) {
+            Button("common_close") { dismiss() }
+            Button("common_restart") { restart() }
         } message: {
-            Text("Session saved to history")
+            Text("bre_complete_saved")
         }
     }
 
-    // MARK: - Top Bar (только одна кнопка закрыть)
-
     private var topBar: some View {
         HStack {
-            Button {
-                dismiss()
-            } label: {
+            Button { dismiss() } label: {
                 Image(systemName: "xmark")
                     .foregroundColor(.black)
                     .padding(10)
                     .background(Color.white.opacity(0.7))
                     .clipShape(Circle())
             }
-
             Spacer()
         }
         .padding(.top, 4)
     }
 
-    // MARK: - Center
-
     private var breathingCircle: some View {
-        let label = isCountingDown ? "\(countdown)" : vm.phase.rawValue
+        let label: LocalizedStringKey = isCountingDown ? LocalizedStringKey("\(countdown)") : vm.phase.titleKey
         let p = isCountingDown ? 0.0 : vm.phaseProgress
 
         let innerScale: CGFloat
@@ -135,17 +120,13 @@ struct BreathingSessionView: View {
                 .padding(.vertical, 10)
                 .background(Color.black.opacity(0.18))
                 .clipShape(Capsule())
-                .animation(.easeInOut(duration: 0.2), value: label)
+                .animation(.easeInOut(duration: 0.2), value: countdown)
         }
     }
 
-    // MARK: - Bottom Bar
-
     private var bottomBar: some View {
         HStack {
-            Button {
-                muteHints.toggle()
-            } label: {
+            Button { muteHints.toggle() } label: {
                 Image(systemName: muteHints ? "speaker.slash" : "speaker.wave.2")
                     .foregroundColor(.black)
                     .padding(10)
@@ -159,12 +140,13 @@ struct BreathingSessionView: View {
                 Text(timeString(vm.totalRemaining))
                     .font(.caption.bold())
                     .foregroundColor(.black.opacity(0.7))
-                Text("Remaining")
+
+                Text("bre_remaining")
                     .font(.caption2)
                     .foregroundColor(.secondary)
 
                 if !muteHints {
-                    Text(vm.instruction)
+                    Text(vm.instructionKey)
                         .font(.footnote.weight(.medium))
                         .foregroundStyle(.black)
                         .padding(.top, 2)
@@ -173,9 +155,7 @@ struct BreathingSessionView: View {
 
             Spacer()
 
-            Button {
-                restart()
-            } label: {
+            Button { restart() } label: {
                 Image(systemName: "gobackward")
                     .foregroundColor(.black)
                     .padding(10)
@@ -185,8 +165,6 @@ struct BreathingSessionView: View {
         }
         .padding(.bottom, 6)
     }
-
-    // MARK: - Helpers
 
     private func startCountdown() {
         countdownTimer?.invalidate()
@@ -225,7 +203,7 @@ struct BreathingSessionView: View {
 
     private func saveBreathingLogIfNeeded() {
         guard !didSave, let duration = vm.duration, let mood = vm.mood else { return }
-        let log = BreathingLog(durationSeconds: duration.seconds, mood: mood.rawValue)
+        let log = BreathingLog(durationSeconds: duration.seconds, mood: mood.localizedTitleString)
         modelContext.insert(log)
         didSave = true
     }

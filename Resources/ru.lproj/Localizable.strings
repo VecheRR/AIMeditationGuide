@@ -1,137 +1,173 @@
-"Home" = "Главная";
-"History" = "История";
-"Settings" = "Настройки";
-"Language" = "Язык";
-"SETTINGS" = "НАСТРОЙКИ";
-"English" = "Английский";
-"Русский" = "Русский";
+"gen_flow_hint" = "Заполни параметры ниже,\nчтобы сгенерировать медитацию";
 
-"Hello, Vitalii" = "Привет, Виталий";
-"How are you\nfeeling today?" = "Как ты\nсегодня себя чувствуешь?";
-"AI suggestion" = "Совет ИИ";
-"GENERATE MEDITATION" = "СГЕНЕРИРОВАТЬ МЕДИТАЦИЮ";
-"BREATHING EXERCISE" = "ДЫХАТЕЛЬНОЕ УПРАЖНЕНИЕ";
-"DAILY ROUTINE" = "ЕЖЕДНЕВНАЯ РУТИНА";
-"Meditation" = "Медитация";
-"Today's Meditation" = "Медитация на сегодня";
-"%lld MIN" = "%lld МИН";
-"%lld MINUTES" = "%lld МИНУТ";
-"CONTINUE" = "ПРОДОЛЖИТЬ";
-"REPLAY" = "ПОВТОРИТЬ";
-"Daily Routine" = "Ежедневная рутина";
-"Routine completed" = "Рутина завершена";
-"Regenerate a new set when you'd like another gentle nudge." = "Сгенерируй новый набор, когда захочешь мягкого напоминания.";
-"%lld min • %@" = "%lld мин • %@";
-"All practices completed" = "Все практики завершены";
-"Feel free to regenerate a new flow when you're ready." = "Можешь создать новый поток, когда будешь готов.";
-"No routine yet" = "Пока нет рутины";
-"Generate 1–3 quick practices to keep your habit alive today." = "Сгенерируй 1–3 короткие практики, чтобы поддержать привычку.";
-"CREATE ROUTINE" = "СОЗДАТЬ РУТИНУ";
-"Next up: %@ — take %lld minutes to keep your routine on track." = "Далее: %@ — удели %lld мин., чтобы сохранить ритм.";
-"Great job completing a %lld-minute session. Try a quick 5-minute breathing break to stay balanced." = "Отлично, ты завершил сессию на %lld минут. Попробуй 5-минутную дыхательную паузу для баланса.";
-"Start with a 5-minute session to set your intention, then follow with a calming breathing exercise." = "Начни с 5-минутной сессии, чтобы настроиться, затем сделай спокойное дыхательное упражнение.";
-"GENERATE" = "СГЕНЕРИРОВАТЬ";
-"GENERATING..." = "ГЕНЕРАЦИЯ...";
-"Fill in the details below to\ngenerate a meditation" = "Заполни детали ниже, чтобы\nсоздать медитацию";
-"Meditation Goal" = "Цель медитации";
-"Duration" = "Длительность";
-"Voice Style" = "Стиль голоса";
-"Background Sound" = "Фоновый звук";
-"Tap to choose" = "Нажми, чтобы выбрать";
-"Not selected" = "Не выбрано";
-"GENERATE MEDITATION" = "СГЕНЕРИРОВАТЬ МЕДИТАЦИЮ";
-"MEDITATION GOAL" = "ЦЕЛЬ МЕДИТАЦИИ";
-"DURATION" = "ДЛИТЕЛЬНОСТЬ";
-"VOICE STYLE" = "СТИЛЬ ГОЛОСА";
-"BACKGROUND SOUND" = "ФОНОВЫЙ ЗВУК";
-"START" = "СТАРТ";
-"SAVE TO HISTORY" = "СОХРАНИТЬ В ИСТОРИИ";
-"SUMMARY" = "КРАТКО";
-"BACKGROUND SOUNDS" = "ФОНОВЫЕ ЗВУКИ";
-"Pick an ambience that lasts through the whole session." = "Выбери фон, который будет звучать всю сессию.";
-"Background Volume" = "Громкость фона";
-"Background %@" = "Фон %@";
-"Your session will stop and won’t auto-save unless you save manually." = "Сессия остановится и не сохранится автоматически, если не сохранить вручную.";
-"Finish Early" = "Завершить раньше";
-"%@ volume" = "Громкость %@";
-"Close" = "Закрыть";
-"Restart" = "Перезапустить";
-"Finish" = "Готово";
-"Cancel" = "Отмена";
-"Close player" = "Закрыть плеер";
-"Save to favorites" = "В избранное";
-"Voice options" = "Настройки голоса";
-"Timer options" = "Настройки таймера";
-"Background sound: %@" = "Фоновый звук: %@";
-"Finish session early" = "Завершить сессию заранее";
-"Save meditation to history" = "Сохранить медитацию в историю";
-"Start meditation" = "Начать медитацию";
-"Duration %lld minutes. Background %@" = "Длительность %lld минут. Фон %@";
-"%lld min" = "%lld мин";
-"MEDITATION" = "МЕДИТАЦИЯ";
-"Unlock AI Meditation" = "Открой доступ к AI Meditation";
-"Try premium for deeper guidance, soothing sounds, and mindful routines." = "Попробуй премиум для глубокой поддержки, звуков и осознанных рутин.";
-"Restore purchases" = "Восстановить покупки";
-"You won't be charged today. Cancel anytime during the trial. After the trial, your chosen plan renews automatically." = "Оплата сегодня не списывается. Отмени в любой момент во время пробного периода. После него выбранный план продлится автоматически.";
-"Premium features" = "Премиум возможности";
-"Build a calming ritual with full access." = "Создавай успокаивающий ритуал с полным доступом.";
-"Choose your plan" = "Выбери свой план";
-"Breathing — next step" = "Дыхание — следующий шаг";
-"Create a breathing exercise\nthat matches your current state" = "Создай дыхательную практику\nпод своё текущее состояние";
-"MOOD CHECK-IN" = "ОЦЕНКА НАСТРОЕНИЯ";
-"Session saved to history" = "Сессия сохранена в историю";
-"Remaining" = "Осталось";
-"MEDITATIONS" = "МЕДИТАЦИИ";
-"BREATHING" = "ДЫХАНИЕ";
-"No meditation sessions yet" = "Пока нет медитаций";
-"No breathing sessions yet" = "Пока нет дыхательных сессий";
-"Remove %@ from history?" = "Убрать %@ из истории?";
-"Remove breathing entry from history?" = "Удалить дыхательную запись из истории?";
-"Delete" = "Удалить";
-"Weekly progress" = "Прогресс за неделю";
-"%lld / 70 min" = "%lld / 70 мин";
-"Total minutes" = "Всего минут";
-"Meditations" = "Медитации";
-"Daily streak" = "Серия по дням";
-"days" = "дней";
-"HISTORY" = "ИСТОРИЯ";
-"Delete meditation?" = "Удалить медитацию?";
-"Delete breathing log?" = "Удалить дыхательную запись?";
-"Structured practices" = "Структурированные практики";
-"Follow the suggested flow, regenerate a new one, or save it for later." = "Следуй предложенному потоку, сгенерируй новый или сохрани на потом.";
-"This week" = "Эта неделя";
-"Mark Done" = "Отметить готово";
-"Save" = "Сохранить";
-"Start" = "Начать";
-"Regenerate" = "Обновить";
-"Marked as done" = "Отмечено как выполнено";
-"Active plan" = "Активный план";
-"Generating your routine..." = "Генерируем твою рутину...";
-"Tap Regenerate to get a fresh set of practices for the day." = "Нажми «Обновить», чтобы получить новые практики на день.";
-"Routine marked as done. Regenerate when you're ready for a fresh flow." = "Рутина завершена. Обнови, когда захочешь новый поток.";
-"Next: %@ • %lld min" = "Далее: %@ • %lld мин";
-"Great job! All practices are done." = "Отлично! Все практики выполнены.";
-"Completed" = "Завершено";
-"Pending" = "В ожидании";
-"Mark as Pending" = "Пометить как ожидает";
-"Mark as Done" = "Пометить выполненным";
-"Welcome to\nAI Meditation" = "Добро пожаловать в\nAI Meditation";
-"Personalized, soothing practices tailored to how you feel today." = "Персональные спокойные практики под твоё сегодняшнее состояние.";
-"Instantly generate guided meditations" = "Мгновенно создавай медитации";
-"Designed to match your current mood" = "Созданы под твоё настроение";
-"Breathing &\nRoutine Support" = "Дыхание и\nподдержка рутины";
-"Guided breathing timers and daily practice plans keep you consistent." = "Таймеры дыхания и ежедневные планы помогают быть последовательным.";
-"Breathing exercises with calm pacing" = "Дыхательные упражнения с мягким ритмом";
-"Routine tracker with small, daily steps" = "Трекер рутины с маленькими ежедневными шагами";
-"Immersive Audio" = "Иммерсивный звук";
-"Pick the voice, background ambience, and session length you prefer." = "Выбирай голос, фон и длительность, которые нравятся.";
-"Choose voices & ambient backgrounds" = "Выбирай голоса и фоновые звуки";
-"Control voice and background volumes" = "Настраивай громкость голоса и фона";
-"Stay Mindful\nEvery Day" = "Оставайся осознанным\nкаждый день";
-"Track your progress and revisit your favorite sessions anytime." = "Отслеживай прогресс и возвращайся к любимым сессиям в любое время.";
-"History of meditations & breathing" = "История медитаций и дыхания";
-"One tap to replay or continue" = "Одно нажатие, чтобы продолжить или повторить";
-"Skip" = "Пропустить";
-"START NOW" = "НАЧАТЬ";
-"NEXT" = "ДАЛЕЕ";
-"I'll explore on my own" = "Я разберусь сам";
+"gen_goal_title" = "Цель медитации";
+"gen_duration_title" = "Длительность";
+"gen_voice_title" = "Стиль голоса";
+"gen_bg_title" = "Фоновый звук";
+
+"gen_btn_generate" = "СГЕНЕРИРОВАТЬ";
+"gen_btn_generating" = "ГЕНЕРАЦИЯ...";
+
+"gen_nav_title" = "ГЕНЕРАЦИЯ МЕДИТАЦИИ";
+
+"gen_sheet_goal_title" = "ЦЕЛЬ";
+"gen_sheet_duration_title" = "ДЛИТЕЛЬНОСТЬ";
+"gen_sheet_voice_title" = "ГОЛОС";
+"gen_sheet_bg_title" = "ФОНОВЫЙ ЗВУК";
+
+"gen_row_tap_to_choose" = "Нажми, чтобы выбрать";
+"gen_row_not_selected" = "Не выбрано";
+
+"gen_result_default_title" = "Медитация";
+"gen_result_summary_title" = "ОПИСАНИЕ";
+"gen_result_summary_empty" = "Текст медитации появится здесь.";
+"gen_result_btn_start" = "НАЧАТЬ";
+"gen_result_btn_save" = "СОХРАНИТЬ В ИСТОРИЮ";
+"gen_result_nav_title" = "МЕДИТАЦИЯ";
+
+"gen_result_cover_subtitle" = "Сессия %lld мин";
+"gen_result_duration_short" = "%lld мин";
+"gen_result_bg_none" = "Без фона";
+
+"gen_result_a11y_start" = "Начать медитацию";
+"gen_result_a11y_save" = "Сохранить медитацию в историю";
+"gen_result_a11y_duration_bg" = "Длительность %lld минут. Фон %@";
+
+"name_prompt_title" = "Как тебя зовут?";
+"name_prompt_subtitle" = "Мы будем использовать имя, чтобы персонализировать главный экран.";
+"name_prompt_field_placeholder" = "Твоё имя";
+"name_prompt_btn_continue" = "Продолжить";
+"name_prompt_btn_not_now" = "Не сейчас";
+
+"player_volume_voice" = "Голос";
+"player_volume_background" = "Фон";
+
+"player_finish_title" = "Завершить раньше?";
+"player_finish_btn_finish" = "Завершить";
+"player_finish_btn_cancel" = "Отмена";
+"player_finish_message" = "Сессия остановится и не сохранится автоматически — только если сохранить вручную.";
+
+"player_a11y_close" = "Закрыть плеер";
+"player_a11y_favorites" = "Сохранить в избранное";
+
+"player_cover_subtitle_minutes" = "Сессия %d мин";
+"player_summary_fallback" = "Расслабься и следуй подсказкам.";
+
+"player_a11y_voice_options" = "Настройки голоса";
+"player_a11y_pause" = "Пауза";
+"player_a11y_play" = "Воспроизвести";
+"player_a11y_play_hint" = "Управляет и голосом, и фоном";
+"player_a11y_timer_options" = "Настройки таймера";
+
+"player_btn_finish_early" = "Завершить";
+"player_a11y_finish_early" = "Завершить сессию раньше";
+
+"player_btn_saved" = "Сохранено";
+"player_btn_save_history" = "Сохранить в историю";
+"player_a11y_save_history" = "Сохранить медитацию в историю";
+
+"player_a11y_background_fmt" = "Фоновый звук: %@";
+"player_a11y_volume_fmt" = "Громкость: %@";
+
+"bg_picker_title" = "ФОНОВЫЕ ЗВУКИ";
+"bg_picker_subtitle" = "Выберите фон, который будет звучать всю сессию.";
+"bg_picker_a11y_hint" = "Меняет фоновый звук без остановки голосовой дорожки";
+
+"bg_picker_volume_title" = "Громкость фона";
+"bg_picker_volume_a11y" = "Громкость фонового звука";
+
+"bg_picker_a11y_background_fmt" = "Фоновый звук: %@";
+
+"bg_none" = "Без фона";
+"bg_nature" = "Природа";
+"bg_ambient" = "Эмбиент";
+"bg_rain" = "Дождь";
+
+"paywall_title" = "Откройте AI-медитации";
+"paywall_subtitle" = "Премиум даёт глубокие практики, успокаивающие звуки и ежедневные ритуалы.";
+"paywall_restore" = "Восстановить покупки";
+"paywall_disclaimer" = "Сегодня списаний не будет. Отменить можно в любой момент во время пробного периода. После него подписка будет продлеваться автоматически.";
+
+"paywall_perks_title" = "Премиум-возможности";
+"paywall_perks_subtitle" = "Соберите спокойный ритуал с полным доступом.";
+
+"paywall_choose_plan" = "Выберите план";
+
+"paywall_processing" = "Обработка…";
+"paywall_continue" = "Продолжить";
+"paywall_start_trial_fmt" = "Начать пробный период за %@";
+
+"paywall_badge_best_value" = "ВЫГОДНЕЕ";
+"paywall_badge_flexible" = "ГИБКО";
+"paywall_badge_one_time" = "РАЗОВО";
+
+"paywall_detail_cancel_anytime" = "Можно отменить в любой момент";
+"paywall_detail_save_vs_monthly" = "Дешевле, чем помесячно";
+"paywall_detail_lifetime_access" = "Доступ навсегда";
+
+"paywall_perk_unlimited" = "Безлимитные AI-медитации";
+"paywall_perk_backgrounds" = "Полная библиотека фоновых звуков";
+"paywall_perk_history" = "История и прогресс";
+"paywall_perk_breathing" = "Дыхательные практики и рутины";
+
+"onb_skip" = "Пропустить";
+"onb_next" = "ДАЛЕЕ";
+"onb_start_now" = "НАЧАТЬ";
+"onb_explore" = "Я разберусь сам";
+
+"onb_p1_title" = "Добро пожаловать в\nAI Meditation";
+"onb_p1_subtitle" = "Персональные спокойные практики под ваше состояние сегодня.";
+"onb_p1_h1" = "Сразу создавайте медитации с голосовым сопровождением";
+"onb_p1_h2" = "Подбирается под настроение и цель";
+
+"onb_p2_title" = "Дыхание и\nежедневная рутина";
+"onb_p2_subtitle" = "Таймер дыхания и короткие планы на день помогают держать привычку.";
+"onb_p2_h1" = "Дыхательные упражнения с ровным темпом";
+"onb_p2_h2" = "Трекер рутины из маленьких шагов";
+
+"onb_p3_title" = "Аудио-атмосфера";
+"onb_p3_subtitle" = "Выбирайте голос, фон и длительность сессии под себя.";
+"onb_p3_h1" = "Голоса и фоновые звуки на выбор";
+"onb_p3_h2" = "Отдельная громкость голоса и фона";
+
+"onb_p4_title" = "Осознанность\nкаждый день";
+"onb_p4_subtitle" = "Следите за прогрессом и возвращайтесь к любимым сессиям.";
+"onb_p4_h1" = "История медитаций и дыхания";
+"onb_p4_h2" = "Один тап — продолжить или повторить";
+
+/* ===== НАСТРОЙКА ДЫХАНИЯ ===== */
+"bre_setup_title" = "ДЫХАТЕЛЬНАЯ ПРАКТИКА";
+"bre_setup_subtitle" = "Создайте дыхательное упражнение,\nкоторое подходит вашему состоянию";
+"bre_setup_mood_title" = "Состояние";
+"bre_setup_duration_title" = "Длительность";
+"bre_setup_start_session" = "НАЧАТЬ";
+
+/* ===== СОСТОЯНИЯ ===== */
+"bre_mood_calm" = "Спокойствие";
+"bre_mood_neutral" = "Нейтральное";
+"bre_mood_stressed" = "Стресс";
+"bre_mood_anxious" = "Тревога";
+
+/* ===== ФАЗЫ ===== */
+"bre_phase_inhale" = "Вдох";
+"bre_phase_hold" = "Задержка";
+"bre_phase_exhale" = "Выдох";
+
+/* ===== ПОДСКАЗКИ ===== */
+"bre_hint_inhale" = "Медленно вдохните";
+"bre_hint_hold" = "Мягко задержите дыхание";
+"bre_hint_exhale" = "Полностью выдохните";
+
+/* ===== ДЛИТЕЛЬНОСТЬ ===== */
+"bre_duration_minutes" = "%d мин";
+
+/* ===== СЕССИЯ ===== */
+"bre_remaining" = "Осталось";
+"bre_complete_title" = "Дыхание завершено";
+"bre_complete_saved" = "Сессия сохранена в истории";
+
+/* ===== ОБЩЕЕ ===== */
+"common_select" = "Выбрать";
+"common_not_selected" = "Не выбрано";
+"common_close" = "Закрыть";
+"common_restart" = "Заново";

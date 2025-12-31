@@ -12,39 +12,25 @@ import Combine
 @MainActor
 final class BreathingViewModel: ObservableObject {
 
-    // MARK: - User selection
     @Published var mood: BreathingMood? = nil
     @Published var duration: BreathingDuration? = nil
 
-    // MARK: - Session state
     @Published var phase: BreathingPhase = .inhale
     @Published var phaseRemaining: Int = 0
     @Published var totalRemaining: Int = 0
     @Published var isRunning = false
-
     @Published var isFinished = false
 
-    // NEW: для “анимация ровно на весь вдох/выдох”
-    @Published var phaseDuration: Int = 1           // сколько секунд длится текущая фаза
-    @Published var phaseProgress: Double = 0        // 0...1
+    @Published var phaseDuration: Int = 1
+    @Published var phaseProgress: Double = 0
 
     private var pattern: BreathingPattern?
     private var timer: Timer?
 
     private var initialTotal: Int { duration?.seconds ?? 0 }
-
     var canStart: Bool { mood != nil && duration != nil }
 
-    var instruction: String {
-        switch phase {
-        case .inhale:
-            return "Inhale slowly"
-        case .hold:
-            return "Hold gently"
-        case .exhale:
-            return "Exhale fully"
-        }
-    }
+    var instructionKey: LocalizedStringKey { phase.instructionKey }
 
     func prepareForStart() {
         totalRemaining = initialTotal
@@ -119,19 +105,16 @@ final class BreathingViewModel: ObservableObject {
         guard let pattern else { return 1 }
         switch p {
         case .inhale: return pattern.inhale
-        case .hold: return pattern.hold
+        case .hold:   return pattern.hold
         case .exhale: return pattern.exhale
         }
     }
 
     private func advancePhase() {
         switch phase {
-        case .inhale:
-            setPhase(.hold)
-        case .hold:
-            setPhase(.exhale)
-        case .exhale:
-            setPhase(.inhale)
+        case .inhale: setPhase(.hold)
+        case .hold:   setPhase(.exhale)
+        case .exhale: setPhase(.inhale)
         }
     }
 

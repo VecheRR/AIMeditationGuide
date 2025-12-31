@@ -15,15 +15,15 @@ struct NamePromptView: View {
 
     var body: some View {
         VStack(spacing: 14) {
-            Text("What's your name?")
+            Text(String(localized: "name_prompt_title"))
                 .font(.title2.weight(.semibold))
 
-            Text("We’ll use it to personalize your Home screen.")
+            Text(String(localized: "name_prompt_subtitle"))
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
 
-            TextField("Your name", text: $temp)
+            TextField(String(localized: "name_prompt_field_placeholder"), text: $temp)
                 .textFieldStyle(.roundedBorder)
                 .autocorrectionDisabled()
                 .textInputAutocapitalization(.words)
@@ -35,7 +35,7 @@ struct NamePromptView: View {
                 name = cleaned
                 dismiss()
             } label: {
-                Text("Continue")
+                Text(String(localized: "name_prompt_btn_continue"))
                     .font(.headline)
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 12)
@@ -45,7 +45,7 @@ struct NamePromptView: View {
             }
             .disabled(temp.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
 
-            Button("Not now") {
+            Button(String(localized: "name_prompt_btn_not_now")) {
                 dismiss()
             }
             .font(.footnote.weight(.semibold))
@@ -53,8 +53,6 @@ struct NamePromptView: View {
             .padding(.top, 2)
         }
         .padding(20)
-        .onAppear {
-            temp = name
-        }
+        .onAppear { temp = name }
     }
 }

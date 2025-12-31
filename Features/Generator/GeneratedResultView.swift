@@ -18,7 +18,7 @@ struct GeneratedResultView: View {
     @Environment(\.modelContext) private var modelContext
 
     var body: some View {
-        let title = vm.generated?.title ?? "Meditation"
+        let title = vm.generated?.title ?? String(localized: "gen_result_default_title")
         let summary = vm.generated?.summary ?? ""
         let durationValue = vm.duration?.rawValue ?? 5
 
@@ -30,30 +30,30 @@ struct GeneratedResultView: View {
                     KenBurnsCoverView(
                         imageURL: vm.coverImageURL,
                         title: title,
-                        subtitle: "\(durationValue) min guided session"
+                        subtitle: coverSubtitle(minutes: durationValue)
                     )
                     .frame(height: 220)
                     .padding(.horizontal, 16)
 
                     VStack(alignment: .leading, spacing: 12) {
-                        Text("SUMMARY")
+                        Text(String(localized: "gen_result_summary_title"))
                             .font(.caption.bold())
                             .foregroundStyle(.secondary)
                             .accessibilityHidden(true)
 
-                        Text(summary.isEmpty ? "Your meditation script will appear here." : summary)
+                        Text(summary.isEmpty ? String(localized: "gen_result_summary_empty") : summary)
                             .font(.body)
                             .foregroundStyle(.primary)
                             .multilineTextAlignment(.leading)
 
                         HStack {
-                            Label("\(durationValue) min", systemImage: "clock")
-                            Label(vm.background?.rawValue ?? "No background", systemImage: "music.note")
+                            Label(durationLabel(minutes: durationValue), systemImage: "clock")
+                            Label(backgroundLabel(), systemImage: "music.note")
                         }
                         .font(.footnote)
                         .foregroundStyle(.secondary)
                         .accessibilityElement(children: .combine)
-                        .accessibilityLabel("Duration \(durationValue) minutes. Background \(vm.background?.rawValue ?? "No background")")
+                        .accessibilityLabel(accessibilitySummary(minutes: durationValue))
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(16)
@@ -64,17 +64,17 @@ struct GeneratedResultView: View {
                     .padding(.horizontal, 16)
 
                     VStack(spacing: 12) {
-                        PrimaryButton(title: "START") {
+                        PrimaryButton(title: String(localized: "gen_result_btn_start")) {
                             bg = vm.background ?? .none
                             openPlayer = true
                         }
-                        .accessibilityLabel("Start meditation")
+                        .accessibilityLabel(Text(String(localized: "gen_result_a11y_start")))
 
-                        PrimaryButton(title: "SAVE TO HISTORY") {
+                        PrimaryButton(title: String(localized: "gen_result_btn_save")) {
                             saveToHistory()
                             didSave = true
                         }
-                        .accessibilityLabel("Save meditation to history")
+                        .accessibilityLabel(Text(String(localized: "gen_result_a11y_save")))
                         .disabled(didSave || vm.generated == nil)
                     }
                     .padding(.bottom, 20)
@@ -83,13 +83,13 @@ struct GeneratedResultView: View {
                 .padding(.vertical, 18)
             }
         }
-        .navigationTitle("MEDITATION")
+        .navigationTitle(String(localized: "gen_result_nav_title"))
         .navigationBarTitleDisplayMode(.inline)
         .fullScreenCover(isPresented: $openPlayer) {
             PlayerView(
                 title: title,
                 summary: summary,
-                durationMinutes: vm.duration?.rawValue ?? 5,
+                durationMinutes: durationValue,
                 voiceURL: vm.voiceFileURL,
                 coverURL: vm.coverImageURL,
                 background: $bg,
@@ -102,6 +102,33 @@ struct GeneratedResultView: View {
             )
         }
     }
+
+    // MARK: - Localized strings helpers
+
+    private func coverSubtitle(minutes: Int) -> String {
+        // "%lld min guided session"
+        return String(format: String(localized: "gen_result_cover_subtitle"), minutes)
+    }
+
+    private func durationLabel(minutes: Int) -> String {
+        // "%lld min"
+        return String(format: String(localized: "gen_result_duration_short"), minutes)
+    }
+
+    private func backgroundLabel() -> String {
+        // Если у тебя rawValue на английском — это временно ок.
+        // Потом лучше сделать локализуемые title для enum.
+        let bgName = vm.background?.rawValue ?? String(localized: "gen_result_bg_none")
+        return bgName
+    }
+
+    private func accessibilitySummary(minutes: Int) -> String {
+        let bgName = vm.background?.rawValue ?? String(localized: "gen_result_bg_none")
+        // "Duration %lld minutes. Background %@"
+        return String(format: String(localized: "gen_result_a11y_duration_bg"), minutes, bgName)
+    }
+
+    // MARK: - Save
 
     private func saveToHistory() {
         guard let gen = vm.generated else { return }

@@ -13,44 +13,32 @@ struct OnboardingView: View {
 
     private let pages: [OnboardingPage] = [
         .init(
-            title: "Welcome to\nAI Meditation",
-            subtitle: "Personalized, soothing practices tailored to how you feel today.",
+            titleKey: "onb_p1_title",
+            subtitleKey: "onb_p1_subtitle",
             icon: "sparkles",
             accent: Color.purple,
-            highlights: [
-                "Instantly generate guided meditations",
-                "Designed to match your current mood"
-            ]
+            highlightKeys: ["onb_p1_h1", "onb_p1_h2"]
         ),
         .init(
-            title: "Breathing &\nRoutine Support",
-            subtitle: "Guided breathing timers and daily practice plans keep you consistent.",
+            titleKey: "onb_p2_title",
+            subtitleKey: "onb_p2_subtitle",
             icon: "wind",
             accent: Color.blue,
-            highlights: [
-                "Breathing exercises with calm pacing",
-                "Routine tracker with small, daily steps"
-            ]
+            highlightKeys: ["onb_p2_h1", "onb_p2_h2"]
         ),
         .init(
-            title: "Immersive Audio",
-            subtitle: "Pick the voice, background ambience, and session length you prefer.",
+            titleKey: "onb_p3_title",
+            subtitleKey: "onb_p3_subtitle",
             icon: "headphones",
             accent: Color.green,
-            highlights: [
-                "Choose voices & ambient backgrounds",
-                "Control voice and background volumes"
-            ]
+            highlightKeys: ["onb_p3_h1", "onb_p3_h2"]
         ),
         .init(
-            title: "Stay Mindful\nEvery Day",
-            subtitle: "Track your progress and revisit your favorite sessions anytime.",
+            titleKey: "onb_p4_title",
+            subtitleKey: "onb_p4_subtitle",
             icon: "leaf",
             accent: Color.orange,
-            highlights: [
-                "History of meditations & breathing",
-                "One tap to replay or continue"
-            ]
+            highlightKeys: ["onb_p4_h1", "onb_p4_h2"]
         )
     ]
 
@@ -63,7 +51,7 @@ struct OnboardingView: View {
             VStack(spacing: 18) {
                 HStack {
                     Spacer()
-                    Button("Skip") { onFinish() }
+                    Button(String(localized: "onb_skip")) { onFinish() }
                         .font(.footnote.weight(.semibold))
                         .foregroundStyle(.secondary)
                 }
@@ -80,7 +68,7 @@ struct OnboardingView: View {
                 pageControl
                     .padding(.top, 4)
 
-                PrimaryButton(title: isLastPage ? "START NOW" : "NEXT") {
+                PrimaryButton(title: isLastPage ? String(localized: "onb_start_now") : String(localized: "onb_next")) {
                     if isLastPage {
                         onFinish()
                     } else {
@@ -92,7 +80,7 @@ struct OnboardingView: View {
                 Button {
                     onFinish()
                 } label: {
-                    Text("I'll explore on my own")
+                    Text(String(localized: "onb_explore"))
                         .font(.footnote)
                         .foregroundStyle(.secondary)
                         .underline()
@@ -140,24 +128,25 @@ private struct OnboardingCard: View {
             .padding(.top, 8)
 
             VStack(alignment: .leading, spacing: 10) {
-                Text(page.title)
+                Text(LocalizedStringKey(page.subtitleKey))
                     .font(.system(size: 28, weight: .semibold))
                     .foregroundStyle(.primary)
                     .lineSpacing(4)
 
-                Text(page.subtitle)
+                Text(LocalizedStringKey(page.subtitleKey))
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
             }
 
             VStack(alignment: .leading, spacing: 8) {
-                ForEach(page.highlights, id: \.self) { highlight in
+                ForEach(page.highlightKeys, id: \.self) { key in
                     HStack(alignment: .top, spacing: 10) {
                         Image(systemName: "checkmark.circle.fill")
                             .foregroundStyle(page.accent)
                             .font(.system(size: 16, weight: .bold))
                             .padding(.top, 2)
-                        Text(highlight)
+
+                        Text(LocalizedStringKey(key))
                             .font(.footnote)
                             .foregroundStyle(.primary)
                     }
@@ -179,9 +168,9 @@ private struct OnboardingCard: View {
 
 private struct OnboardingPage: Identifiable {
     let id = UUID()
-    let title: String
-    let subtitle: String
+    let titleKey: String
+    let subtitleKey: String
     let icon: String
     let accent: Color
-    let highlights: [String]
+    let highlightKeys: [String]
 }
