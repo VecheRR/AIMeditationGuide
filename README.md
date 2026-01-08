@@ -1,102 +1,234 @@
 # AI Meditation Guide 🧘‍♂️✨
 
-AI Meditation Guide — iOS-приложение для генерации персонализированных медитаций и дыхательных упражнений с использованием искусственного интеллекта. Приложение помогает снизить стресс, улучшить сон, фокус и общее эмоциональное состояние.
+AI Meditation Guide — iOS-приложение для генерации персонализированных медитаций и дыхательных практик с помощью искусственного интеллекта.  
+Приложение подбирает сценарий медитации, голос, фоновый звук и длительность под конкретную цель пользователя: сон, фокус, снижение стресса и тревоги.
 
 ---
 
-## 📱 Платформа
-- iOS 17+
-- SwiftUI
-- SwiftData
-- AVFoundation
+## 🎯 Purpose
+
+Цель проекта — создать современное wellness-приложение, которое:
+- генерирует уникальные медитации с помощью AI,
+- помогает пользователю расслабиться, улучшить сон и концентрацию,
+- сочетает дыхательные практики, аудиоплеер и аналитику прогресса,
+- готово к монетизации через подписки и рекламу.
+
+Проект реализован как **production-ready iOS MVP** с полной архитектурой и интеграциями.
 
 ---
 
-## ✨ Основные возможности
+## 📱 Core Features
 
-### 🧠 AI Meditation Generator
-- Генерация медитаций по цели пользователя:
+### AI Meditation Generator
+- Выбор цели:
   - Reduce stress
   - Improve sleep
   - Increase focus
+  - Boost energy
   - Calm anxiety
-- Выбор длительности (5 / 10 / 15 минут)
-- Настройка стиля голоса
-- Фоновая аудио-среда (Nature / Ambient / Rain / None)
-- AI-сгенерированное описание и сценарий медитации
+- Параметры генерации:
+  - Duration (5 / 10 / 15 min)
+  - Voice style (Soft / Neutral / Deep)
+  - Background sound (Nature / Ambient / Rain / None)
+- Генерация:
+  - AI-сценарий медитации
+  - Обложка
+  - Озвучка через AI TTS
 
-### 🔊 Meditation Player
-- Проигрывание AI-синтезированного голоса
-- Фоновая музыка
-- Раздельная регулировка громкости
-- Таймлайн и перемотка
-- Завершение сессии досрочно
-- Сохранение в историю
+### Meditation Player
+- Воспроизведение AI-голоса
+- Фоновый ambient-звук
+- Раздельная регулировка громкости (voice / background)
+- Timeline + seek
+- Finish early с подтверждением
+- Save to History
+- Таймер оставшегося времени (Remaining Time)
 
-### 🌬 Breathing Exercises
-- Персонализированные дыхательные упражнения
-- Фазовая логика (Inhale / Hold / Exhale)
-- Анимированный визуальный индикатор
-- Выбор длительности
+### Breathing Exercises
+- Mood check-in:
+  - Calm
+  - Neutral
+  - Stressed
+  - Anxious
+- Длительность:
+  - 1 / 3 / 5 min
+- Анимированная дыхательная логика:
+  - Inhale → Hold → Exhale
 - Локализованные инструкции
 
-### 📊 History & Progress
-- История медитаций и дыхательных практик
+### History & Progress
+- История медитаций и дыхательных упражнений
 - Повторное воспроизведение
-- Хранение данных через SwiftData
+- Удаление записей
+- Статистика:
+  - Total minutes meditated
+  - Daily streak
+  - Weekly progress
 
 ---
 
-## 🌍 Локализация
-- English 🇺🇸
-- Russian 🇷🇺
-- Используется `Localizable.strings`
-- Централизованная система локализации
+## 🏗️ Architecture
+
+- **SwiftUI**
+- **SwiftData**
+- **MVVM**
+- **Feature-based structure**
+- **Async / Await**
+- **Dependency isolation**
+- **Config via `.xcconfig`**
+- **Secrets excluded from Git**
 
 ---
 
-## 🔐 Интеграции
+## 🌍 Localization
 
-### AppHud
-- Управление подписками
-- Paywall
-- Проверка статуса подписки
-- Получение продуктов
-- Атрибуция пользователей
+- English
+- Russian
+- Полная локализация UI
+- Отсутствие `rawValue` в интерфейсе
+- Централизованный `Localizable.strings`
 
-### AppsFlyer
-- Трекинг установок
-- Поддержка App Tracking Transparency
-- Передача данных в AppHud
+---
 
-### Firebase
-- Analytics
+## 🔊 Audio Stack
 
-### AdMob
-- Rewarded Ads
+- `AVFoundation`
+- AI TTS (OpenAI)
+- Voice & background mixing
+- Smart loading & seeking
+- Local file persistence
+
+---
+
+## 🤖 AI Integration
 
 ### OpenAI
-- Генерация текстов медитаций
-- Синтез речи (TTS)
-- Генерация изображений обложек
+- Chat Completions (JSON-response)
+- Генерация:
+  - title
+  - summary
+  - meditation script
+- Image generation для обложек
+- Text-to-Speech (MP3)
 
 ---
 
-## ⚙️ Конфигурация
-- Все ключи и секреты хранятся в `.xcconfig`
-- Secrets исключены из Git
-- Конфигурация через `Info.plist`
+## 💳 Monetization
+
+### Subscriptions (AppHud)
+- Weekly / Monthly / Yearly
+- Product IDs:
+  - `sonicforge_weekly`
+  - `sonicforge_monthly`
+  - `sonicforge_yearly`
+- Paywall ID:
+  - `main_paywall`
+- Restore purchases
+- Subscription status listener
+
+### Ads
+- AdMob Rewarded Ads
+- Просмотр рекламы → запуск медитации
 
 ---
 
-## 📦 Подготовка к публикации
-- Release-сборка готова
-- Версии и билды настроены
-- App Privacy описан
-- App Store метаданные подготовлены
-- Приложение готово к TestFlight
+## 📊 Analytics & Attribution
+
+### Integrated SDKs
+- **Firebase Analytics**
+- **AppsFlyer**
+- **Yandex AppMetrica**
+- **AppHud Attribution**
+
+### App Tracking Transparency
+- Полная поддержка ATT (iOS)
+- Обработка всех статусов
+- Передача статуса в AppsFlyer
 
 ---
 
-## 🚀 Статус проекта
-MVP завершён. Приложение готово к публикации и дальнейшему развитию.
+## 🏪 App Store Information
+
+### App Metadata
+- **App Name:** AI Meditation Guide
+- **Subtitle:** Personalized AI-powered meditation & breathing
+- **Category:** Health & Fitness
+- **Primary Language:** English
+- **Additional Language:** Russian
+- **Age Rating:** 4+
+
+---
+
+## 🔐 App Privacy
+
+### Collected Data
+- Identifiers (IDFA — с разрешения пользователя)
+- Usage Data (analytics)
+- Purchases (subscriptions)
+
+### Data Usage
+- Analytics (Firebase, AppsFlyer, AppMetrica)
+- Advertising (AdMob)
+- App Functionality (AppHud)
+
+### Tracking
+- **Tracking:** Yes
+- Реализовано через `AppTrackingTransparency`
+
+### Data Linked to User
+- **Yes**
+- Используется для аналитики и рекламы
+
+> Приложение соответствует требованиям App Store Review Guidelines.
+
+---
+
+## 🧪 Project Status
+
+### ✅ Completed (MVP Core)
+- Meditation generator
+- Breathing exercises
+- Custom audio player
+- History & progress
+- Localization
+- Analytics & attribution
+- Monetization foundation
+- Config & security setup
+- GitHub repository
+
+### 🔜 Planned
+- Daily routine generation
+- Favorites
+- Background audio smart looping
+- Offline handling
+- Real StoreKit subscriptions
+- App icon & launch screen
+- TestFlight release
+
+---
+
+## 🚀 Build & Run
+
+```bash
+pod install
+open AIMeditationGuide.xcworkspace
+```
+
+•	Xcode 15+
+•	iOS 16+
+•	Release configuration uses .xcconfig
+
+⸻
+
+📌 Notes
+
+This project is production-oriented and ready for:
+•	TestFlight
+•	App Store submission
+•	Further scaling
+
+⸻
+
+Author: Vladislav
+Platform: iOS
+Stack: SwiftUI
