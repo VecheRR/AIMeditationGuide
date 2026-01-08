@@ -7,11 +7,17 @@
 
 import SwiftUI
 
+struct SelectListRow: Identifiable, Hashable {
+    let id: String      // стабильный ID (rawValue / key)
+    let title: String   // локализованный текст для UI
+}
+
 struct SelectList: View {
     @Environment(\.dismiss) private var dismiss
+
     let title: String
-    let items: [String]
-    let selected: String?
+    let rows: [SelectListRow]
+    let selectedID: String?
     let onSelect: (String) -> Void
 
     var body: some View {
@@ -19,31 +25,35 @@ struct SelectList: View {
             ZStack {
                 AppBackground()
 
-                VStack(spacing: 10) {
-                    ForEach(items, id: \.self) { item in
-                        Button {
-                            onSelect(item)
-                            dismiss()
-                        } label: {
-                            Text(item)
-                                .font(.headline)
-                                .frame(maxWidth: .infinity)
-                                .padding(.vertical, 14)
-                                .background(Color.white.opacity(0.7))
-                                .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
-                                .overlay(alignment: .trailing) {
-                                    if selected == item {
-                                        Image(systemName: "checkmark.circle.fill")
-                                            .padding(.trailing, 14)
+                ScrollView {
+                    VStack(spacing: 10) {
+                        ForEach(rows) { row in
+                            Button {
+                                onSelect(row.id)
+                                dismiss()
+                            } label: {
+                                Text(row.title)
+                                    .font(.headline)
+                                    .frame(maxWidth: .infinity)
+                                    .padding(.vertical, 14)
+                                    .background(Color.white.opacity(0.7))
+                                    .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+                                    .overlay(alignment: .trailing) {
+                                        if selectedID == row.id {
+                                            Image(systemName: "checkmark.circle.fill")
+                                                .padding(.trailing, 14)
+                                        }
                                     }
-                                }
+                            }
+                            .buttonStyle(.plain)
+                            .foregroundStyle(.black)
                         }
-                        .buttonStyle(.plain)
-                        .foregroundStyle(.black)
+                        .padding(.horizontal, 16)
+
+                        Spacer(minLength: 16)
                     }
-                    Spacer()
+                    .padding(.top, 16)
                 }
-                .padding(16)
             }
             .navigationTitle(title)
             .navigationBarTitleDisplayMode(.inline)

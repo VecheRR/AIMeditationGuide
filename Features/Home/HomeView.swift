@@ -29,6 +29,10 @@ struct HomeView: View {
     @AppStorage("userName") private var userName: String = ""
     @State private var showNamePrompt = false
 
+    // Language (важно!)
+    @AppStorage("appLanguage") private var appLanguageRaw: String = AppLanguage.system.rawValue
+    private var lang: AppLanguage { AppLanguage(rawValue: appLanguageRaw) ?? .system }
+
     // Derived
     private var last: MeditationSession? { sessions.first }
     private var latestRoutine: RoutinePlan? { routines.first }
@@ -40,12 +44,11 @@ struct HomeView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                AppBackground()
+                backgroundLayer
 
                 ScrollView(.vertical, showsIndicators: false) {
                     VStack(spacing: 18) {
                         header
-
                         quickActionsCard
 
                         if let last {
@@ -66,7 +69,7 @@ struct HomeView: View {
             .fullScreenCover(isPresented: $showGenerator) { GeneratorFlowView() }
             .fullScreenCover(isPresented: $openPlayer) {
                 PlayerView(
-                    title: playerSession?.title ?? "Meditation",
+                    title: playerSession?.title ?? L10n.s("common_meditation_default_title", lang: lang),
                     summary: playerSession?.summary ?? "",
                     durationMinutes: playerSession?.durationMinutes ?? 5,
                     voiceURL: playerSession?.voiceURL,
@@ -88,59 +91,57 @@ struct HomeView: View {
                     .presentationDragIndicator(.visible)
             }
         }
+        .onAppear { Analytics.screen("home") }
     }
 }
 
 // MARK: - UI blocks
 private extension HomeView {
 
+    var backgroundLayer: some View {
+        AppBackground()
+            .overlay(
+                LinearGradient(
+                    colors: [
+                        Color.blue.opacity(0.12),
+                        Color.purple.opacity(0.08),
+                        Color.yellow.opacity(0.08),
+                        Color.white.opacity(0.0)
+                    ],
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                )
+                .ignoresSafeArea()
+            )
+            .ignoresSafeArea()
+    }
+
     var header: some View {
         VStack(spacing: 8) {
             greetingText
                 .frame(maxWidth: .infinity, alignment: .center)
-                .font(.system(size: 18, weight: .regular, design: .serif))
-                .foregroundStyle(.black.opacity(0.75))
+                .font(.system(size: 16, weight: .regular))
+                .foregroundStyle(.black.opacity(0.55))
                 .padding(.top, 6)
 
-            // "How are you" — serif italic
-            // "feeling" — жирный sans
-            // "today?" — serif italic
-            HStack(spacing: 8) {
-                Text("How are you")
-                    .font(.custom("Amstelvar-Italic", size: 48))
-                    .kerning(-1.5)
-                    .foregroundStyle(.black)
-
-                Spacer()
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-
-            HStack(spacing: 8) {
-                Text("feeling")
-                    .font(.custom("FunnelDisplay-Regular", size: 48))
-                    .kerning(-1.5)
-                    .foregroundStyle(.black)
-
-                Text("today?")
-                    .font(.custom("Amstelvar-Italic", size: 48))
-                    .kerning(-1.5)
-                    .foregroundStyle(.black)
-
-                Spacer()
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
+            Text(L10n.s("home_header_title", lang: lang))
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .font(.system(size: 34, weight: .semibold))
+                .foregroundStyle(.black)
+                .minimumScaleFactor(0.75)
+                .lineLimit(2)
         }
     }
 
     var quickActionsCard: some View {
         VStack(spacing: 10) {
-            actionRow(title: "GENERATE MEDITATION", icon: "sparkles", tint: .purple) {
+            actionRow(titleKey: "home_action_generate", icon: "sparkles", tint: .purple) {
                 showGenerator = true
             }
-            actionRow(title: "BREATHING EXERCISE", icon: "wind", tint: .blue) {
+            actionRow(titleKey: "home_action_breathing", icon: "wind", tint: .blue) {
                 goBreathing = true
             }
-            actionRow(title: "DAILY ROUTINE", icon: "leaf", tint: .green) {
+            actionRow(titleKey: "home_action_routine", icon: "leaf", tint: .green) {
                 goRoutine = true
             }
         }
@@ -151,12 +152,13 @@ private extension HomeView {
     func todaySection(_ s: MeditationSession) -> some View {
         VStack(alignment: .leading, spacing: 10) {
             HStack {
-                Text("Today’s Meditation")
+                Text(L10n.s("home_today_title", lang: lang))
                     .font(.system(size: 18, weight: .semibold))
                     .foregroundStyle(.black)
 
                 Spacer()
 
+                // ВАЖНО: локаль для этого текста будет системной, пока ты не задашь .environment(\.locale, ...)
                 Text(s.createdAt, style: .date)
                     .font(.system(size: 14, weight: .regular))
                     .foregroundStyle(.black.opacity(0.55))
@@ -177,22 +179,23 @@ private extension HomeView {
                     .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
 
                 VStack(alignment: .leading, spacing: 6) {
-                    Text("\(s.durationMinutes) MINUTES")
+                    Text(L10n.f("home_minutes_format_caps", lang: lang, s.durationMinutes))
                         .font(.system(size: 18, weight: .semibold))
                         .foregroundStyle(.black)
 
-                    Text(s.summary.isEmpty ? "Take a quick meditation break" : s.summary)
+                    Text(s.summary.isEmpty ? L10n.s("home_today_fallback_summary", lang: lang) : s.summary)
                         .font(.system(size: 15, weight: .regular))
                         .foregroundStyle(.black.opacity(0.6))
                         .lineLimit(2)
 
-                    // маленький бейдж как на макете
                     HStack(spacing: 8) {
                         Image(systemName: "leaf")
                             .font(.system(size: 12, weight: .semibold))
                             .foregroundStyle(.green)
 
-                        Text(latestRoutine != nil ? "DAILY ROUTINE" : "MEDITATION")
+                        Text(latestRoutine != nil
+                             ? L10n.s("home_badge_daily_routine", lang: lang)
+                             : L10n.s("home_badge_meditation", lang: lang))
                             .font(.system(size: 12, weight: .semibold))
                             .foregroundStyle(.green)
                     }
@@ -215,22 +218,32 @@ private extension HomeView {
 
     var recommendedSection: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("Recommended Sessions")
+            Text(L10n.s("home_recommended_title", lang: lang))
                 .font(.system(size: 18, weight: .semibold))
                 .foregroundStyle(.black)
 
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 12) {
-                    // Заглушки, пока у тебя нет массива рекомендаций
-                    recommendedCard(title: "Breathing", subtitle: "3 min reset", icon: "wind", tint: .blue) {
-                        goBreathing = true
-                    }
-                    recommendedCard(title: "Routine", subtitle: nextPracticeSubtitle, icon: "leaf", tint: .green) {
-                        goRoutine = true
-                    }
-                    recommendedCard(title: "Meditation", subtitle: "5 min focus", icon: "sparkles", tint: .purple) {
-                        showGenerator = true
-                    }
+                    recommendedCard(
+                        titleKey: "home_rec_breathing_title",
+                        subtitle: L10n.s("home_rec_breathing_subtitle", lang: lang),
+                        icon: "wind",
+                        tint: .blue
+                    ) { goBreathing = true }
+
+                    recommendedCard(
+                        titleKey: "home_rec_routine_title",
+                        subtitle: nextPracticeSubtitle,
+                        icon: "leaf",
+                        tint: .green
+                    ) { goRoutine = true }
+
+                    recommendedCard(
+                        titleKey: "home_rec_meditation_title",
+                        subtitle: L10n.s("home_rec_meditation_subtitle", lang: lang),
+                        icon: "sparkles",
+                        tint: .purple
+                    ) { showGenerator = true }
                 }
                 .padding(.vertical, 4)
             }
@@ -240,15 +253,15 @@ private extension HomeView {
 
     var nextPracticeSubtitle: String {
         if let nextPractice {
-            return "\(nextPractice.durationMinutes) min • \(nextPractice.title)"
+            return L10n.f("home_next_practice_format", lang: lang, nextPractice.durationMinutes, nextPractice.title)
         }
         if let latestRoutine, latestRoutine.status == .done {
-            return "Completed • generate new"
+            return L10n.s("home_routine_completed_subtitle", lang: lang)
         }
-        return "1–3 practices"
+        return L10n.s("home_routine_fallback_subtitle", lang: lang)
     }
 
-    func recommendedCard(title: String, subtitle: String, icon: String, tint: Color, action: @escaping () -> Void) -> some View {
+    func recommendedCard(titleKey: String, subtitle: String, icon: String, tint: Color, action: @escaping () -> Void) -> some View {
         Button(action: action) {
             VStack(alignment: .leading, spacing: 10) {
                 HStack(spacing: 10) {
@@ -256,7 +269,8 @@ private extension HomeView {
                         .font(.system(size: 16, weight: .semibold))
                         .foregroundStyle(tint)
 
-                    Text(title.uppercased())
+                    // ВАЖНО: не делаем .uppercased() “в лоб” — иначе RU выглядит по-дурацки + зависит от системной локали.
+                    Text(uppercaseUI(L10n.s(titleKey, lang: lang)))
                         .font(.system(size: 12, weight: .semibold))
                         .foregroundStyle(.black.opacity(0.7))
 
@@ -280,7 +294,7 @@ private extension HomeView {
         .buttonStyle(.plain)
     }
 
-    func actionRow(title: String, icon: String, tint: Color, action: @escaping () -> Void) -> some View {
+    func actionRow(titleKey: String, icon: String, tint: Color, action: @escaping () -> Void) -> some View {
         Button(action: action) {
             HStack(spacing: 12) {
                 ZStack {
@@ -293,7 +307,7 @@ private extension HomeView {
                         .foregroundStyle(tint)
                 }
 
-                Text(title)
+                Text(L10n.s(titleKey, lang: lang))
                     .font(.system(size: 14, weight: .semibold))
                     .foregroundStyle(.black)
 
@@ -333,7 +347,7 @@ private extension HomeView {
 
             VStack {
                 Spacer()
-                Text("\(s.durationMinutes) MIN")
+                Text(L10n.f("home_minutes_badge_format", lang: lang, s.durationMinutes))
                     .font(.system(size: 12, weight: .semibold))
                     .foregroundStyle(.white)
                     .padding(.horizontal, 10)
@@ -350,26 +364,31 @@ private extension HomeView {
 
         return Group {
             if n.isEmpty {
-                Text("Hello")
-                    .font(.custom("Amstelvar-Italic", size: 20))
-                    .foregroundStyle(.secondary)
+                Text(L10n.s("home_greeting_hello", lang: lang))
             } else {
-                (
-                    Text("Hello, ")
-                        .font(.custom("Amstelvar-Italic", size: 20))
-                        .foregroundStyle(.secondary)
-                    +
-                    Text(n)
-                        .font(.custom("FunnelDisplay-Bold", size: 20))
-                        .foregroundStyle(.secondary)
-                )
+                Text(L10n.f("home_greeting_named_format", lang: lang, n))
             }
         }
     }
+
+    // MARK: - Helpers
 
     func open(session: MeditationSession) {
         playerSession = session
         bg = session.background
         openPlayer = true
+    }
+
+    func uppercaseUI(_ s: String) -> String {
+        // В RU верхний регистр часто выглядит хуже (особенно в UI-лейблах).
+        // Для EN оставляем uppercase.
+        switch lang {
+        case .ru:
+            return s
+        case .en:
+            return s.uppercased(with: Locale(identifier: "en_US"))
+        case .system:
+            return s.uppercased() // как было, по системной локали
+        }
     }
 }

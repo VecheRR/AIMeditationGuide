@@ -11,7 +11,6 @@
 		8655BD4C2F03180B00BAEA89 /* RoutineViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8655BD4A2F03180B00BAEA89 /* RoutineViewModel.swift */; };
 		8655BD4D2F03180B00BAEA89 /* RoutineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8655BD492F03180B00BAEA89 /* RoutineView.swift */; };
 		8655BD4E2F03180B00BAEA89 /* RoutineGeneratorService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8655BD472F03180B00BAEA89 /* RoutineGeneratorService.swift */; };
-		8655BD502F03182D00BAEA89 /* BreathingStubView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8655BD4F2F03182D00BAEA89 /* BreathingStubView.swift */; };
 		8655BD522F03184A00BAEA89 /* MeditationPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8655BD512F03184A00BAEA89 /* MeditationPlayerView.swift */; };
 		8672DEB52F03DFCD00DF26B0 /* CoverPlaceholderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8672DEB42F03DFCD00DF26B0 /* CoverPlaceholderView.swift */; };
 		8672DEBD2F04026A00DF26B0 /* StoreKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8672DEBC2F04026A00DF26B0 /* StoreKitManager.swift */; };
@@ -20,6 +19,17 @@
 		8672DED12F048B2A00DF26B0 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8672DECF2F048B2A00DF26B0 /* SettingsView.swift */; };
 		8672DED32F048BCD00DF26B0 /* Amstelvar-Italic[wdth,wght,opsz] 2.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8672DED22F048BCD00DF26B0 /* Amstelvar-Italic[wdth,wght,opsz] 2.ttf */; };
 		8672DED52F048BD800DF26B0 /* FunnelDisplay-VariableFont_wght 2.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8672DED42F048BD800DF26B0 /* FunnelDisplay-VariableFont_wght 2.ttf */; };
+		8672DED72F0CF34300DF26B0 /* AppLanguage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8672DED62F0CF33F00DF26B0 /* AppLanguage.swift */; };
+		8672DED92F0D0E0300DF26B0 /* BreathingMood.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8672DED82F0D0E0000DF26B0 /* BreathingMood.swift */; };
+		8672DEDB2F0D0E7C00DF26B0 /* BreathingLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8672DEDA2F0D0E7800DF26B0 /* BreathingLog.swift */; };
+		8672DEDF2F0DC61F00DF26B0 /* AppHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8672DEDE2F0DC61B00DF26B0 /* AppHUD.swift */; };
+		86801AB32F0E548600EB2C63 /* Analytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86801AB22F0E548600EB2C63 /* Analytics.swift */; };
+		86801AB52F0E597800EB2C63 /* ApphudManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86801AB42F0E597800EB2C63 /* ApphudManager.swift */; };
+		86801AB72F0E5E1400EB2C63 /* Keys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86801AB62F0E5E1400EB2C63 /* Keys.swift */; };
+		86801AB92F0E68CF00EB2C63 /* PaywallProductVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86801AB82F0E68CF00EB2C63 /* PaywallProductVM.swift */; };
+		86CAA2572F0E974600E45F8C /* TopMostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86CAA2562F0E974400E45F8C /* TopMostViewController.swift */; };
+		86CAA2592F0E99ED00E45F8C /* AdMobRewardedManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86CAA2582F0E99EB00E45F8C /* AdMobRewardedManager.swift */; };
+		86CAA25B2F0E9A0400E45F8C /* UIViewController+Top.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86CAA25A2F0E9A0300E45F8C /* UIViewController+Top.swift */; };
 		86E6EA8A2F02A3DC00532BE2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 86E6EA892F02A3DC00532BE2 /* Assets.xcassets */; };
 		86E6EAA42F02A50100532BE2 /* river.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 86E6EAA32F02A50100532BE2 /* river.mp3 */; };
 		86E6EAA62F02A51300532BE2 /* birds.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 86E6EAA52F02A51300532BE2 /* birds.mp3 */; };
@@ -52,16 +62,18 @@
 		86E6EAF72F02D75500532BE2 /* MoodPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E6EAEA2F02D11800532BE2 /* MoodPickerView.swift */; };
 		86E6EAF82F02D75500532BE2 /* BreathingPhase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E6EAF22F02D14300532BE2 /* BreathingPhase.swift */; };
 		86E6EAF92F02D75500532BE2 /* DurationPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E6EAEC2F02D12400532BE2 /* DurationPickerView.swift */; };
+		90B6A05704376DFC09266756 /* Pods_AIMeditationGuide.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4708DE144315894144C7124B /* Pods_AIMeditationGuide.framework */; };
 		B1F6EB112F04C00100AAAAAA /* KenBurnsCoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F6EB102F04C00100AAAAAA /* KenBurnsCoverView.swift */; };
 		B1LOCAL012F05C00000AAAAAA /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = B1LOCAL002F05BFF800AAAAAA /* Localizable.strings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0ADC6AE24C2B30BB9B00682A /* Pods-AIMeditationGuide.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AIMeditationGuide.release.xcconfig"; path = "Target Support Files/Pods-AIMeditationGuide/Pods-AIMeditationGuide.release.xcconfig"; sourceTree = "<group>"; };
+		4708DE144315894144C7124B /* Pods_AIMeditationGuide.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AIMeditationGuide.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8655BD472F03180B00BAEA89 /* RoutineGeneratorService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutineGeneratorService.swift; sourceTree = "<group>"; };
 		8655BD482F03180B00BAEA89 /* RoutineModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutineModels.swift; sourceTree = "<group>"; };
 		8655BD492F03180B00BAEA89 /* RoutineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutineView.swift; sourceTree = "<group>"; };
 		8655BD4A2F03180B00BAEA89 /* RoutineViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutineViewModel.swift; sourceTree = "<group>"; };
-		8655BD4F2F03182D00BAEA89 /* BreathingStubView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreathingStubView.swift; sourceTree = "<group>"; };
 		8655BD512F03184A00BAEA89 /* MeditationPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeditationPlayerView.swift; sourceTree = "<group>"; };
 		8672DEB42F03DFCD00DF26B0 /* CoverPlaceholderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoverPlaceholderView.swift; sourceTree = "<group>"; };
 		8672DEBC2F04026A00DF26B0 /* StoreKitManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreKitManager.swift; sourceTree = "<group>"; };
@@ -70,6 +82,17 @@
 		8672DECF2F048B2A00DF26B0 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		8672DED22F048BCD00DF26B0 /* Amstelvar-Italic[wdth,wght,opsz] 2.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Amstelvar-Italic[wdth,wght,opsz] 2.ttf"; sourceTree = "<group>"; };
 		8672DED42F048BD800DF26B0 /* FunnelDisplay-VariableFont_wght 2.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "FunnelDisplay-VariableFont_wght 2.ttf"; sourceTree = "<group>"; };
+		8672DED62F0CF33F00DF26B0 /* AppLanguage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLanguage.swift; sourceTree = "<group>"; };
+		8672DED82F0D0E0000DF26B0 /* BreathingMood.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreathingMood.swift; sourceTree = "<group>"; };
+		8672DEDA2F0D0E7800DF26B0 /* BreathingLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreathingLog.swift; sourceTree = "<group>"; };
+		8672DEDE2F0DC61B00DF26B0 /* AppHUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppHUD.swift; sourceTree = "<group>"; };
+		86801AB22F0E548600EB2C63 /* Analytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Analytics.swift; sourceTree = "<group>"; };
+		86801AB42F0E597800EB2C63 /* ApphudManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApphudManager.swift; sourceTree = "<group>"; };
+		86801AB62F0E5E1400EB2C63 /* Keys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keys.swift; sourceTree = "<group>"; };
+		86801AB82F0E68CF00EB2C63 /* PaywallProductVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallProductVM.swift; sourceTree = "<group>"; };
+		86CAA2562F0E974400E45F8C /* TopMostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopMostViewController.swift; sourceTree = "<group>"; };
+		86CAA2582F0E99EB00E45F8C /* AdMobRewardedManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdMobRewardedManager.swift; sourceTree = "<group>"; };
+		86CAA25A2F0E9A0300E45F8C /* UIViewController+Top.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Top.swift"; sourceTree = "<group>"; };
 		86E6EA822F02A3DA00532BE2 /* AIMeditationGuide.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AIMeditationGuide.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		86E6EA892F02A3DC00532BE2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		86E6EAA32F02A50100532BE2 /* river.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = river.mp3; sourceTree = "<group>"; };
@@ -106,6 +129,7 @@
 		B1F6EB102F04C00100AAAAAA /* KenBurnsCoverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KenBurnsCoverView.swift; sourceTree = "<group>"; };
 		B1LOCAL032F05C01E00AAAAAA /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		B1LOCAL042F05C02700AAAAAA /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
+		DF0FF6D086CBEB9D5CA82F43 /* Pods-AIMeditationGuide.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AIMeditationGuide.debug.xcconfig"; path = "Target Support Files/Pods-AIMeditationGuide/Pods-AIMeditationGuide.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -134,12 +158,30 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				90B6A05704376DFC09266756 /* Pods_AIMeditationGuide.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4D557E985366AFDC7CBA63D5 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				DF0FF6D086CBEB9D5CA82F43 /* Pods-AIMeditationGuide.debug.xcconfig */,
+				0ADC6AE24C2B30BB9B00682A /* Pods-AIMeditationGuide.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		86801AB02F0E547800EB2C63 /* Analytics */ = {
+			isa = PBXGroup;
+			children = (
+				86801AB22F0E548600EB2C63 /* Analytics.swift */,
+			);
+			path = Analytics;
+			sourceTree = "<group>";
+		};
 		86E6EA792F02A3DA00532BE2 = {
 			isa = PBXGroup;
 			children = (
@@ -152,6 +194,8 @@
 				86E6EA912F02A42E00532BE2 /* App */,
 				86E6EA842F02A3DA00532BE2 /* AIMeditationGuide */,
 				86E6EA832F02A3DA00532BE2 /* Products */,
+				4D557E985366AFDC7CBA63D5 /* Pods */,
+				BC115B3629D9EB8C3051BCF8 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -166,6 +210,12 @@
 		86E6EA912F02A42E00532BE2 /* App */ = {
 			isa = PBXGroup;
 			children = (
+				86CAA25A2F0E9A0300E45F8C /* UIViewController+Top.swift */,
+				86CAA2582F0E99EB00E45F8C /* AdMobRewardedManager.swift */,
+				86CAA2562F0E974400E45F8C /* TopMostViewController.swift */,
+				86801AB82F0E68CF00EB2C63 /* PaywallProductVM.swift */,
+				86801AB42F0E597800EB2C63 /* ApphudManager.swift */,
+				8672DED62F0CF33F00DF26B0 /* AppLanguage.swift */,
 				86E6EAC22F02ABF300532BE2 /* MainTabView.swift */,
 				86E6EAC12F02ABE100532BE2 /* RootView.swift */,
 				8672DEBE2F04114000DF26B0 /* AIMeditation.storekit */,
@@ -176,6 +226,7 @@
 		86E6EA922F02A43300532BE2 /* Config */ = {
 			isa = PBXGroup;
 			children = (
+				86801AB62F0E5E1400EB2C63 /* Keys.swift */,
 				86E6EAB72F02A97400532BE2 /* Config.xcconfig */,
 			);
 			path = Config;
@@ -184,6 +235,7 @@
 		86E6EA932F02A43800532BE2 /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				86801AB02F0E547800EB2C63 /* Analytics */,
 				86E6EAB92F02AA1600532BE2 /* Networking */,
 				86E6EA972F02A45000532BE2 /* Storage */,
 				86E6EA962F02A44B00532BE2 /* Audio */,
@@ -204,6 +256,7 @@
 		86E6EA952F02A44500532BE2 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				8672DEDE2F0DC61B00DF26B0 /* AppHUD.swift */,
 				8672DEB42F03DFCD00DF26B0 /* CoverPlaceholderView.swift */,
 				B1F6EB102F04C00100AAAAAA /* KenBurnsCoverView.swift */,
 				86E6EADA2F02AD4F00532BE2 /* PrimaryButton.swift */,
@@ -294,7 +347,8 @@
 		86E6EA9E2F02A47B00532BE2 /* Breathing */ = {
 			isa = PBXGroup;
 			children = (
-				8655BD4F2F03182D00BAEA89 /* BreathingStubView.swift */,
+				8672DEDA2F0D0E7800DF26B0 /* BreathingLog.swift */,
+				8672DED82F0D0E0000DF26B0 /* BreathingMood.swift */,
 				86E6EAF22F02D14300532BE2 /* BreathingPhase.swift */,
 				86E6EAF02F02D13B00532BE2 /* BreathingViewModel.swift */,
 				86E6EAEE2F02D12C00532BE2 /* BreathingSessionView.swift */,
@@ -355,6 +409,14 @@
 			path = Networking;
 			sourceTree = "<group>";
 		};
+		BC115B3629D9EB8C3051BCF8 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				4708DE144315894144C7124B /* Pods_AIMeditationGuide.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -362,9 +424,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 86E6EA8D2F02A3DC00532BE2 /* Build configuration list for PBXNativeTarget "AIMeditationGuide" */;
 			buildPhases = (
+				D2F8B1CF9A46DAD51ED2FB04 /* [CP] Check Pods Manifest.lock */,
 				86E6EA7E2F02A3DA00532BE2 /* Sources */,
 				86E6EA7F2F02A3DA00532BE2 /* Frameworks */,
 				86E6EA802F02A3DA00532BE2 /* Resources */,
+				33CA3B65CEA3529FE326478A /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -374,8 +438,6 @@
 				86E6EA842F02A3DA00532BE2 /* AIMeditationGuide */,
 			);
 			name = AIMeditationGuide;
-			packageProductDependencies = (
-			);
 			productName = AIMeditationGuide;
 			productReference = 86E6EA822F02A3DA00532BE2 /* AIMeditationGuide.app */;
 			productType = "com.apple.product-type.application";
@@ -434,6 +496,52 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		33CA3B65CEA3529FE326478A /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-AIMeditationGuide/Pods-AIMeditationGuide-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-AIMeditationGuide/Pods-AIMeditationGuide-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-AIMeditationGuide/Pods-AIMeditationGuide-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D2F8B1CF9A46DAD51ED2FB04 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-AIMeditationGuide-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		86E6EA7E2F02A3DA00532BE2 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -444,6 +552,7 @@
 				8672DED02F048B2A00DF26B0 /* NamePromtView.swift in Sources */,
 				8672DED12F048B2A00DF26B0 /* SettingsView.swift in Sources */,
 				8655BD4B2F03180B00BAEA89 /* RoutineModels.swift in Sources */,
+				8672DEDB2F0D0E7C00DF26B0 /* BreathingLog.swift in Sources */,
 				8655BD4C2F03180B00BAEA89 /* RoutineViewModel.swift in Sources */,
 				8655BD4D2F03180B00BAEA89 /* RoutineView.swift in Sources */,
 				8655BD4E2F03180B00BAEA89 /* RoutineGeneratorService.swift in Sources */,
@@ -453,18 +562,27 @@
 				86E6EACF2F02ACAB00532BE2 /* PaywallView.swift in Sources */,
 				86E6EAD02F02ACAB00532BE2 /* AppModelContainer.swift in Sources */,
 				86E6EAD72F02ACBA00532BE2 /* SelectList.swift in Sources */,
+				8672DED92F0D0E0300DF26B0 /* BreathingMood.swift in Sources */,
 				86E6EAD12F02ACAB00532BE2 /* OnboardingView.swift in Sources */,
+				86CAA25B2F0E9A0400E45F8C /* UIViewController+Top.swift in Sources */,
 				86E6EAD92F02AD4400532BE2 /* AppBackground.swift in Sources */,
 				86E6EAD22F02ACAB00532BE2 /* Models.swift in Sources */,
 				86E6EADF2F02AF5500532BE2 /* PlayerView.swift in Sources */,
+				8672DED72F0CF34300DF26B0 /* AppLanguage.swift in Sources */,
 				86E6EAF42F02D75500532BE2 /* BreathingSessionView.swift in Sources */,
 				86E6EAF52F02D75500532BE2 /* BreathingViewModel.swift in Sources */,
+				86801AB52F0E597800EB2C63 /* ApphudManager.swift in Sources */,
 				86E6EAF62F02D75500532BE2 /* BreathingSetupView.swift in Sources */,
 				86E6EAF72F02D75500532BE2 /* MoodPickerView.swift in Sources */,
+				86CAA2572F0E974600E45F8C /* TopMostViewController.swift in Sources */,
 				86E6EAF82F02D75500532BE2 /* BreathingPhase.swift in Sources */,
+				86801AB72F0E5E1400EB2C63 /* Keys.swift in Sources */,
+				86801AB32F0E548600EB2C63 /* Analytics.swift in Sources */,
 				8655BD522F03184A00BAEA89 /* MeditationPlayerView.swift in Sources */,
 				86E6EAF92F02D75500532BE2 /* DurationPickerView.swift in Sources */,
+				86801AB92F0E68CF00EB2C63 /* PaywallProductVM.swift in Sources */,
 				86E6EAD32F02ACAB00532BE2 /* MainTabView.swift in Sources */,
+				8672DEDF2F0DC61F00DF26B0 /* AppHUD.swift in Sources */,
 				86E6EAD42F02ACAB00532BE2 /* RootView.swift in Sources */,
 				86E6EAC92F02AC9800532BE2 /* HistoryView.swift in Sources */,
 				8672DEB52F03DFCD00DF26B0 /* CoverPlaceholderView.swift in Sources */,
@@ -472,9 +590,9 @@
 				86E6EACA2F02ACA000532BE2 /* GeneratorFlowView.swift in Sources */,
 				86E6EACB2F02ACA000532BE2 /* GeneratorViewModel.swift in Sources */,
 				86E6EADD2F02AF4300532BE2 /* AudioPlayerService.swift in Sources */,
+				86CAA2592F0E99ED00E45F8C /* AdMobRewardedManager.swift in Sources */,
 				86E6EACC2F02ACA000532BE2 /* GeneratedResultView.swift in Sources */,
 				8672DEBD2F04026A00DF26B0 /* StoreKitManager.swift in Sources */,
-				8655BD502F03182D00BAEA89 /* BreathingStubView.swift in Sources */,
 				86E6EADB2F02AD5200532BE2 /* PrimaryButton.swift in Sources */,
 				86E6EACD2F02ACA000532BE2 /* GeneratorModels.swift in Sources */,
 			);
@@ -620,6 +738,7 @@
 		};
 		86E6EA8E2F02A3DC00532BE2 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = DF0FF6D086CBEB9D5CA82F43 /* Pods-AIMeditationGuide.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -627,6 +746,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = H49G8BG8ZM;
 				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = AIMeditationGuide/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -653,6 +773,7 @@
 		};
 		86E6EA8F2F02A3DC00532BE2 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0ADC6AE24C2B30BB9B00682A /* Pods-AIMeditationGuide.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -660,6 +781,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = H49G8BG8ZM;
 				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = AIMeditationGuide/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;

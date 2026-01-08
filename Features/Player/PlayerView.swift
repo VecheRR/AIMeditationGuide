@@ -27,6 +27,9 @@ struct PlayerView: View {
     @State private var didSaveFromPlayer = false
     @State private var showFinishConfirmation = false
 
+    @AppStorage("appLanguage") private var appLanguageRaw: String = AppLanguage.system.rawValue
+    private var lang: AppLanguage { AppLanguage(rawValue: appLanguageRaw) ?? .system }
+
     var body: some View {
         ZStack {
             AppBackground()
@@ -92,19 +95,21 @@ struct PlayerView: View {
 
             if wasPlaying { audio.play() }
         }
-        .alert(String(localized: "player_finish_title"), isPresented: $showFinishConfirmation) {
-            Button(String(localized: "player_finish_btn_finish"), role: .destructive) {
+        .alert(L10n.s("player_finish_title", lang: lang), isPresented: $showFinishConfirmation) {
+            Button(L10n.s("player_finish_btn_finish", lang: lang), role: .destructive) {
                 audio.stop()
                 dismiss()
                 onFinishEarly?()
             }
-            Button(String(localized: "player_finish_btn_cancel"), role: .cancel) {
+            Button(L10n.s("player_finish_btn_cancel", lang: lang), role: .cancel) {
                 showFinishConfirmation = false
             }
         } message: {
-            Text(String(localized: "player_finish_message"))
+            Text(L10n.s("player_finish_message", lang: lang))
         }
     }
+
+    // MARK: - Top bar
 
     private var topBar: some View {
         HStack {
@@ -115,7 +120,7 @@ struct PlayerView: View {
                     .background(.ultraThinMaterial)
                     .clipShape(Circle())
             }
-            .accessibilityLabel(Text(String(localized: "player_a11y_close")))
+            .accessibilityLabel(Text(L10n.s("player_a11y_close", lang: lang)))
 
             Spacer()
 
@@ -128,15 +133,14 @@ struct PlayerView: View {
                     .background(.ultraThinMaterial)
                     .clipShape(Circle())
             }
-            .accessibilityLabel(Text(String(localized: "player_a11y_favorites")))
+            .accessibilityLabel(Text(L10n.s("player_a11y_favorites", lang: lang)))
         }
     }
 
+    // MARK: - Header
+
     private var header: some View {
-        let subtitle = String(
-            format: NSLocalizedString("player_cover_subtitle_minutes", comment: "e.g. 10 min session"),
-            durationMinutes
-        )
+        let subtitle = L10n.f("player_cover_subtitle_minutes", lang: lang, durationMinutes)
 
         return VStack(alignment: .leading, spacing: 12) {
             KenBurnsCoverView(
@@ -153,7 +157,7 @@ struct PlayerView: View {
                     .lineLimit(2)
                     .minimumScaleFactor(0.9)
 
-                Text(summary.isEmpty ? String(localized: "player_summary_fallback") : summary)
+                Text(summary.isEmpty ? L10n.s("player_summary_fallback", lang: lang) : summary)
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
                     .multilineTextAlignment(.leading)
@@ -161,6 +165,8 @@ struct PlayerView: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
     }
+
+    // MARK: - Controls
 
     private var controls: some View {
         HStack(spacing: 26) {
@@ -173,7 +179,7 @@ struct PlayerView: View {
                     .background(.ultraThinMaterial)
                     .clipShape(Circle())
             }
-            .accessibilityLabel(Text(String(localized: "player_a11y_voice_options")))
+            .accessibilityLabel(Text(L10n.s("player_a11y_voice_options", lang: lang)))
 
             Button {
                 audio.isPlaying ? audio.pause() : audio.play()
@@ -185,8 +191,8 @@ struct PlayerView: View {
                     .background(.ultraThinMaterial)
                     .clipShape(Circle())
             }
-            .accessibilityLabel(Text(audio.isPlaying ? String(localized: "player_a11y_pause") : String(localized: "player_a11y_play")))
-            .accessibilityHint(Text(String(localized: "player_a11y_play_hint")))
+            .accessibilityLabel(Text(audio.isPlaying ? L10n.s("player_a11y_pause", lang: lang) : L10n.s("player_a11y_play", lang: lang)))
+            .accessibilityHint(Text(L10n.s("player_a11y_play_hint", lang: lang)))
 
             Button {
                 // потом: timer
@@ -197,9 +203,11 @@ struct PlayerView: View {
                     .background(.ultraThinMaterial)
                     .clipShape(Circle())
             }
-            .accessibilityLabel(Text(String(localized: "player_a11y_timer_options")))
+            .accessibilityLabel(Text(L10n.s("player_a11y_timer_options", lang: lang)))
         }
     }
+
+    // MARK: - Timeline
 
     private var timeline: some View {
         VStack(spacing: 8) {
@@ -208,7 +216,7 @@ struct PlayerView: View {
                     get: { audio.currentTime },
                     set: { audio.seek(to: $0) }
                 ),
-                in: 0...audio.duration
+                in: 0...max(audio.duration, 0.0001)
             )
             .tint(.accentColor)
 
@@ -223,16 +231,24 @@ struct PlayerView: View {
         .padding(.top, 12)
     }
 
+    private func backgroundTitle(_ bg: GenBackground) -> String {
+        if bg == .none {
+            return L10n.s("gen_bg_none", lang: lang)
+        }
+        return L10n.s("gen_bg_\(bg.rawValue)", lang: lang)
+    }
+
+    // MARK: - Bottom bar
+
     private var bottomBar: some View {
-        let bgName = background.rawValue.lowercased()
-        let bgA11y = String(format: NSLocalizedString("player_a11y_background_fmt", comment: "Background sound: %s"), bgName)
+        let bgTitle = backgroundTitle(background)
+        let bgA11y = L10n.f("player_a11y_background_fmt", lang: lang, bgTitle)
 
         return HStack {
             Button { showBgPicker = true } label: {
                 HStack(spacing: 8) {
                     Image(systemName: "music.note")
-                    Text(bgName)
-                        .textCase(.lowercase)
+                    Text(bgTitle)
                 }
                 .font(.caption.bold())
                 .foregroundStyle(.primary)
@@ -248,7 +264,7 @@ struct PlayerView: View {
             Button { showFinishConfirmation = true } label: {
                 HStack(spacing: 6) {
                     Image(systemName: "stop.circle")
-                    Text(String(localized: "player_btn_finish_early"))
+                    Text(L10n.s("player_btn_finish_early", lang: lang))
                 }
                 .font(.caption.bold())
                 .foregroundStyle(.primary)
@@ -257,7 +273,7 @@ struct PlayerView: View {
                 .background(.ultraThinMaterial)
                 .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
             }
-            .accessibilityLabel(Text(String(localized: "player_a11y_finish_early")))
+            .accessibilityLabel(Text(L10n.s("player_a11y_finish_early", lang: lang)))
 
             Spacer()
 
@@ -267,9 +283,12 @@ struct PlayerView: View {
                     onSave()
                     didSaveFromPlayer = true
                 } label: {
+                    let saved = (didSaveFromPlayer || isAlreadySaved)
                     HStack(spacing: 6) {
-                        Image(systemName: (didSaveFromPlayer || isAlreadySaved) ? "checkmark" : "tray.and.arrow.down")
-                        Text((didSaveFromPlayer || isAlreadySaved) ? String(localized: "player_btn_saved") : String(localized: "player_btn_save_history"))
+                        Image(systemName: saved ? "checkmark" : "tray.and.arrow.down")
+                        Text(saved
+                             ? L10n.s("player_btn_saved", lang: lang)
+                             : L10n.s("player_btn_save_history", lang: lang))
                     }
                     .font(.caption.bold())
                     .foregroundStyle(.primary)
@@ -278,25 +297,32 @@ struct PlayerView: View {
                     .background(.ultraThinMaterial)
                     .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
                 }
-                .accessibilityLabel(Text(String(localized: "player_a11y_save_history")))
                 .disabled(isAlreadySaved || didSaveFromPlayer)
+                .accessibilityLabel(Text(L10n.s("player_a11y_save_history", lang: lang)))
             }
         }
         .padding(.top, 12)
     }
 
+    // MARK: - Volume
+
     private func volumeSlider(titleKey: String, value: Binding<Double>) -> some View {
-        HStack(spacing: 10) {
-            Text(String(localized: String.LocalizationValue(titleKey)))
+        let title = L10n.s(titleKey, lang: lang)
+        let a11y = L10n.f("player_a11y_volume_fmt", lang: lang, title)
+
+        return HStack(spacing: 10) {
+            Text(title)
                 .font(.caption)
                 .foregroundStyle(.secondary)
-                .frame(width: 90, alignment: .leading)
+                .frame(width: 110, alignment: .leading)
 
             Slider(value: value, in: 0...1)
                 .tint(.accentColor)
-                .accessibilityLabel(Text(String(format: NSLocalizedString("player_a11y_volume_fmt", comment: "%s volume"), NSLocalizedString(titleKey, comment: ""))))
+                .accessibilityLabel(Text(a11y))
         }
     }
+
+    // MARK: - Helpers
 
     private func timeString(_ t: TimeInterval) -> String {
         let total = max(Int(t.rounded()), 0)

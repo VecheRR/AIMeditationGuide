@@ -1,3 +1,149 @@
+/* ===== SETTINGS ===== */
+"settings_title" = "Настройки";
+"settings_profile_section" = "Профиль";
+"settings_name_placeholder" = "Имя";
+"settings_language_section" = "Язык";
+"settings_language_title" = "Язык";
+
+/* ===== COMMON ===== */
+"common_meditation_default_title" = "Медитация";
+
+/* ===== HOME ===== */
+"home_greeting_hello" = "Привет";
+"home_greeting_named_format" = "Привет, %@";
+
+"home_header_title" = "Как ты себя чувствуешь сегодня?";
+
+"home_action_generate" = "СОЗДАТЬ МЕДИТАЦИЮ";
+"home_action_breathing" = "ДЫХАТЕЛЬНАЯ ПРАКТИКА";
+"home_action_routine" = "ЕЖЕДНЕВНЫЙ ПЛАН";
+
+"home_today_title" = "Медитация на сегодня";
+"home_today_fallback_summary" = "Сделай короткую паузу для медитации";
+
+"home_minutes_format_caps" = "%d МИНУТ";
+"home_minutes_badge_format" = "%d МИН";
+
+"home_badge_daily_routine" = "ЕЖЕДНЕВНЫЙ ПЛАН";
+"home_badge_meditation" = "МЕДИТАЦИЯ";
+
+"home_recommended_title" = "Рекомендации";
+"home_rec_breathing_title" = "ДЫХАНИЕ";
+"home_rec_breathing_subtitle" = "3 мин перезагрузка";
+"home_rec_routine_title" = "ПЛАН";
+"home_rec_meditation_title" = "МЕДИТАЦИЯ";
+"home_rec_meditation_subtitle" = "5 мин фокус";
+
+"home_next_practice_format" = "%d мин • %@";
+"home_routine_completed_subtitle" = "Завершено • создать новый";
+"home_routine_fallback_subtitle" = "1–3 практики";
+
+"tab_home" = "Главная";
+"tab_history" = "История";
+"tab_settings" = "Настройки";
+
+/* ===== SETTINGS ===== */
+"settings_title" = "Настройки";
+"settings_profile_section" = "Профиль";
+"settings_name_placeholder" = "Имя";
+"settings_language_section" = "Язык";
+"settings_language_title" = "Язык";
+
+/* ===== LANGUAGES ===== */
+"language_system" = "Системный";
+"language_english" = "Английский";
+"language_russian" = "Русский";
+
+/* ===== TABS ===== */
+"tab_home" = "Главная";
+"tab_history" = "История";
+"tab_settings" = "Настройки";
+
+/* ===== HISTORY ===== */
+"history_title" = "История";
+"history_segment_meditations" = "МЕДИТАЦИИ";
+"history_segment_breathing" = "ДЫХАНИЕ";
+"history_empty_meditations" = "Пока нет медитаций";
+"history_empty_breathing" = "Пока нет дыхательных сессий";
+
+"history_delete_meditation_title" = "Удалить медитацию?";
+"history_delete_meditation_message_format" = "Удалить «%@» из истории?";
+"history_delete_breathing_title" = "Удалить запись дыхания?";
+"history_delete_breathing_message" = "Удалить запись дыхания из истории?";
+
+"history_stat_total_minutes_title" = "Всего минут";
+"history_stat_total_minutes_caption" = "Медитации";
+"history_stat_streak_title" = "Серия";
+"history_stat_streak_caption" = "дней";
+
+"history_weekly_progress_title" = "Прогресс за неделю";
+"history_weekly_progress_value_format" = "%d / 70 мин";
+
+"history_minutes_badge_format" = "%d МИН";
+"history_minutes_title_format" = "%d МИНУТ";
+"history_breathing_subtitle" = "Дыхательная практика";
+
+/* ===== COMMON ===== */
+"common_delete" = "Удалить";
+"common_cancel" = "Отмена";
+
+/* ===== PAYWALL ===== */
+"paywall_title" = "Откройте AI-медитации";
+"paywall_subtitle" = "Премиум даёт более глубокие практики, успокаивающие звуки и осознанные ритуалы.";
+
+"paywall_perks_title" = "Премиум-возможности";
+"paywall_perks_subtitle" = "Соберите спокойный ритуал с полным доступом.";
+
+"paywall_perk_unlimited" = "Безлимитные AI-медитации";
+"paywall_perk_backgrounds" = "Полная библиотека фоновых звуков";
+"paywall_perk_history" = "История и отслеживание прогресса";
+"paywall_perk_breathing" = "Дыхательные упражнения и рутины";
+
+"paywall_choose_plan" = "Выберите план";
+
+"paywall_restore" = "Восстановить покупки";
+"paywall_disclaimer" = "Сегодня списаний не будет. Отменить можно в любой момент во время пробного периода. После него выбранный план будет продлеваться автоматически.";
+
+"paywall_processing" = "Обработка...";
+"paywall_start_trial_fmt" = "Начать пробный период за %@";
+"paywall_continue" = "Продолжить";
+
+"paywall_badge_best_value" = "ЛУЧШАЯ ЦЕНА";
+"paywall_badge_flexible" = "ГИБКО";
+"paywall_badge_one_time" = "РАЗОВО";
+
+"paywall_detail_cancel_anytime" = "Можно отменить в любой момент";
+"paywall_detail_save_vs_monthly" = "Выгоднее, чем помесячно";
+"paywall_detail_lifetime_access" = "Доступ навсегда";
+
+/* ===== ONBOARDING ===== */
+"onb_skip" = "Пропустить";
+"onb_next" = "ДАЛЕЕ";
+"onb_start_now" = "НАЧАТЬ";
+"onb_explore" = "Я разберусь сам";
+
+"onb_p1_title" = "Добро пожаловать в\nAI-медитации";
+"onb_p1_subtitle" = "Персональные практики, которые подстраиваются под ваше состояние.";
+"onb_p1_h1" = "Мгновенная генерация медитаций";
+"onb_p1_h2" = "Подбор под ваше настроение";
+
+"onb_p2_title" = "Дыхание и\nежедневные ритуалы";
+"onb_p2_subtitle" = "Таймеры дыхания и планы практик помогают держать регулярность.";
+"onb_p2_h1" = "Дыхательные упражнения в спокойном темпе";
+"onb_p2_h2" = "Трекер рутины с небольшими шагами";
+
+"onb_p3_title" = "Иммерсивный звук";
+"onb_p3_subtitle" = "Выберите голос, фон и длительность сессии, как вам удобно.";
+"onb_p3_h1" = "Голоса и фоновые звуки на выбор";
+"onb_p3_h2" = "Отдельная громкость голоса и фона";
+
+"onb_p4_title" = "Осознанность\nкаждый день";
+"onb_p4_subtitle" = "Отслеживайте прогресс и возвращайтесь к любимым сессиям.";
+"onb_p4_h1" = "История медитаций и дыхания";
+"onb_p4_h2" = "Один тап — повторить или продолжить";
+
+/* ===== GENERATOR FLOW ===== */
+"gen_nav_title" = "СОЗДАТЬ МЕДИТАЦИЮ";
 "gen_flow_hint" = "Заполни параметры ниже,\nчтобы сгенерировать медитацию";
 
 "gen_goal_title" = "Цель медитации";
@@ -5,169 +151,337 @@
 "gen_voice_title" = "Стиль голоса";
 "gen_bg_title" = "Фоновый звук";
 
-"gen_btn_generate" = "СГЕНЕРИРОВАТЬ";
-"gen_btn_generating" = "ГЕНЕРАЦИЯ...";
+"gen_btn_generate" = "СОЗДАТЬ";
+"gen_btn_generating" = "СОЗДАНИЕ...";
 
-"gen_nav_title" = "ГЕНЕРАЦИЯ МЕДИТАЦИИ";
+"gen_row_tap_to_choose" = "Нажми, чтобы выбрать";
+"gen_row_not_selected" = "Не выбрано";
 
 "gen_sheet_goal_title" = "ЦЕЛЬ";
 "gen_sheet_duration_title" = "ДЛИТЕЛЬНОСТЬ";
 "gen_sheet_voice_title" = "ГОЛОС";
 "gen_sheet_bg_title" = "ФОНОВЫЙ ЗВУК";
 
-"gen_row_tap_to_choose" = "Нажми, чтобы выбрать";
-"gen_row_not_selected" = "Не выбрано";
-
-"gen_result_default_title" = "Медитация";
-"gen_result_summary_title" = "ОПИСАНИЕ";
-"gen_result_summary_empty" = "Текст медитации появится здесь.";
-"gen_result_btn_start" = "НАЧАТЬ";
-"gen_result_btn_save" = "СОХРАНИТЬ В ИСТОРИЮ";
+/* ===== GENERATOR RESULT ===== */
 "gen_result_nav_title" = "МЕДИТАЦИЯ";
+"gen_result_default_title" = "Медитация";
 
-"gen_result_cover_subtitle" = "Сессия %lld мин";
-"gen_result_duration_short" = "%lld мин";
+"gen_result_summary_title" = "КРАТКО";
+"gen_result_summary_empty" = "Текст медитации появится здесь.";
+
+"gen_result_cover_subtitle" = "%d мин • сессия с голосом";
+"gen_result_duration_short" = "%d мин";
+
 "gen_result_bg_none" = "Без фона";
+
+"gen_result_btn_start" = "НАЧАТЬ";
+"gen_result_btn_save" = "СОХРАНИТЬ";
 
 "gen_result_a11y_start" = "Начать медитацию";
 "gen_result_a11y_save" = "Сохранить медитацию в историю";
-"gen_result_a11y_duration_bg" = "Длительность %lld минут. Фон %@";
+"gen_result_a11y_duration_bg" = "Длительность %d минут. Фон %@";
 
-"name_prompt_title" = "Как тебя зовут?";
-"name_prompt_subtitle" = "Мы будем использовать имя, чтобы персонализировать главный экран.";
-"name_prompt_field_placeholder" = "Твоё имя";
-"name_prompt_btn_continue" = "Продолжить";
-"name_prompt_btn_not_now" = "Не сейчас";
+/* ===== PLAYER ===== */
+"player_finish_title" = "Завершить сессию?";
+"player_finish_message" = "Точно закончить сессию раньше времени?";
+"player_finish_btn_finish" = "Завершить";
+"player_finish_btn_cancel" = "Отмена";
+
+"player_summary_fallback" = "Сделай паузу и спокойно подыши.";
+
+"player_cover_subtitle_minutes" = "%d мин • сессия";
+
+"player_btn_finish_early" = "Завершить";
+"player_btn_save_history" = "Сохранить";
+"player_btn_saved" = "Сохранено";
 
 "player_volume_voice" = "Голос";
 "player_volume_background" = "Фон";
 
-"player_finish_title" = "Завершить раньше?";
-"player_finish_btn_finish" = "Завершить";
-"player_finish_btn_cancel" = "Отмена";
-"player_finish_message" = "Сессия остановится и не сохранится автоматически — только если сохранить вручную.";
-
-"player_a11y_close" = "Закрыть плеер";
-"player_a11y_favorites" = "Сохранить в избранное";
-
-"player_cover_subtitle_minutes" = "Сессия %d мин";
-"player_summary_fallback" = "Расслабься и следуй подсказкам.";
-
+"player_a11y_close" = "Закрыть";
+"player_a11y_favorites" = "Избранное";
 "player_a11y_voice_options" = "Настройки голоса";
+"player_a11y_timer_options" = "Таймер";
+"player_a11y_play" = "Пуск";
 "player_a11y_pause" = "Пауза";
-"player_a11y_play" = "Воспроизвести";
-"player_a11y_play_hint" = "Управляет и голосом, и фоном";
-"player_a11y_timer_options" = "Настройки таймера";
+"player_a11y_play_hint" = "Нажми дважды, чтобы переключить воспроизведение.";
 
-"player_btn_finish_early" = "Завершить";
-"player_a11y_finish_early" = "Завершить сессию раньше";
-
-"player_btn_saved" = "Сохранено";
-"player_btn_save_history" = "Сохранить в историю";
-"player_a11y_save_history" = "Сохранить медитацию в историю";
+"player_a11y_finish_early" = "Закончить раньше";
+"player_a11y_save_history" = "Сохранить в историю";
 
 "player_a11y_background_fmt" = "Фоновый звук: %@";
 "player_a11y_volume_fmt" = "Громкость: %@";
 
-"bg_picker_title" = "ФОНОВЫЕ ЗВУКИ";
-"bg_picker_subtitle" = "Выберите фон, который будет звучать всю сессию.";
-"bg_picker_a11y_hint" = "Меняет фоновый звук без остановки голосовой дорожки";
+/* ===== BACKGROUND PICKER ===== */
+"bg_picker_title" = "Фоновый звук";
+"bg_picker_subtitle" = "Выбери спокойную атмосферу для сессии.";
+"bg_picker_a11y_hint" = "Выберите один фоновый звук.";
 
-"bg_picker_volume_title" = "Громкость фона";
-"bg_picker_volume_a11y" = "Громкость фонового звука";
+"bg_picker_volume_title" = "Громкость";
+"bg_picker_volume_a11y" = "Громкость фона";
 
 "bg_picker_a11y_background_fmt" = "Фоновый звук: %@";
 
-"bg_none" = "Без фона";
+"bg_none" = "Нет";
 "bg_nature" = "Природа";
 "bg_ambient" = "Эмбиент";
 "bg_rain" = "Дождь";
 
-"paywall_title" = "Откройте AI-медитации";
-"paywall_subtitle" = "Премиум даёт глубокие практики, успокаивающие звуки и ежедневные ритуалы.";
-"paywall_restore" = "Восстановить покупки";
-"paywall_disclaimer" = "Сегодня списаний не будет. Отменить можно в любой момент во время пробного периода. После него подписка будет продлеваться автоматически.";
+/* ===== COMMON ===== */
+"common_delete" = "Удалить";
+"common_cancel" = "Отмена";
 
-"paywall_perks_title" = "Премиум-возможности";
-"paywall_perks_subtitle" = "Соберите спокойный ритуал с полным доступом.";
+/* ===== HISTORY ===== */
+"history_title" = "История";
 
-"paywall_choose_plan" = "Выберите план";
+"history_segment_meditations" = "МЕДИТАЦИИ";
+"history_segment_breathing" = "ДЫХАНИЕ";
 
-"paywall_processing" = "Обработка…";
-"paywall_continue" = "Продолжить";
-"paywall_start_trial_fmt" = "Начать пробный период за %@";
+"history_empty_meditations" = "Пока нет медитаций";
+"history_empty_breathing" = "Пока нет дыхательных сессий";
 
-"paywall_badge_best_value" = "ВЫГОДНЕЕ";
-"paywall_badge_flexible" = "ГИБКО";
-"paywall_badge_one_time" = "РАЗОВО";
+"history_delete_meditation_title" = "Удалить медитацию?";
+"history_delete_meditation_message_format" = "Удалить \"%@\" из истории?";
 
-"paywall_detail_cancel_anytime" = "Можно отменить в любой момент";
-"paywall_detail_save_vs_monthly" = "Дешевле, чем помесячно";
-"paywall_detail_lifetime_access" = "Доступ навсегда";
+"history_delete_breathing_title" = "Удалить дыхание?";
+"history_delete_breathing_message" = "Удалить запись дыхательной сессии из истории?";
 
-"paywall_perk_unlimited" = "Безлимитные AI-медитации";
-"paywall_perk_backgrounds" = "Полная библиотека фоновых звуков";
-"paywall_perk_history" = "История и прогресс";
-"paywall_perk_breathing" = "Дыхательные практики и рутины";
+"history_stat_total_minutes_title" = "Всего минут";
+"history_stat_total_minutes_caption" = "Медитации";
 
-"onb_skip" = "Пропустить";
-"onb_next" = "ДАЛЕЕ";
-"onb_start_now" = "НАЧАТЬ";
-"onb_explore" = "Я разберусь сам";
+"history_stat_streak_title" = "Серия дней";
+"history_stat_streak_caption" = "дн.";
 
-"onb_p1_title" = "Добро пожаловать в\nAI Meditation";
-"onb_p1_subtitle" = "Персональные спокойные практики под ваше состояние сегодня.";
-"onb_p1_h1" = "Сразу создавайте медитации с голосовым сопровождением";
-"onb_p1_h2" = "Подбирается под настроение и цель";
+"history_weekly_progress_title" = "Прогресс за неделю";
+"history_weekly_progress_value_format" = "%d / 70 мин";
 
-"onb_p2_title" = "Дыхание и\nежедневная рутина";
-"onb_p2_subtitle" = "Таймер дыхания и короткие планы на день помогают держать привычку.";
-"onb_p2_h1" = "Дыхательные упражнения с ровным темпом";
-"onb_p2_h2" = "Трекер рутины из маленьких шагов";
+"history_minutes_badge_format" = "%d МИН";
+"history_minutes_title_format" = "%d МИНУТ";
 
-"onb_p3_title" = "Аудио-атмосфера";
-"onb_p3_subtitle" = "Выбирайте голос, фон и длительность сессии под себя.";
-"onb_p3_h1" = "Голоса и фоновые звуки на выбор";
-"onb_p3_h2" = "Отдельная громкость голоса и фона";
+"history_breathing_subtitle" = "Дыхательная практика";
+"history_meditation_summary_fallback" = "Короткая осознанная практика";
 
-"onb_p4_title" = "Осознанность\nкаждый день";
-"onb_p4_subtitle" = "Следите за прогрессом и возвращайтесь к любимым сессиям.";
-"onb_p4_h1" = "История медитаций и дыхания";
-"onb_p4_h2" = "Один тап — продолжить или повторить";
-
-/* ===== НАСТРОЙКА ДЫХАНИЯ ===== */
-"bre_setup_title" = "ДЫХАТЕЛЬНАЯ ПРАКТИКА";
-"bre_setup_subtitle" = "Создайте дыхательное упражнение,\nкоторое подходит вашему состоянию";
-"bre_setup_mood_title" = "Состояние";
-"bre_setup_duration_title" = "Длительность";
-"bre_setup_start_session" = "НАЧАТЬ";
-
-/* ===== СОСТОЯНИЯ ===== */
+/* ===== BREATHING MOODS (shared) ===== */
 "bre_mood_calm" = "Спокойствие";
-"bre_mood_neutral" = "Нейтральное";
+"bre_mood_neutral" = "Нейтрально";
 "bre_mood_stressed" = "Стресс";
 "bre_mood_anxious" = "Тревога";
 
-/* ===== ФАЗЫ ===== */
+/* ===== GENERATOR FLOW ===== */
+"gen_nav_title" = "Генератор";
+"gen_flow_hint" = "Выбери параметры — и мы сгенерируем медитацию.";
+"gen_btn_generate" = "Сгенерировать";
+"gen_btn_generating" = "Генерируем...";
+
+"gen_goal_title" = "Цель";
+"gen_duration_title" = "Длительность";
+"gen_voice_title" = "Голос";
+"gen_bg_title" = "Фон";
+
+"gen_sheet_goal_title" = "Выбери цель";
+"gen_sheet_duration_title" = "Выбери длительность";
+"gen_sheet_voice_title" = "Выбери голос";
+"gen_sheet_bg_title" = "Выбери фон";
+
+"gen_row_tap_to_choose" = "Нажми, чтобы выбрать";
+"gen_row_not_selected" = "Не выбрано";
+
+/* durations */
+"gen_duration_5" = "5 минут";
+"gen_duration_10" = "10 минут";
+"gen_duration_15" = "15 минут";
+
+/* backgrounds */
+"gen_bg_none" = "Без фона";
+"gen_bg_nature" = "Природа";
+"gen_bg_ambient" = "Эмбиент";
+"gen_bg_rain" = "Дождь";
+
+/* voices */
+"gen_voice_calm" = "Спокойный";
+"gen_voice_warm" = "Тёплый";
+"gen_voice_deep" = "Низкий";
+
+/* goals */
+"gen_goal_focus" = "Фокус";
+"gen_goal_sleep" = "Сон";
+"gen_goal_relax" = "Расслабление";
+
+"mood_calm" = "Спокойно";
+"mood_neutral" = "Нормально";
+"mood_stressed" = "Стресс";
+"mood_anxious" = "Тревожно";
+"mood_energized" = "Бодро";
+
+"bre_mood_calm" = "Спокойно";
+"bre_mood_neutral" = "Нейтрально";
+"bre_mood_stressed" = "Стресс";
+"bre_mood_anxious" = "Тревожно";
+
+/* Generator - Goals */
+"gen_goal_reduce_stress" = "Снизить стресс";
+"gen_goal_improve_sleep" = "Улучшить сон";
+"gen_goal_increase_focus" = "Повысить концентрацию";
+"gen_goal_boost_energy" = "Поднять энергию";
+"gen_goal_calm_anxiety" = "Успокоить тревожность";
+
+/* Generator - Voices */
+"gen_voice_soft" = "Мягкий";
+"gen_voice_neutral" = "Нейтральный";
+"gen_voice_deep" = "Низкий";
+
+/* Generator - Backgrounds */
+"gen_bg_None" = "Без фона";
+"gen_bg_Nature" = "Природа";
+"gen_bg_Ambient music" = "Эмбиент";
+"gen_bg_Rain" = "Дождь";
+
+/* Generator - Durations */
+"gen_duration_5" = "5 минут";
+"gen_duration_10" = "10 минут";
+"gen_duration_15" = "15 минут";
+
+"routine_title" = "Ежедневный план";
+"routine_header_title" = "Структурные практики";
+"routine_header_subtitle" = "Следуй предложенному плану, сгенерируй новый или сохрани на потом.";
+
+"routine_btn_start" = "Начать";
+"routine_btn_regenerate" = "Сгенерировать";
+"routine_btn_save" = "Сохранить";
+"routine_btn_mark_done" = "Отметить выполненным";
+
+"routine_status_done" = "Отмечено как выполненное";
+"routine_status_active" = "Активный план";
+
+"routine_week_title" = "Эта неделя";
+
+"routine_loading" = "Генерируем твой план...";
+
+"routine_empty_title" = "План ещё не создан";
+"routine_empty_subtitle" = "Нажми «Сгенерировать», чтобы получить практики на сегодня.";
+
+"routine_banner_done" = "План отмечен как выполненный. Когда будешь готов — сгенерируй новый.";
+"routine_banner_all_done" = "Отлично! Все практики выполнены.";
+"routine_banner_next_format" = "Далее: %@ • %lld мин";
+
+"routine_minutes_format" = "%lld мин";
+
+"routine_item_completed" = "Выполнено";
+"routine_item_pending" = "Не выполнено";
+
+"routine_btn_mark_pending" = "Сделать невыполненным";
+"routine_btn_mark_done_item" = "Отметить выполненным";
+
+/* Routine */
+"routine_title" = "Рутина";
+"routine_header_title" = "Структурные практики";
+"routine_header_subtitle" = "Следуй предложенному плану, сгенерируй новый или сохрани на потом.";
+
+"routine_btn_start" = "Начать";
+"routine_btn_regenerate" = "Обновить";
+"routine_btn_save" = "Сохранить";
+"routine_btn_mark_done" = "Отметить выполненной";
+
+"routine_status_done" = "Отмечено как выполнено";
+"routine_status_active" = "Активный план";
+
+"routine_week_title" = "Эта неделя";
+
+"routine_loading" = "Генерируем рутину...";
+
+"routine_empty_title" = "Рутины пока нет";
+"routine_empty_subtitle" = "Нажми «Обновить», чтобы получить новый набор практик на сегодня.";
+
+"routine_banner_done" = "Рутина отмечена как выполненная. Когда будешь готов — обнови план.";
+/* Порядок как в коде: title, minutes */
+"routine_banner_next_format" = "Далее: %@ • %d мин";
+"routine_banner_all_done" = "Отлично! Все практики выполнены.";
+
+"routine_minutes_format" = "%d мин";
+
+"routine_item_completed" = "Выполнено";
+"routine_item_pending" = "Не выполнено";
+
+"routine_btn_mark_pending" = "Отметить как не выполнено";
+"routine_btn_mark_done_item" = "Отметить как выполнено";
+
+/* Routine errors (RoutineViewModel errorKey) */
+"routine_error_generic" = "Что-то пошло не так. Попробуй ещё раз.";
+"routine_error_network" = "Ошибка сети. Попробуй ещё раз.";
+"routine_error_no_internet" = "Нет подключения к интернету.";
+"routine_error_timeout" = "Превышено время ожидания. Попробуй ещё раз.";
+"routine_error_encoding" = "Не удалось подготовить данные рутины.";
+
+/* Routine AI prompts */
+"routine_ai_system_line1" = "Ты — коуч по осознанным привычкам и рутине.";
+"routine_ai_system_line2" = "Отвечай ТОЛЬКО JSON в формате: {\"items\":[{\"title\":\"string\",\"details\":\"string\",\"durationMinutes\":integer}]}";
+"routine_ai_system_line3" = "Дай 1–3 короткие, практичные практики (по 3–20 минут).";
+"routine_ai_system_line4" = "Без markdown. Без лишних ключей. Без комментариев.";
+
+"routine_ai_language_en" = "Пиши названия и описания на английском.";
+"routine_ai_language_ru" = "Пиши названия и описания на русском.";
+"routine_ai_language_system" = "Пиши названия и описания на английском.";
+
+"routine_ai_history_empty" = "Недавних практик нет.";
+"routine_ai_yes" = "да";
+"routine_ai_no" = "нет";
+"routine_ai_history_line_format" = "- %@ (%d мин) выполнено: %@";
+"routine_ai_history_block_format" = "История недавних практик:\n%@";
+
+"routine_ai_goals_fallback" = "Цель: общее спокойствие и фокус.";
+"routine_ai_goals_format" = "Цели: %@.";
+
+"routine_ai_time_of_day_format" = "Время дня: %@.";
+"routine_ai_user_request" = "Предложи следующие практики, учитывая время дня. В details дай короткие инструкции и реалистичную длительность.";
+
+"routine_daypart_morning" = "утро";
+"routine_daypart_afternoon" = "день";
+"routine_daypart_evening" = "вечер";
+
+/* Routine errors */
+"routine_error_empty_ai_response" = "AI не вернул практики. Нажми «Обновить».";
+
+"bre_complete_title" = "Сессия завершена";
+"bre_complete_saved" = "Сохранено в истории.";
+
+"bre_remaining" = "Осталось";
+
+"bre_a11y_close" = "Закрыть";
+"bre_a11y_mute_hints" = "Скрыть подсказки дыхания";
+"bre_a11y_unmute_hints" = "Показать подсказки дыхания";
+"bre_a11y_restart" = "Начать заново";
+
+"bre_setup_title" = "Дыхание";
+"bre_setup_subtitle" = "Выбери настроение и длительность — и начнём.";
+"bre_setup_mood_title" = "Настроение";
+"bre_setup_duration_title" = "Длительность";
+"bre_setup_start_session" = "Начать сессию";
+
 "bre_phase_inhale" = "Вдох";
 "bre_phase_hold" = "Задержка";
 "bre_phase_exhale" = "Выдох";
 
-/* ===== ПОДСКАЗКИ ===== */
-"bre_hint_inhale" = "Медленно вдохните";
-"bre_hint_hold" = "Мягко задержите дыхание";
-"bre_hint_exhale" = "Полностью выдохните";
+"bre_hint_inhale" = "Медленно вдохни";
+"bre_hint_hold" = "Задержи дыхание";
+"bre_hint_exhale" = "Медленно выдохни";
 
-/* ===== ДЛИТЕЛЬНОСТЬ ===== */
 "bre_duration_minutes" = "%d мин";
-
-/* ===== СЕССИЯ ===== */
 "bre_remaining" = "Осталось";
-"bre_complete_title" = "Дыхание завершено";
-"bre_complete_saved" = "Сессия сохранена в истории";
+"bre_complete_title" = "Сессия завершена";
+"bre_complete_saved" = "Сохранено в историю.";
 
-/* ===== ОБЩЕЕ ===== */
+"bre_duration_minutes_format" = "%d мин";
+
+"bre_mood_calm" = "Спокойно";
+"bre_mood_neutral" = "Нейтрально";
+"bre_mood_stressed" = "Стресс";
+"bre_mood_anxious" = "Тревога";
+
 "common_select" = "Выбрать";
-"common_not_selected" = "Не выбрано";
-"common_close" = "Закрыть";
-"common_restart" = "Заново";
+
+/* Name prompt */
+"name_prompt_title" = "Как к тебе обращаться?";
+"name_prompt_subtitle" = "Мы будем использовать имя в подсказках и медитациях.";
+"name_prompt_field_placeholder" = "Например: Влад";
+"name_prompt_btn_continue" = "Продолжить";
+"name_prompt_btn_not_now" = "Не сейчас";

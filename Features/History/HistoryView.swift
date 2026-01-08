@@ -13,6 +13,10 @@ struct HistoryView: View {
     @Query(sort: \MeditationSession.createdAt, order: .reverse) private var sessions: [MeditationSession]
     @Query(sort: \BreathingLog.createdAt, order: .reverse) private var breathingLogs: [BreathingLog]
 
+    // Language (важно!)
+    @AppStorage("appLanguage") private var appLanguageRaw: String = AppLanguage.system.rawValue
+    private var lang: AppLanguage { AppLanguage(rawValue: appLanguageRaw) ?? .system }
+
     @State private var segment: Segment = .meditations
 
     @State private var selected: MeditationSession?
@@ -45,9 +49,16 @@ struct HistoryView: View {
         return streak
     }
 
-    enum Segment: String, CaseIterable {
-        case meditations = "MEDITATIONS"
-        case breathing = "BREATHING"
+    enum Segment: CaseIterable, Hashable {
+        case meditations
+        case breathing
+
+        var titleKey: String {
+            switch self {
+            case .meditations: return "history_segment_meditations"
+            case .breathing:   return "history_segment_breathing"
+            }
+        }
     }
 
     var body: some View {
@@ -57,22 +68,20 @@ struct HistoryView: View {
 
                 VStack(spacing: 12) {
                     picker
-
                     stats
 
                     ScrollView {
                         VStack(spacing: 10) {
                             if segment == .meditations {
                                 ForEach(sessions) { s in
-                                    Button {
-                                        selected = s
-                                    } label: {
+                                    Button { selected = s } label: {
                                         historyCard(session: s)
                                     }
                                     .buttonStyle(.plain)
                                 }
+
                                 if sessions.isEmpty {
-                                    Text("No meditation sessions yet")
+                                    Text(L10n.s("history_empty_meditations", lang: lang))
                                         .foregroundStyle(.secondary)
                                         .padding(.top, 30)
                                 }
@@ -80,8 +89,9 @@ struct HistoryView: View {
                                 ForEach(breathingLogs) { log in
                                     breathingCard(log: log)
                                 }
+
                                 if breathingLogs.isEmpty {
-                                    Text("No breathing sessions yet")
+                                    Text(L10n.s("history_empty_breathing", lang: lang))
                                         .foregroundStyle(.secondary)
                                         .padding(.top, 30)
                                 }
@@ -93,8 +103,10 @@ struct HistoryView: View {
                     }
                 }
             }
-            .navigationTitle("HISTORY")
+            .navigationTitle(L10n.s("history_title", lang: lang))
             .navigationBarTitleDisplayMode(.inline)
+
+            // open meditation
             .fullScreenCover(isPresented: Binding(
                 get: { selected != nil },
                 set: { if !$0 { selected = nil } }
@@ -103,42 +115,49 @@ struct HistoryView: View {
                     MeditationPlayerView(session: selected)
                 }
             }
-            .alert("Delete meditation?", isPresented: Binding(
+
+            // delete meditation alert
+            .alert(L10n.s("history_delete_meditation_title", lang: lang), isPresented: Binding(
                 get: { sessionToDelete != nil },
                 set: { if !$0 { sessionToDelete = nil } }
             )) {
-                Button("Delete", role: .destructive) {
+                Button(L10n.s("common_delete", lang: lang), role: .destructive) {
                     if let sessionToDelete { modelContext.delete(sessionToDelete) }
                     sessionToDelete = nil
                 }
-                Button("Cancel", role: .cancel) { sessionToDelete = nil }
+                Button(L10n.s("common_cancel", lang: lang), role: .cancel) {
+                    sessionToDelete = nil
+                }
             } message: {
                 if let sessionToDelete {
-                    Text("Remove \(sessionToDelete.title) from history?")
+                    Text(L10n.f("history_delete_meditation_message_format", lang: lang, sessionToDelete.title))
                 }
             }
-            .alert("Delete breathing log?", isPresented: Binding(
+
+            // delete breathing alert
+            .alert(L10n.s("history_delete_breathing_title", lang: lang), isPresented: Binding(
                 get: { breathingToDelete != nil },
                 set: { if !$0 { breathingToDelete = nil } }
             )) {
-                Button("Delete", role: .destructive) {
+                Button(L10n.s("common_delete", lang: lang), role: .destructive) {
                     if let breathingToDelete { modelContext.delete(breathingToDelete) }
                     breathingToDelete = nil
                 }
-                Button("Cancel", role: .cancel) { breathingToDelete = nil }
+                Button(L10n.s("common_cancel", lang: lang), role: .cancel) {
+                    breathingToDelete = nil
+                }
             } message: {
-                Text("Remove breathing entry from history?")
+                Text(L10n.s("history_delete_breathing_message", lang: lang))
             }
         }
+        .onAppear { Analytics.screen("history") }
     }
 
     private var picker: some View {
         HStack(spacing: 0) {
             ForEach(Segment.allCases, id: \.self) { seg in
-                Button {
-                    segment = seg
-                } label: {
-                    Text(seg.rawValue)
+                Button { segment = seg } label: {
+                    Text(L10n.s(seg.titleKey, lang: lang))
                         .font(.caption.bold())
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 10)
@@ -156,17 +175,25 @@ struct HistoryView: View {
     private var stats: some View {
         VStack(spacing: 12) {
             HStack(spacing: 10) {
-                statCard(title: "Total minutes", value: "\(totalMeditationMinutes)", caption: "Meditations")
-                statCard(title: "Daily streak", value: "\(streakDays)", caption: "days")
+                statCard(
+                    title: L10n.s("history_stat_total_minutes_title", lang: lang),
+                    value: "\(totalMeditationMinutes)",
+                    caption: L10n.s("history_stat_total_minutes_caption", lang: lang)
+                )
+                statCard(
+                    title: L10n.s("history_stat_streak_title", lang: lang),
+                    value: "\(streakDays)",
+                    caption: L10n.s("history_stat_streak_caption", lang: lang)
+                )
             }
 
             VStack(alignment: .leading, spacing: 8) {
-                HStack { 
-                    Text("Weekly progress")
+                HStack {
+                    Text(L10n.s("history_weekly_progress_title", lang: lang))
                         .font(.caption.bold())
                         .foregroundStyle(.secondary)
                     Spacer()
-                    Text("\(weeklyMinutes) / 70 min")
+                    Text(L10n.f("history_weekly_progress_value_format", lang: lang, weeklyMinutes))
                         .font(.caption.bold())
                         .foregroundStyle(.secondary)
                 }
@@ -205,16 +232,16 @@ struct HistoryView: View {
                 .fill(Color.black.opacity(0.08))
                 .frame(width: 64, height: 64)
                 .overlay(
-                    Text("\(session.durationMinutes) MIN")
+                    Text(L10n.f("history_minutes_badge_format", lang: lang, session.durationMinutes))
                         .font(.caption.bold())
                         .foregroundStyle(.secondary)
                 )
 
             VStack(alignment: .leading, spacing: 4) {
-                Text("\(session.durationMinutes) MINUTES")
+                Text(L10n.f("history_minutes_title_format", lang: lang, session.durationMinutes))
                     .font(.headline)
 
-                Text(session.summary)
+                Text(session.summary.isEmpty ? L10n.s("history_meditation_summary_fallback", lang: lang) : session.summary)
                     .font(.footnote)
                     .foregroundStyle(.secondary)
                     .lineLimit(2)
@@ -226,9 +253,7 @@ struct HistoryView: View {
 
             Spacer()
 
-            Button {
-                sessionToDelete = session
-            } label: {
+            Button { sessionToDelete = session } label: {
                 Image(systemName: "trash")
                     .foregroundStyle(.red)
                     .padding(10)
@@ -236,6 +261,7 @@ struct HistoryView: View {
                     .clipShape(Circle())
             }
             .buttonStyle(.plain)
+            .accessibilityLabel(L10n.s("common_delete", lang: lang))
         }
         .padding(12)
         .background(Color.white.opacity(0.65))
@@ -243,21 +269,23 @@ struct HistoryView: View {
     }
 
     private func breathingCard(log: BreathingLog) -> some View {
-        HStack(spacing: 12) {
+        let minutes = log.durationSeconds / 60
+
+        return HStack(spacing: 12) {
             RoundedRectangle(cornerRadius: 14)
                 .fill(Color.black.opacity(0.08))
                 .frame(width: 64, height: 64)
                 .overlay(
-                    Text("\(log.durationSeconds / 60) MIN")
+                    Text(L10n.f("history_minutes_badge_format", lang: lang, minutes))
                         .font(.caption.bold())
                         .foregroundStyle(.secondary)
                 )
 
             VStack(alignment: .leading, spacing: 4) {
-                Text(log.mood)
+                Text(localizedMoodTitle(log.moodTitle))
                     .font(.headline)
 
-                Text("Guided breathing")
+                Text(L10n.s("history_breathing_subtitle", lang: lang))
                     .font(.footnote)
                     .foregroundStyle(.secondary)
 
@@ -268,9 +296,7 @@ struct HistoryView: View {
 
             Spacer()
 
-            Button {
-                breathingToDelete = log
-            } label: {
+            Button { breathingToDelete = log } label: {
                 Image(systemName: "trash")
                     .foregroundStyle(.red)
                     .padding(10)
@@ -278,9 +304,22 @@ struct HistoryView: View {
                     .clipShape(Circle())
             }
             .buttonStyle(.plain)
+            .accessibilityLabel(L10n.s("common_delete", lang: lang))
         }
         .padding(12)
         .background(Color.white.opacity(0.65))
         .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
+    }
+
+    private func localizedMoodTitle(_ raw: String) -> String {
+        // raw у тебя сейчас "Calm"/"Neutral"/"Stressed"/"Anxious"
+        // если придёт что-то другое — покажем как есть
+        switch raw.lowercased() {
+        case "calm":     return L10n.s("bre_mood_calm", lang: lang)
+        case "neutral":  return L10n.s("bre_mood_neutral", lang: lang)
+        case "stressed": return L10n.s("bre_mood_stressed", lang: lang)
+        case "anxious":  return L10n.s("bre_mood_anxious", lang: lang)
+        default:         return raw
+        }
     }
 }

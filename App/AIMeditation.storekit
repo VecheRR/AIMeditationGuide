@@ -14,21 +14,7 @@
 
   ],
   "products" : [
-    {
-      "displayPrice" : "129.99",
-      "familyShareable" : false,
-      "internalID" : "29D517AC",
-      "localizations" : [
-        {
-          "description" : "",
-          "displayName" : "",
-          "locale" : "en_US"
-        }
-      ],
-      "productID" : "aimeditation.pro.lifetime",
-      "referenceName" : "Lifetime",
-      "type" : "NonConsumable"
-    }
+
   ],
   "settings" : {
     "_askToBuyEnabled" : false,
@@ -71,9 +57,37 @@
               "locale" : "en_US"
             }
           ],
-          "productID" : "aimeditation.pro.monthly",
+          "productID" : "sonicforge_monthly",
           "recurringSubscriptionPeriod" : "P1M",
           "referenceName" : "Monthly",
+          "subscriptionGroupID" : "F2BC8D44",
+          "type" : "RecurringSubscription",
+          "winbackOffers" : [
+
+          ]
+        },
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "3.99",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "39CC2B4B",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "",
+              "displayName" : "",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "sonicforge_weekly",
+          "recurringSubscriptionPeriod" : "P1W",
+          "referenceName" : "Weekly",
           "subscriptionGroupID" : "F2BC8D44",
           "type" : "RecurringSubscription",
           "winbackOffers" : [
@@ -90,7 +104,7 @@
           "displayPrice" : "49.99",
           "familyShareable" : false,
           "groupNumber" : 1,
-          "internalID" : "39CC2B4B",
+          "internalID" : "A7A655B9",
           "introductoryOffer" : null,
           "localizations" : [
             {
@@ -99,9 +113,9 @@
               "locale" : "en_US"
             }
           ],
-          "productID" : "aimeditation.pro.annual",
+          "productID" : "sonicforge_yearly",
           "recurringSubscriptionPeriod" : "P1Y",
-          "referenceName" : "Annual",
+          "referenceName" : "Yearly",
           "subscriptionGroupID" : "F2BC8D44",
           "type" : "RecurringSubscription",
           "winbackOffers" : [

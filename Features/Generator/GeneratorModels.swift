@@ -8,37 +8,48 @@
 import Foundation
 
 enum GenGoal: String, CaseIterable, Identifiable {
-    case reduceStress = "Reduce stress"
-    case improveSleep = "Improve sleep"
-    case increaseFocus = "Increase focus"
-    case boostEnergy = "Boost energy"
-    case calmAnxiety = "Calm anxiety"
+    case reduce_stress
+    case improve_sleep
+    case increase_focus
+    case boost_energy
+    case calm_anxiety
     var id: String { rawValue }
 }
 
-enum GenDuration: Int, CaseIterable, Identifiable {
-    case min5 = 5, min10 = 10, min15 = 15
-    var id: Int { rawValue }
-    var title: String { "\(rawValue) min" }
-}
-
 enum GenVoice: String, CaseIterable, Identifiable {
-    case soft = "Soft"
-    case neutral = "Neutral"
-    case deep = "Deep"
+    case soft = "soft"
+    case neutral = "neutral"
+    case deep = "deep"
     var id: String { rawValue }
 }
 
 enum GenBackground: String, CaseIterable, Identifiable {
-    case nature = "Nature"
-    case ambient = "Ambient music"
-    case rain = "Rain"
-    case none = "None"
+    case nature = "nature"
+    case ambient = "ambient"
+    case rain = "rain"
+    case none = "none"
     var id: String { rawValue }
 
-    /// Accept legacy stored values (e.g., "Waves") to keep previously saved sessions working.
     static func from(raw: String) -> GenBackground {
-        if raw == "Waves" { return .ambient }
+        // поддержка легаси значений
+        if raw == "Waves" || raw == "Ambient music" { return .ambient }
+        if raw == "Nature" { return .nature }
+        if raw == "Rain" { return .rain }
+        if raw == "None" { return .none }
         return GenBackground(rawValue: raw) ?? .none
     }
 }
+
+enum GenDuration: Int, CaseIterable, Identifiable {
+    case min5 = 5
+    case min10 = 10
+    case min15 = 15
+
+    var id: Int { rawValue }
+
+    var title: String {
+        // либо отдельные ключи gen_duration_5, gen_duration_10...
+        String(localized: "gen_duration_\(rawValue)")
+    }
+}
+

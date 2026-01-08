@@ -6,13 +6,14 @@
 //
 
 import SwiftUI
-import StoreKit
 
 struct PaywallView: View {
-    @EnvironmentObject private var store: StoreKitManager
+    @EnvironmentObject private var apphud: ApphudManager
     @State private var selectedProductID: String?
 
-    // Храним ключи, а не английские строки
+    @AppStorage("appLanguage") private var appLanguageRaw: String = AppLanguage.system.rawValue
+    private var lang: AppLanguage { AppLanguage(rawValue: appLanguageRaw) ?? .system }
+
     private let perkKeys: [String] = [
         "paywall_perk_unlimited",
         "paywall_perk_backgrounds",
@@ -25,25 +26,14 @@ struct PaywallView: View {
             AppBackground()
 
             VStack(spacing: 18) {
-                VStack(spacing: 10) {
-                    Text(String(localized: "paywall_title"))
-                        .font(.system(size: 30, weight: .semibold))
-                        .multilineTextAlignment(.center)
 
-                    Text(String(localized: "paywall_subtitle"))
-                        .font(.subheadline)
-                        .foregroundStyle(.secondary)
-                        .multilineTextAlignment(.center)
-                        .padding(.horizontal, 8)
-                }
-                .padding(.top, 8)
+                header
 
                 VStack(spacing: 12) {
                     perksCard
                     planPicker
 
-                    if let error = store.errorMessage, !error.isEmpty {
-                        // Ошибка StoreKit/SDK — это системный текст, не локализуем
+                    if let error = apphud.lastError, !error.isEmpty {
                         Text(error)
                             .font(.footnote)
                             .foregroundStyle(.red)
@@ -54,19 +44,22 @@ struct PaywallView: View {
 
                 VStack(spacing: 12) {
                     PrimaryButton(title: primaryButtonTitle) {
-                        Task { await purchaseSelected() }
+                        purchaseSelected()
                     }
-                    .disabled(store.isProcessingPurchase || selectedProductID == nil)
+                    .disabled(apphud.isLoading || selectedProductID == nil)
 
-                    Button(action: { Task { await store.restorePurchases() } }) {
-                        Text(String(localized: "paywall_restore"))
+                    Button {
+                        apphud.restore()
+                    } label: {
+                        Text(L10n.s("paywall_restore", lang: lang))
                             .font(.footnote.weight(.semibold))
                             .foregroundStyle(.secondary)
                     }
+                    .disabled(apphud.isLoading)
                 }
                 .padding(.bottom, 12)
 
-                Text(String(localized: "paywall_disclaimer"))
+                Text(L10n.s("paywall_disclaimer", lang: lang))
                     .font(.caption2)
                     .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)
@@ -74,7 +67,34 @@ struct PaywallView: View {
             }
             .padding(.horizontal, 20)
             .padding(.vertical, 18)
+            .task {
+                // грузим планы один раз при открытии экрана
+                if apphud.products.isEmpty && !apphud.isLoading {
+                    apphud.loadPaywallProducts()
+                }
+                if selectedProductID == nil {
+                    selectedProductID = apphud.products.first?.id
+                }
+            }
+            .onAppear {
+                Analytics.event("paywall_open", ["source": "app_gate"])
+            }
         }
+    }
+
+    private var header: some View {
+        VStack(spacing: 10) {
+            Text(L10n.s("paywall_title", lang: lang))
+                .font(.system(size: 30, weight: .semibold))
+                .multilineTextAlignment(.center)
+
+            Text(L10n.s("paywall_subtitle", lang: lang))
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, 8)
+        }
+        .padding(.top, 8)
     }
 
     private var perksCard: some View {
@@ -91,10 +111,10 @@ struct PaywallView: View {
                 }
 
                 VStack(alignment: .leading, spacing: 4) {
-                    Text(String(localized: "paywall_perks_title"))
+                    Text(L10n.s("paywall_perks_title", lang: lang))
                         .font(.headline)
 
-                    Text(String(localized: "paywall_perks_subtitle"))
+                    Text(L10n.s("paywall_perks_subtitle", lang: lang))
                         .font(.footnote)
                         .foregroundStyle(.secondary)
                 }
@@ -106,7 +126,8 @@ struct PaywallView: View {
                     HStack(spacing: 10) {
                         Image(systemName: "checkmark.circle.fill")
                             .foregroundStyle(.green)
-                        Text(LocalizedStringKey(key))
+
+                        Text(L10n.s(key, lang: lang))
                             .font(.footnote)
                     }
                 }
@@ -120,23 +141,23 @@ struct PaywallView: View {
 
     private var planPicker: some View {
         VStack(alignment: .leading, spacing: 10) {
-            Text(String(localized: "paywall_choose_plan"))
+            Text(L10n.s("paywall_choose_plan", lang: lang))
                 .font(.subheadline.weight(.semibold))
                 .foregroundStyle(.secondary)
 
             VStack(spacing: 10) {
-                ForEach(store.products, id: \.id) { product in
+                ForEach(apphud.products, id: \.id) { vm in
                     Button {
-                        selectedProductID = product.id
+                        selectedProductID = vm.id
                     } label: {
                         HStack(alignment: .center, spacing: 12) {
                             VStack(alignment: .leading, spacing: 4) {
                                 HStack(spacing: 8) {
-                                    Text(product.displayName.uppercased())
+                                    Text(vm.displayName.uppercased())
                                         .font(.caption.weight(.semibold))
 
-                                    if let badge = badge(for: product) {
-                                        Text(badge)
+                                    if let b = badge(for: vm) {
+                                        Text(b)
                                             .font(.caption2.weight(.heavy))
                                             .padding(.horizontal, 8)
                                             .padding(.vertical, 4)
@@ -145,11 +166,11 @@ struct PaywallView: View {
                                     }
                                 }
 
-                                Text(product.displayPrice)
+                                Text(vm.displayPrice.isEmpty ? "—" : vm.displayPrice)
                                     .font(.title3.weight(.semibold))
 
-                                if let detail = detail(for: product) {
-                                    Text(detail)
+                                if let d = detail(for: vm) {
+                                    Text(d)
                                         .font(.caption)
                                         .foregroundStyle(.secondary)
                                 }
@@ -157,7 +178,7 @@ struct PaywallView: View {
 
                             Spacer()
 
-                            Image(systemName: selectedProductID == product.id ? "largecircle.fill.circle" : "circle")
+                            Image(systemName: selectedProductID == vm.id ? "largecircle.fill.circle" : "circle")
                                 .font(.title3)
                                 .foregroundStyle(.black)
                         }
@@ -169,7 +190,7 @@ struct PaywallView: View {
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 18, style: .continuous)
                                         .stroke(
-                                            selectedProductID == product.id ? Color.black : Color.black.opacity(0.08),
+                                            selectedProductID == vm.id ? Color.black : Color.black.opacity(0.08),
                                             lineWidth: 1.2
                                         )
                                 )
@@ -178,58 +199,46 @@ struct PaywallView: View {
                     .buttonStyle(.plain)
                 }
 
-                if store.products.isEmpty {
-                    ProgressView()
-                        .frame(maxWidth: .infinity)
+                if apphud.products.isEmpty {
+                    ProgressView().frame(maxWidth: .infinity)
                 }
-            }
-        }
-        .task {
-            if selectedProductID == nil {
-                selectedProductID = store.products.first?.id
             }
         }
     }
 
     private var primaryButtonTitle: String {
-        if store.isProcessingPurchase { return String(localized: "paywall_processing") }
-
-        if let product = store.products.first(where: { $0.id == selectedProductID }),
-           let offer = product.subscription?.introductoryOffer {
-            // "Start %@ trial"
-            return String(
-                format: NSLocalizedString("paywall_start_trial_fmt", comment: ""),
-                offer.displayPrice
-            )
+        if apphud.isLoading {
+            return L10n.s("paywall_processing", lang: lang)
         }
 
-        return String(localized: "paywall_continue")
+        if let vm = apphud.products.first(where: { $0.id == selectedProductID }),
+           vm.hasTrial {
+            // у тебя нет displayPrice у trial периода, поэтому просто “Start trial”
+            return L10n.s("paywall_continue", lang: lang)
+        }
+
+        return L10n.s("paywall_continue", lang: lang)
     }
 
-    private func badge(for product: Product) -> String? {
-        let id = product.id.lowercased()
-        if id.contains("annual") { return String(localized: "paywall_badge_best_value") }
-        if id.contains("monthly") { return String(localized: "paywall_badge_flexible") }
-        if id.contains("lifetime") { return String(localized: "paywall_badge_one_time") }
+    private func badge(for vm: PaywallProductVM) -> String? {
+        let id = vm.id.lowercased()
+        if id.contains("year") { return L10n.s("paywall_badge_best_value", lang: lang) }
+        if id.contains("month") { return L10n.s("paywall_badge_flexible", lang: lang) }
+        if id.contains("week") { return nil }
         return nil
     }
 
-    private func detail(for product: Product) -> String? {
-        if let subscription = product.subscription {
-            switch subscription.subscriptionPeriod.unit {
-            case .month:
-                return String(localized: "paywall_detail_cancel_anytime")
-            case .year:
-                return String(localized: "paywall_detail_save_vs_monthly")
-            default:
-                return nil
-            }
+    private func detail(for vm: PaywallProductVM) -> String? {
+        guard let unit = vm.periodUnit else { return nil }
+        switch unit {
+        case "month": return L10n.s("paywall_detail_cancel_anytime", lang: lang)
+        case "year": return L10n.s("paywall_detail_save_vs_monthly", lang: lang)
+        default: return nil
         }
-        return String(localized: "paywall_detail_lifetime_access")
     }
 
-    private func purchaseSelected() async {
-        guard let product = store.products.first(where: { $0.id == selectedProductID }) else { return }
-        await store.purchase(product: product)
+    private func purchaseSelected() {
+        guard let vm = apphud.products.first(where: { $0.id == selectedProductID }) else { return }
+        apphud.purchase(vm)
     }
 }

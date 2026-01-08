@@ -13,6 +13,10 @@ struct BackgroundPickerView: View {
 
     @Environment(\.dismiss) private var dismiss
 
+    // Language (важно!)
+    @AppStorage("appLanguage") private var appLanguageRaw: String = AppLanguage.system.rawValue
+    private var lang: AppLanguage { AppLanguage(rawValue: appLanguageRaw) ?? .system }
+
     private let grid = [GridItem(.flexible()), GridItem(.flexible())]
 
     var body: some View {
@@ -20,15 +24,15 @@ struct BackgroundPickerView: View {
             VStack(alignment: .leading, spacing: 16) {
 
                 VStack(alignment: .leading, spacing: 6) {
-                    Text(String(localized: "bg_picker_title"))
+                    Text(L10n.s("bg_picker_title", lang: lang))
                         .font(.caption.bold())
                         .foregroundStyle(.secondary)
                         .padding(.top, 6)
 
-                    Text(String(localized: "bg_picker_subtitle"))
+                    Text(L10n.s("bg_picker_subtitle", lang: lang))
                         .font(.footnote)
                         .foregroundStyle(.secondary)
-                        .accessibilityHint(Text(String(localized: "bg_picker_a11y_hint")))
+                        .accessibilityHint(Text(L10n.s("bg_picker_a11y_hint", lang: lang)))
                 }
 
                 LazyVGrid(columns: grid, spacing: 12) {
@@ -39,13 +43,13 @@ struct BackgroundPickerView: View {
                 }
 
                 VStack(alignment: .leading, spacing: 8) {
-                    Text(String(localized: "bg_picker_volume_title"))
+                    Text(L10n.s("bg_picker_volume_title", lang: lang))
                         .font(.caption)
                         .foregroundStyle(.secondary)
 
                     Slider(value: $volume, in: 0...1)
                         .tint(.accentColor)
-                        .accessibilityLabel(Text(String(localized: "bg_picker_volume_a11y")))
+                        .accessibilityLabel(Text(L10n.s("bg_picker_volume_a11y", lang: lang)))
                 }
             }
             .padding(16)
@@ -82,26 +86,19 @@ struct BackgroundPickerView: View {
             }
         }
         .buttonStyle(.plain)
-        .accessibilityLabel(
-            Text(
-                String(
-                    format: NSLocalizedString("bg_picker_a11y_background_fmt", comment: ""),
-                    bgName
-                )
-            )
-        )
+        .accessibilityLabel(Text(L10n.f("bg_picker_a11y_background_fmt", lang: lang, bgName)))
     }
 
     private func localizedBackgroundName(_ bg: GenBackground) -> String {
         switch bg {
         case .none:
-            return String(localized: "bg_none")
+            return L10n.s("bg_none", lang: lang)
         case .nature:
-            return String(localized: "bg_nature")
+            return L10n.s("bg_nature", lang: lang)
         case .ambient:
-            return String(localized: "bg_ambient")
+            return L10n.s("bg_ambient", lang: lang)
         case .rain:
-            return String(localized: "bg_rain")
+            return L10n.s("bg_rain", lang: lang)
         }
     }
 }

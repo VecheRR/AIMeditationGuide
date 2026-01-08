@@ -1,13 +1,12 @@
-//
-//  BreathingSetupView.swift
-//  AIMeditationGuide
-//
-
 import SwiftUI
 
 struct BreathingSetupView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var vm = BreathingViewModel()
+
+    // Language (важно!)
+    @AppStorage("appLanguage") private var appLanguageRaw: String = AppLanguage.system.rawValue
+    private var lang: AppLanguage { AppLanguage(rawValue: appLanguageRaw) ?? .system }
 
     @State private var showMoodPicker = false
     @State private var showDurationPicker = false
@@ -22,7 +21,7 @@ struct BreathingSetupView: View {
                     header
                     illustration
 
-                    Text("bre_setup_subtitle")
+                    Text(L10n.s("bre_setup_subtitle", lang: lang))
                         .font(.headline)
                         .multilineTextAlignment(.center)
                         .foregroundStyle(.secondary)
@@ -30,16 +29,14 @@ struct BreathingSetupView: View {
                     VStack(spacing: 12) {
                         optionRow(
                             titleKey: "bre_setup_mood_title",
-                            valueKey: vm.mood?.titleKey,
-                            valueText: nil,
+                            valueText: vm.mood?.localizedTitleString,
                             placeholderKey: "common_select",
                             icon: "target"
                         ) { showMoodPicker = true }
 
                         optionRow(
                             titleKey: "bre_setup_duration_title",
-                            valueKey: nil,
-                            valueText: vm.duration?.title,
+                            valueText: vm.duration.map { $0.title(lang: lang) },
                             placeholderKey: "common_select",
                             icon: "timer"
                         ) { showDurationPicker = true }
@@ -51,7 +48,13 @@ struct BreathingSetupView: View {
                     PrimaryButton(
                         title: String(localized: "bre_setup_start_session"),
                         isEnabled: vm.canStart
-                    ) { startSession = true }
+                    ) {
+                        Analytics.event("breathing_start", [
+                            "mood": vm.mood?.rawValue ?? "unknown",
+                            "duration_min": vm.duration?.rawValue ?? 0
+                        ])
+                        startSession = true
+                    }
                     .padding(.horizontal, 16)
                     .padding(.bottom, 16)
                 }
@@ -72,19 +75,12 @@ struct BreathingSetupView: View {
 
     private var header: some View {
         HStack {
-            Button { dismiss() } label: {
-                Image(systemName: "xmark")
-                    .foregroundStyle(.black)
-                    .padding(10)
-                    .background(Color.white.opacity(0.7))
-                    .clipShape(Circle())
-            }
-
             Spacer()
 
-            Text("bre_setup_title")
-                .font(.caption.bold())
-                .foregroundStyle(.secondary)
+            Text(L10n.s("bre_setup_title", lang: lang))
+                .font(.title2.weight(.semibold))
+                    .foregroundStyle(.primary)
+                    .padding(.top, 8)
 
             Spacer()
 
@@ -108,14 +104,13 @@ struct BreathingSetupView: View {
     }
 
     private func optionRow(
-        titleKey: LocalizedStringKey,
-        valueKey: LocalizedStringKey?,
+        titleKey: String,
         valueText: String?,
-        placeholderKey: LocalizedStringKey,
+        placeholderKey: String,
         icon: String,
         action: @escaping () -> Void
     ) -> some View {
-        let hasValue = (valueKey != nil) || (valueText != nil && !(valueText ?? "").isEmpty)
+        let hasValue = !(valueText ?? "").isEmpty
 
         return Button(action: action) {
             HStack(spacing: 12) {
@@ -128,20 +123,16 @@ struct BreathingSetupView: View {
                     .accessibilityHidden(true)
 
                 VStack(alignment: .leading, spacing: 2) {
-                    Text(titleKey)
+                    Text(L10n.s(titleKey, lang: lang))
                         .font(.caption)
                         .foregroundStyle(.secondary)
 
-                    if let valueKey {
-                        Text(valueKey)
-                            .font(.body.weight(.medium))
-                            .foregroundStyle(.black)
-                    } else if let valueText, !valueText.isEmpty {
+                    if let valueText, !valueText.isEmpty {
                         Text(valueText)
                             .font(.body.weight(.medium))
                             .foregroundStyle(.black)
                     } else {
-                        Text(placeholderKey)
+                        Text(L10n.s(placeholderKey, lang: lang))
                             .font(.body.weight(.medium))
                             .foregroundStyle(.black)
                     }

@@ -13,29 +13,36 @@ struct NamePromptView: View {
 
     @State private var temp: String = ""
 
+    // ✅ Language like in the rest of the app
+    @AppStorage("appLanguage") private var appLanguageRaw: String = AppLanguage.system.rawValue
+    private var lang: AppLanguage { AppLanguage(rawValue: appLanguageRaw) ?? .system }
+
+    private var cleanedTemp: String {
+        temp.trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+
     var body: some View {
         VStack(spacing: 14) {
-            Text(String(localized: "name_prompt_title"))
+            Text(L10n.s("name_prompt_title", lang: lang))
                 .font(.title2.weight(.semibold))
 
-            Text(String(localized: "name_prompt_subtitle"))
+            Text(L10n.s("name_prompt_subtitle", lang: lang))
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
 
-            TextField(String(localized: "name_prompt_field_placeholder"), text: $temp)
+            TextField(L10n.s("name_prompt_field_placeholder", lang: lang), text: $temp)
                 .textFieldStyle(.roundedBorder)
                 .autocorrectionDisabled()
                 .textInputAutocapitalization(.words)
                 .padding(.top, 6)
 
             Button {
-                let cleaned = temp.trimmingCharacters(in: .whitespacesAndNewlines)
-                guard !cleaned.isEmpty else { return }
-                name = cleaned
+                guard !cleanedTemp.isEmpty else { return }
+                name = cleanedTemp
                 dismiss()
             } label: {
-                Text(String(localized: "name_prompt_btn_continue"))
+                Text(L10n.s("name_prompt_btn_continue", lang: lang))
                     .font(.headline)
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 12)
@@ -43,9 +50,9 @@ struct NamePromptView: View {
                     .foregroundStyle(.white)
                     .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
             }
-            .disabled(temp.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+            .disabled(cleanedTemp.isEmpty)
 
-            Button(String(localized: "name_prompt_btn_not_now")) {
+            Button(L10n.s("name_prompt_btn_not_now", lang: lang)) {
                 dismiss()
             }
             .font(.footnote.weight(.semibold))

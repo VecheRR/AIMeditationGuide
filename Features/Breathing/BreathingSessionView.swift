@@ -1,10 +1,3 @@
-//
-//  BreathingSessionView.swift
-//  AIMeditationGuide
-//
-//  Created by Vladislav on 29.12.2025.
-//
-
 import SwiftUI
 import SwiftData
 
@@ -21,6 +14,10 @@ struct BreathingSessionView: View {
     @State private var showCompletion = false
 
     @State private var countdownTimer: Timer?
+
+    // Language (важно!)
+    @AppStorage("appLanguage") private var appLanguageRaw: String = AppLanguage.system.rawValue
+    private var lang: AppLanguage { AppLanguage(rawValue: appLanguageRaw) ?? .system }
 
     var body: some View {
         ZStack {
@@ -48,15 +45,22 @@ struct BreathingSessionView: View {
 
         .onChange(of: vm.isFinished) { _, finished in
             guard finished else { return }
+
+            Analytics.event("session_complete", [
+                "type": "breathing",
+                "duration_sec": vm.duration?.seconds ?? 0,
+                "mood": vm.mood?.rawValue ?? "unknown"
+            ])
+
             saveBreathingLogIfNeeded()
             showCompletion = true
         }
 
-        .alert("bre_complete_title", isPresented: $showCompletion) {
-            Button("common_close") { dismiss() }
-            Button("common_restart") { restart() }
+        .alert(L10n.s("bre_complete_title", lang: lang), isPresented: $showCompletion) {
+            Button(L10n.s("common_close", lang: lang)) { dismiss() }
+            Button(L10n.s("common_restart", lang: lang)) { restart() }
         } message: {
-            Text("bre_complete_saved")
+            Text(L10n.s("bre_complete_saved", lang: lang))
         }
     }
 
@@ -69,13 +73,18 @@ struct BreathingSessionView: View {
                     .background(Color.white.opacity(0.7))
                     .clipShape(Circle())
             }
+            .accessibilityLabel(Text(L10n.s("bre_a11y_close", lang: lang)))
+
             Spacer()
         }
         .padding(.top, 4)
     }
 
     private var breathingCircle: some View {
-        let label: LocalizedStringKey = isCountingDown ? LocalizedStringKey("\(countdown)") : vm.phase.titleKey
+        let label: String = isCountingDown
+            ? "\(countdown)"
+            : L10n.s(vm.phase.titleKey, lang: lang)
+
         let p = isCountingDown ? 0.0 : vm.phaseProgress
 
         let innerScale: CGFloat
@@ -121,6 +130,7 @@ struct BreathingSessionView: View {
                 .background(Color.black.opacity(0.18))
                 .clipShape(Capsule())
                 .animation(.easeInOut(duration: 0.2), value: countdown)
+                .glassEffect(in: .capsule)
         }
     }
 
@@ -132,7 +142,15 @@ struct BreathingSessionView: View {
                     .padding(10)
                     .background(Color.white.opacity(0.7))
                     .clipShape(Circle())
+                    .glassEffect()
             }
+            .accessibilityLabel(
+                Text(
+                    muteHints
+                    ? L10n.s("bre_a11y_unmute_hints", lang: lang)
+                    : L10n.s("bre_a11y_mute_hints", lang: lang)
+                )
+            )
 
             Spacer()
 
@@ -141,12 +159,12 @@ struct BreathingSessionView: View {
                     .font(.caption.bold())
                     .foregroundColor(.black.opacity(0.7))
 
-                Text("bre_remaining")
+                Text(L10n.s("bre_remaining", lang: lang))
                     .font(.caption2)
                     .foregroundColor(.secondary)
 
                 if !muteHints {
-                    Text(vm.instructionKey)
+                    Text(L10n.s(vm.phase.instructionKey, lang: lang))
                         .font(.footnote.weight(.medium))
                         .foregroundStyle(.black)
                         .padding(.top, 2)
@@ -162,6 +180,7 @@ struct BreathingSessionView: View {
                     .background(Color.white.opacity(0.7))
                     .clipShape(Circle())
             }
+            .accessibilityLabel(Text(L10n.s("bre_a11y_restart", lang: lang)))
         }
         .padding(.bottom, 6)
     }
@@ -202,8 +221,12 @@ struct BreathingSessionView: View {
     }
 
     private func saveBreathingLogIfNeeded() {
-        guard !didSave, let duration = vm.duration, let mood = vm.mood else { return }
-        let log = BreathingLog(durationSeconds: duration.seconds, mood: mood.localizedTitleString)
+        guard !didSave,
+              let duration = vm.duration,
+              let mood = vm.mood
+        else { return }
+
+        let log = BreathingLog(durationSeconds: duration.seconds, mood: mood)
         modelContext.insert(log)
         didSave = true
     }

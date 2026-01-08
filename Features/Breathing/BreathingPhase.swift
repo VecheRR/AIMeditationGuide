@@ -13,7 +13,8 @@ enum BreathingPhase: CaseIterable {
     case hold
     case exhale
 
-    var titleKey: LocalizedStringKey {
+    // Ключи для UI (дальше выводишь через Text(key) или L10n.s(key, lang:))
+    var titleKey: String {
         switch self {
         case .inhale: return "bre_phase_inhale"
         case .hold:   return "bre_phase_hold"
@@ -21,7 +22,7 @@ enum BreathingPhase: CaseIterable {
         }
     }
 
-    var instructionKey: LocalizedStringKey {
+    var instructionKey: String {
         switch self {
         case .inhale: return "bre_hint_inhale"
         case .hold:   return "bre_hint_hold"
@@ -39,40 +40,14 @@ struct BreathingPattern {
 
     static func forMood(_ mood: BreathingMood) -> BreathingPattern {
         switch mood {
-        case .calm:    return .init(inhale: 4, hold: 4, exhale: 6)
-        case .neutral: return .init(inhale: 4, hold: 4, exhale: 4)
-        case .stressed:return .init(inhale: 4, hold: 6, exhale: 8)
-        case .anxious: return .init(inhale: 3, hold: 6, exhale: 8)
-        }
-    }
-}
-
-enum BreathingMood: CaseIterable, Equatable {
-    case calm
-    case neutral
-    case stressed
-    case anxious
-
-    var titleKey: LocalizedStringKey {
-        switch self {
-        case .calm:     return "bre_mood_calm"
-        case .neutral:  return "bre_mood_neutral"
-        case .stressed: return "bre_mood_stressed"
-        case .anxious:  return "bre_mood_anxious"
-        }
-    }
-
-    /// Для сохранения в историю как ТЕКСТ (уже локализованный)
-    var localizedTitleString: String {
-        NSLocalizedString(keyString, comment: "")
-    }
-
-    private var keyString: String {
-        switch self {
-        case .calm:     return "bre_mood_calm"
-        case .neutral:  return "bre_mood_neutral"
-        case .stressed: return "bre_mood_stressed"
-        case .anxious:  return "bre_mood_anxious"
+        case .calm:
+            return .init(inhale: 4, hold: 4, exhale: 6)
+        case .neutral:
+            return .init(inhale: 4, hold: 4, exhale: 4)
+        case .stressed:
+            return .init(inhale: 4, hold: 6, exhale: 8)
+        case .anxious:
+            return .init(inhale: 3, hold: 6, exhale: 8)
         }
     }
 }
@@ -84,9 +59,7 @@ enum BreathingDuration: Int, CaseIterable, Equatable {
 
     var seconds: Int { rawValue * 60 }
 
-    /// "1 min" / "5 min" через Localizable: bre_duration_minutes = "%d min";
-    var title: String {
-        let format = NSLocalizedString("bre_duration_minutes", comment: "")
-        return String(format: format, rawValue)
+    func title(lang: AppLanguage) -> String {
+        L10n.f("bre_duration_minutes_format", lang: lang, rawValue)
     }
 }

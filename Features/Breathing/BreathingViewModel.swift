@@ -1,10 +1,3 @@
-//
-//  BreathingViewModel.swift
-//  AIMeditationGuide
-//
-//  Created by Vladislav on 29.12.2025.
-//
-
 import Foundation
 import SwiftUI
 import Combine
@@ -30,7 +23,8 @@ final class BreathingViewModel: ObservableObject {
     private var initialTotal: Int { duration?.seconds ?? 0 }
     var canStart: Bool { mood != nil && duration != nil }
 
-    var instructionKey: LocalizedStringKey { phase.instructionKey }
+    // ✅ было String → стало LocalizedStringKey
+//    var instructionKey: LocalizedStringKey { phase.instructionKey }
 
     func prepareForStart() {
         totalRemaining = initialTotal

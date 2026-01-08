@@ -9,6 +9,9 @@ struct MoodPickerView: View {
     @Environment(\.dismiss) private var dismiss
     @Binding var selected: BreathingMood?
 
+    @AppStorage("appLanguage") private var appLanguageRaw: String = AppLanguage.system.rawValue
+    private var lang: AppLanguage { AppLanguage(rawValue: appLanguageRaw) ?? .system }
+
     var body: some View {
         ZStack {
             AppBackground()
@@ -18,7 +21,7 @@ struct MoodPickerView: View {
 
                 VStack(spacing: 10) {
                     ForEach(BreathingMood.allCases, id: \.self) { mood in
-                        pill(title: mood.titleKey, isSelected: selected == mood) {
+                        pill(title: mood.title(lang: lang), isSelected: selected == mood) {
                             selected = mood
                             dismiss()
                         }
@@ -44,7 +47,7 @@ struct MoodPickerView: View {
 
             Spacer()
 
-            Text("bre_setup_mood_title")
+            Text(L10n.s("bre_setup_mood_title", lang: lang))
                 .font(.caption.bold())
                 .foregroundStyle(.secondary)
 
@@ -55,7 +58,7 @@ struct MoodPickerView: View {
         .padding(.horizontal, 16)
     }
 
-    private func pill(title: LocalizedStringKey, isSelected: Bool, action: @escaping () -> Void) -> some View {
+    private func pill(title: String, isSelected: Bool, action: @escaping () -> Void) -> some View {
         Button(action: action) {
             HStack {
                 Text(title)

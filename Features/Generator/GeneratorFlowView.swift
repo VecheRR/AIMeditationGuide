@@ -11,6 +11,10 @@ struct GeneratorFlowView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var vm = GeneratorViewModel()
 
+    // Language (важно!)
+    @AppStorage("appLanguage") private var appLanguageRaw: String = AppLanguage.system.rawValue
+    private var lang: AppLanguage { AppLanguage(rawValue: appLanguageRaw) ?? .system }
+
     @State private var showGoal = false
     @State private var showDuration = false
     @State private var showVoice = false
@@ -29,7 +33,7 @@ struct GeneratorFlowView: View {
                                 .font(.system(size: 56, weight: .semibold))
                                 .padding(.top, 6)
 
-                            Text("gen_flow_hint") // локализация
+                            Text(L10n.s("gen_flow_hint", lang: lang))
                                 .font(.subheadline)
                                 .foregroundStyle(.secondary)
                                 .multilineTextAlignment(.center)
@@ -38,15 +42,30 @@ struct GeneratorFlowView: View {
                         .frame(maxWidth: .infinity)
 
                         VStack(spacing: 12) {
-                            row(titleKey: "gen_goal_title", value: vm.goal?.rawValue ?? "") { showGoal = true }
-                            row(titleKey: "gen_duration_title", value: vm.duration?.title ?? "") { showDuration = true }
-                            row(titleKey: "gen_voice_title", value: vm.voice?.rawValue ?? "") { showVoice = true }
-                            row(titleKey: "gen_bg_title", value: vm.background?.rawValue ?? "") { showBg = true }
+                            row(
+                                title: L10n.s("gen_goal_title", lang: lang),
+                                valueText: vm.goal.map { goalTitle($0) } ?? ""
+                            ) { showGoal = true }
+
+                            row(
+                                title: L10n.s("gen_duration_title", lang: lang),
+                                valueText: vm.duration.map { durationTitle($0) } ?? ""
+                            ) { showDuration = true }
+
+                            row(
+                                title: L10n.s("gen_voice_title", lang: lang),
+                                valueText: vm.voice.map { voiceTitle($0) } ?? ""
+                            ) { showVoice = true }
+
+                            row(
+                                title: L10n.s("gen_bg_title", lang: lang),
+                                valueText: vm.background.map { bgTitle($0) } ?? ""
+                            ) { showBg = true }
                         }
                         .padding(.horizontal, 16)
 
                         if let err = vm.errorText {
-                            Text(err) // обычно это системная ошибка, можно не локализовать
+                            Text(err) // системное
                                 .font(.footnote)
                                 .foregroundStyle(.red)
                                 .padding(.horizontal, 16)
@@ -59,7 +78,9 @@ struct GeneratorFlowView: View {
                     Spacer()
 
                     PrimaryButton(
-                        title: vm.isLoading ? String(localized: "gen_btn_generating") : String(localized: "gen_btn_generate"),
+                        title: vm.isLoading
+                            ? L10n.s("gen_btn_generating", lang: lang)
+                            : L10n.s("gen_btn_generate", lang: lang),
                         isEnabled: vm.canGenerate && !vm.isLoading
                     ) {
                         Task {
@@ -71,56 +92,90 @@ struct GeneratorFlowView: View {
                     .padding(.bottom, 16)
                 }
             }
-            .navigationTitle(String(localized: "gen_nav_title"))
+            .navigationTitle(L10n.s("gen_nav_title", lang: lang))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     Button { dismiss() } label: { Image(systemName: "xmark") }
+                        .accessibilityLabel(Text(L10n.s("common_close", lang: lang)))
                 }
             }
             .navigationDestination(isPresented: $showResult) {
                 GeneratedResultView(vm: vm)
             }
+
+            // MARK: - Sheets (ID хранится rawValue, UI показывает локализованный title)
+
             .sheet(isPresented: $showGoal) {
                 SelectList(
-                    title: String(localized: "gen_sheet_goal_title"),
-                    items: GenGoal.allCases.map { $0.rawValue }, // ⚠️ ниже напишу, как локализовать значения
-                    selected: vm.goal?.rawValue
-                ) { v in vm.goal = GenGoal(rawValue: v) }
+                    title: L10n.s("gen_sheet_goal_title", lang: lang),
+                    rows: GenGoal.allCases.map {
+                        .init(id: $0.rawValue, title: goalTitle($0))
+                    },
+                    selectedID: vm.goal?.rawValue
+                ) { id in
+                    vm.goal = GenGoal(rawValue: id)
+                }
+                .presentationDetents([.medium])
             }
+
             .sheet(isPresented: $showDuration) {
                 SelectList(
-                    title: String(localized: "gen_sheet_duration_title"),
-                    items: GenDuration.allCases.map { $0.title },
-                    selected: vm.duration?.title
-                ) { v in vm.duration = GenDuration.allCases.first(where: { $0.title == v }) }
+                    title: L10n.s("gen_sheet_duration_title", lang: lang),
+                    rows: GenDuration.allCases.map {
+                        .init(id: String($0.rawValue), title: durationTitle($0))
+                    },
+                    selectedID: vm.duration.map { String($0.rawValue) }
+                ) { id in
+                    if let raw = Int(id) {
+                        vm.duration = GenDuration(rawValue: raw)
+                    }
+                }
+                .presentationDetents([.medium])
             }
+
             .sheet(isPresented: $showVoice) {
                 SelectList(
-                    title: String(localized: "gen_sheet_voice_title"),
-                    items: GenVoice.allCases.map { $0.rawValue },
-                    selected: vm.voice?.rawValue
-                ) { v in vm.voice = GenVoice(rawValue: v) }
+                    title: L10n.s("gen_sheet_voice_title", lang: lang),
+                    rows: GenVoice.allCases.map {
+                        .init(id: $0.rawValue, title: voiceTitle($0))
+                    },
+                    selectedID: vm.voice?.rawValue
+                ) { id in
+                    vm.voice = GenVoice(rawValue: id)
+                }
+                .presentationDetents([.medium])
             }
+
             .sheet(isPresented: $showBg) {
                 SelectList(
-                    title: String(localized: "gen_sheet_bg_title"),
-                    items: GenBackground.allCases.map { $0.rawValue },
-                    selected: vm.background?.rawValue
-                ) { v in vm.background = GenBackground(rawValue: v) }
+                    title: L10n.s("gen_sheet_bg_title", lang: lang),
+                    rows: GenBackground.allCases.map {
+                        .init(id: $0.rawValue, title: bgTitle($0))
+                    },
+                    selectedID: vm.background?.rawValue
+                ) { id in
+                    vm.background = GenBackground(rawValue: id)
+                }
+                .presentationDetents([.medium])
             }
         }
     }
 
-    private func row(titleKey: String, value: String, action: @escaping () -> Void) -> some View {
-        Button(action: action) {
+    // MARK: - Row
+
+    private func row(title: String, valueText: String, action: @escaping () -> Void) -> some View {
+        let displayValue = valueText.isEmpty ? L10n.s("gen_row_tap_to_choose", lang: lang) : valueText
+        let a11yValue = valueText.isEmpty ? L10n.s("gen_row_not_selected", lang: lang) : valueText
+
+        return Button(action: action) {
             HStack(alignment: .center, spacing: 12) {
                 VStack(alignment: .leading, spacing: 4) {
-                    Text(LocalizedStringKey(titleKey))
+                    Text(title)
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
 
-                    Text(value.isEmpty ? String(localized: "gen_row_tap_to_choose") : value)
+                    Text(displayValue)
                         .font(.headline)
                         .foregroundStyle(.primary)
                         .lineLimit(2)
@@ -148,13 +203,26 @@ struct GeneratorFlowView: View {
         .contentShape(Rectangle())
         .buttonStyle(.plain)
         .foregroundStyle(.primary)
-        // Accessibility — тоже локализуем через ключи, чтобы не было английского в русском UI
-        .accessibilityLabel(
-            Text(
-                value.isEmpty
-                ? LocalizedStringKey("\(titleKey). gen_row_not_selected")
-                : LocalizedStringKey("\(titleKey). \(value)")
-            )
-        )
+        .accessibilityLabel(Text("\(title). \(a11yValue)"))
+    }
+
+    // MARK: - Localized enum titles (UI)
+
+    private func goalTitle(_ g: GenGoal) -> String {
+        // ожидаем ключи вида: gen_goal_reduce_stress и т.д.
+        L10n.s("gen_goal_\(g.rawValue)", lang: lang)
+    }
+
+    private func voiceTitle(_ v: GenVoice) -> String {
+        L10n.s("gen_voice_\(v.rawValue)", lang: lang)
+    }
+
+    private func bgTitle(_ b: GenBackground) -> String {
+        L10n.s("gen_bg_\(b.rawValue)", lang: lang)
+    }
+
+    private func durationTitle(_ d: GenDuration) -> String {
+        // ожидаем ключи: gen_duration_5 / gen_duration_10 / gen_duration_15
+        L10n.s("gen_duration_\(d.rawValue)", lang: lang)
     }
 }

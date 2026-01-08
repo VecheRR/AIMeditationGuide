@@ -11,6 +11,10 @@ struct OnboardingView: View {
     let onFinish: () -> Void
     @State private var page = 0
 
+    // Language (важно!)
+    @AppStorage("appLanguage") private var appLanguageRaw: String = AppLanguage.system.rawValue
+    private var lang: AppLanguage { AppLanguage(rawValue: appLanguageRaw) ?? .system }
+
     private let pages: [OnboardingPage] = [
         .init(
             titleKey: "onb_p1_title",
@@ -51,7 +55,7 @@ struct OnboardingView: View {
             VStack(spacing: 18) {
                 HStack {
                     Spacer()
-                    Button(String(localized: "onb_skip")) { onFinish() }
+                    Button(L10n.s("onb_skip", lang: lang)) { onFinish() }
                         .font(.footnote.weight(.semibold))
                         .foregroundStyle(.secondary)
                 }
@@ -59,7 +63,7 @@ struct OnboardingView: View {
 
                 TabView(selection: $page) {
                     ForEach(Array(pages.enumerated()), id: \.offset) { index, item in
-                        OnboardingCard(page: item)
+                        OnboardingCard(page: item, lang: lang)
                             .tag(index)
                     }
                 }
@@ -68,7 +72,11 @@ struct OnboardingView: View {
                 pageControl
                     .padding(.top, 4)
 
-                PrimaryButton(title: isLastPage ? String(localized: "onb_start_now") : String(localized: "onb_next")) {
+                PrimaryButton(
+                    title: isLastPage
+                        ? L10n.s("onb_start_now", lang: lang)
+                        : L10n.s("onb_next", lang: lang)
+                ) {
                     if isLastPage {
                         onFinish()
                     } else {
@@ -80,7 +88,7 @@ struct OnboardingView: View {
                 Button {
                     onFinish()
                 } label: {
-                    Text(String(localized: "onb_explore"))
+                    Text(L10n.s("onb_explore", lang: lang))
                         .font(.footnote)
                         .foregroundStyle(.secondary)
                         .underline()
@@ -106,6 +114,7 @@ struct OnboardingView: View {
 
 private struct OnboardingCard: View {
     let page: OnboardingPage
+    let lang: AppLanguage
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
@@ -128,12 +137,12 @@ private struct OnboardingCard: View {
             .padding(.top, 8)
 
             VStack(alignment: .leading, spacing: 10) {
-                Text(LocalizedStringKey(page.subtitleKey))
+                Text(L10n.s(page.titleKey, lang: lang))
                     .font(.system(size: 28, weight: .semibold))
                     .foregroundStyle(.primary)
                     .lineSpacing(4)
 
-                Text(LocalizedStringKey(page.subtitleKey))
+                Text(L10n.s(page.subtitleKey, lang: lang))
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
             }
@@ -146,7 +155,7 @@ private struct OnboardingCard: View {
                             .font(.system(size: 16, weight: .bold))
                             .padding(.top, 2)
 
-                        Text(LocalizedStringKey(key))
+                        Text(L10n.s(key, lang: lang))
                             .font(.footnote)
                             .foregroundStyle(.primary)
                     }

@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftData
+import UIKit
 
 struct GeneratedResultView: View {
     @ObservedObject var vm: GeneratorViewModel
@@ -15,10 +16,17 @@ struct GeneratedResultView: View {
     @State private var bg: GenBackground = .nature
     @State private var didSave = false
 
+    @State private var isStarting = false
+    @State private var startError: String?
+
     @Environment(\.modelContext) private var modelContext
 
+    // Language
+    @AppStorage("appLanguage") private var appLanguageRaw: String = AppLanguage.system.rawValue
+    private var lang: AppLanguage { AppLanguage(rawValue: appLanguageRaw) ?? .system }
+
     var body: some View {
-        let title = vm.generated?.title ?? String(localized: "gen_result_default_title")
+        let title = vm.generated?.title ?? L10n.s("gen_result_default_title", lang: lang)
         let summary = vm.generated?.summary ?? ""
         let durationValue = vm.duration?.rawValue ?? 5
 
@@ -27,6 +35,7 @@ struct GeneratedResultView: View {
 
             ScrollView {
                 VStack(spacing: 18) {
+
                     KenBurnsCoverView(
                         imageURL: vm.coverImageURL,
                         title: title,
@@ -36,12 +45,12 @@ struct GeneratedResultView: View {
                     .padding(.horizontal, 16)
 
                     VStack(alignment: .leading, spacing: 12) {
-                        Text(String(localized: "gen_result_summary_title"))
+                        Text(L10n.s("gen_result_summary_title", lang: lang))
                             .font(.caption.bold())
                             .foregroundStyle(.secondary)
                             .accessibilityHidden(true)
 
-                        Text(summary.isEmpty ? String(localized: "gen_result_summary_empty") : summary)
+                        Text(summary.isEmpty ? L10n.s("gen_result_summary_empty", lang: lang) : summary)
                             .font(.body)
                             .foregroundStyle(.primary)
                             .multilineTextAlignment(.leading)
@@ -53,7 +62,7 @@ struct GeneratedResultView: View {
                         .font(.footnote)
                         .foregroundStyle(.secondary)
                         .accessibilityElement(children: .combine)
-                        .accessibilityLabel(accessibilitySummary(minutes: durationValue))
+                        .accessibilityLabel(Text(accessibilitySummary(minutes: durationValue)))
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(16)
@@ -63,18 +72,31 @@ struct GeneratedResultView: View {
                     )
                     .padding(.horizontal, 16)
 
-                    VStack(spacing: 12) {
-                        PrimaryButton(title: String(localized: "gen_result_btn_start")) {
-                            bg = vm.background ?? .none
-                            openPlayer = true
-                        }
-                        .accessibilityLabel(Text(String(localized: "gen_result_a11y_start")))
+                    if let startError, !startError.isEmpty {
+                        Text(startError)
+                            .font(.footnote)
+                            .foregroundStyle(.red)
+                            .multilineTextAlignment(.center)
+                            .padding(.horizontal, 16)
+                    }
 
-                        PrimaryButton(title: String(localized: "gen_result_btn_save")) {
+                    VStack(spacing: 12) {
+
+                        PrimaryButton(
+                            title: isStarting
+                                ? L10n.s("paywall_processing", lang: lang)
+                                : L10n.s("gen_result_btn_start", lang: lang)
+                        ) {
+                            Task { await startMeditationWithAd() }
+                        }
+                        .accessibilityLabel(Text(L10n.s("gen_result_a11y_start", lang: lang)))
+                        .disabled(isStarting || vm.generated == nil)
+
+                        PrimaryButton(title: L10n.s("gen_result_btn_save", lang: lang)) {
                             saveToHistory()
                             didSave = true
                         }
-                        .accessibilityLabel(Text(String(localized: "gen_result_a11y_save")))
+                        .accessibilityLabel(Text(L10n.s("gen_result_a11y_save", lang: lang)))
                         .disabled(didSave || vm.generated == nil)
                     }
                     .padding(.bottom, 20)
@@ -83,8 +105,12 @@ struct GeneratedResultView: View {
                 .padding(.vertical, 18)
             }
         }
-        .navigationTitle(String(localized: "gen_result_nav_title"))
+        .navigationTitle(L10n.s("gen_result_nav_title", lang: lang))
         .navigationBarTitleDisplayMode(.inline)
+        .task {
+            // заранее подгружаем rewarded
+            AdMobRewardedManager.shared.preload()
+        }
         .fullScreenCover(isPresented: $openPlayer) {
             PlayerView(
                 title: title,
@@ -103,35 +129,63 @@ struct GeneratedResultView: View {
         }
     }
 
-    // MARK: - Localized strings helpers
+    // MARK: - Start with rewarded ad
+
+    @MainActor
+    private func startMeditationWithAd() async {
+        startError = nil
+        isStarting = true
+        defer { isStarting = false }
+
+        // подстраховка — если не подгружено
+        AdMobRewardedManager.shared.preload()
+
+        guard let vc = UIApplication.shared.topViewController else {
+            startError = "No view controller to present ad."
+            return
+        }
+
+        let ok = await AdMobRewardedManager.shared.show(from: vc)
+
+        // ok = true только если reward получен (так и должно быть в твоём менеджере)
+        guard ok else {
+            startError = "Ad not completed. Try again."
+            return
+        }
+
+        bg = vm.background ?? .none
+        openPlayer = true
+    }
+
+    // MARK: - Labels
 
     private func coverSubtitle(minutes: Int) -> String {
-        // "%lld min guided session"
-        return String(format: String(localized: "gen_result_cover_subtitle"), minutes)
+        L10n.f("gen_result_cover_subtitle", lang: lang, minutes)
     }
 
     private func durationLabel(minutes: Int) -> String {
-        // "%lld min"
-        return String(format: String(localized: "gen_result_duration_short"), minutes)
+        L10n.f("gen_result_duration_short", lang: lang, minutes)
     }
 
     private func backgroundLabel() -> String {
-        // Если у тебя rawValue на английском — это временно ок.
-        // Потом лучше сделать локализуемые title для enum.
-        let bgName = vm.background?.rawValue ?? String(localized: "gen_result_bg_none")
-        return bgName
+        guard let bg = vm.background else {
+            return L10n.s("gen_result_bg_none", lang: lang)
+        }
+        if bg == .none {
+            return L10n.s("gen_result_bg_none", lang: lang)
+        }
+        return L10n.s("gen_bg_\(bg.rawValue)", lang: lang)
     }
 
     private func accessibilitySummary(minutes: Int) -> String {
-        let bgName = vm.background?.rawValue ?? String(localized: "gen_result_bg_none")
-        // "Duration %lld minutes. Background %@"
-        return String(format: String(localized: "gen_result_a11y_duration_bg"), minutes, bgName)
+        L10n.f("gen_result_a11y_duration_bg", lang: lang, minutes, backgroundLabel())
     }
 
     // MARK: - Save
 
     private func saveToHistory() {
         guard let gen = vm.generated else { return }
+
         let minutes = vm.duration?.rawValue ?? 5
         let bgRaw = (vm.background ?? .none).rawValue
         let fileName = vm.voiceFileURL?.lastPathComponent

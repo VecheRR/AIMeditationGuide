@@ -67,20 +67,20 @@ extension MeditationSession {
     }
 }
 
-@Model
-final class BreathingLog {
-    @Attribute(.unique) var id: UUID
-    var createdAt: Date
-    var durationSeconds: Int
-    var mood: String
-
-    init(durationSeconds: Int, mood: String) {
-        self.id = UUID()
-        self.createdAt = .now
-        self.durationSeconds = durationSeconds
-        self.mood = mood
-    }
-}
+//@Model
+//final class BreathingLog {
+//    @Attribute(.unique) var id: UUID
+//    var createdAt: Date
+//    var durationSeconds: Int
+//    var mood: String
+//
+//    init(durationSeconds: Int, mood: String) {
+//        self.id = UUID()
+//        self.createdAt = .now
+//        self.durationSeconds = durationSeconds
+//        self.mood = mood
+//    }
+//}
 
 @Model
 final class RoutinePlan {

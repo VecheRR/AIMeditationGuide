@@ -12,6 +12,10 @@ struct RoutineView: View {
     @Environment(\.modelContext) private var modelContext
     @StateObject private var viewModel = RoutineViewModel()
 
+    // Language (важно!)
+    @AppStorage("appLanguage") private var appLanguageRaw: String = AppLanguage.system.rawValue
+    private var lang: AppLanguage { AppLanguage(rawValue: appLanguageRaw) ?? .system }
+
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
@@ -19,8 +23,8 @@ struct RoutineView: View {
 
                 progressCalendar
 
-                if let error = viewModel.errorText {
-                    errorBanner(text: error)
+                if let key = viewModel.errorKey {
+                    errorBanner(text: L10n.s(key, lang: lang))
                 }
 
                 if viewModel.isLoading {
@@ -35,16 +39,22 @@ struct RoutineView: View {
             .padding(.top, 12)
         }
         .background(AppBackground())
-        .navigationTitle("DAILY ROUTINE")
+        .navigationTitle(L10n.s("routine_title", lang: lang))
         .navigationBarTitleDisplayMode(.inline)
-        .onAppear { viewModel.configure(context: modelContext) }
+        .onAppear {
+            viewModel.configure(context: modelContext)
+            viewModel.setLanguage(lang)
+        }
     }
+
+    // MARK: - Header
 
     private var headerSection: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("Structured practices")
+            Text(L10n.s("routine_header_title", lang: lang))
                 .font(.headline)
-            Text("Follow the suggested flow, regenerate a new one, or save it for later.")
+
+            Text(L10n.s("routine_header_subtitle", lang: lang))
                 .font(.footnote)
                 .foregroundStyle(.secondary)
 
@@ -53,44 +63,32 @@ struct RoutineView: View {
             }
 
             HStack(spacing: 10) {
-                headerButton(title: "Start", icon: "play.fill", isDisabled: viewModel.plan == nil) { viewModel.start() }
-                headerButton(title: "Regenerate", icon: "arrow.clockwise") {
+                headerButton(
+                    title: L10n.s("routine_btn_start", lang: lang),
+                    icon: "play.fill",
+                    isDisabled: viewModel.plan == nil
+                ) { viewModel.start() }
+
+                headerButton(
+                    title: L10n.s("routine_btn_regenerate", lang: lang),
+                    icon: "arrow.clockwise"
+                ) {
                     Task { await viewModel.regenerate() }
                 }
-                headerButton(title: "Save", icon: "tray.and.arrow.down.fill", isDisabled: viewModel.plan == nil) { viewModel.savePlan() }
-                headerButton(title: "Mark Done", icon: "checkmark.circle.fill", isDisabled: viewModel.plan == nil || viewModel.plan?.status == .done) { viewModel.markPlanDone() }
+
+                headerButton(
+                    title: L10n.s("routine_btn_save", lang: lang),
+                    icon: "tray.and.arrow.down.fill",
+                    isDisabled: viewModel.plan == nil
+                ) { viewModel.savePlan() }
+
+                headerButton(
+                    title: L10n.s("routine_btn_mark_done", lang: lang),
+                    icon: "checkmark.circle.fill",
+                    isDisabled: viewModel.plan == nil || viewModel.plan?.status == .done
+                ) { viewModel.markPlanDone() }
             }
         }
-    }
-
-    private var progressCalendar: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text("This week")
-                .font(.caption.bold())
-                .foregroundStyle(.secondary)
-
-            HStack(spacing: 10) {
-                ForEach(dayEntries, id: \.day) { entry in
-                    VStack(spacing: 6) {
-                        Text(entry.short)
-                            .font(.caption2)
-                            .foregroundStyle(.secondary)
-                        Circle()
-                            .fill(entry.isDone ? Color.green : Color.black.opacity(0.1))
-                            .frame(width: 12, height: 12)
-                            .overlay(
-                                Circle()
-                                    .stroke(entry.isToday ? Color.blue : Color.clear, lineWidth: 2)
-                                    .frame(width: 18, height: 18)
-                            )
-                    }
-                    .frame(maxWidth: .infinity)
-                }
-            }
-        }
-        .padding(12)
-        .background(Color.white.opacity(0.6))
-        .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
     }
 
     private func headerButton(title: String, icon: String, isDisabled: Bool = false, action: @escaping () -> Void) -> some View {
@@ -113,7 +111,10 @@ struct RoutineView: View {
         HStack(spacing: 8) {
             Image(systemName: status == .done ? "checkmark.seal.fill" : "bolt.fill")
                 .foregroundStyle(status == .done ? .green : .blue)
-            Text(status == .done ? "Marked as done" : "Active plan")
+
+            Text(status == .done
+                 ? L10n.s("routine_status_done", lang: lang)
+                 : L10n.s("routine_status_active", lang: lang))
                 .font(.caption)
         }
         .padding(.horizontal, 10)
@@ -122,10 +123,45 @@ struct RoutineView: View {
         .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
     }
 
+    // MARK: - Week calendar
+
+    private var progressCalendar: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text(L10n.s("routine_week_title", lang: lang))
+                .font(.caption.bold())
+                .foregroundStyle(.secondary)
+
+            HStack(spacing: 10) {
+                ForEach(dayEntries, id: \.day) { entry in
+                    VStack(spacing: 6) {
+                        Text(entry.short)
+                            .font(.caption2)
+                            .foregroundStyle(.secondary)
+
+                        Circle()
+                            .fill(entry.isDone ? Color.green : Color.black.opacity(0.1))
+                            .frame(width: 12, height: 12)
+                            .overlay(
+                                Circle()
+                                    .stroke(entry.isToday ? Color.blue : Color.clear, lineWidth: 2)
+                                    .frame(width: 18, height: 18)
+                            )
+                    }
+                    .frame(maxWidth: .infinity)
+                }
+            }
+        }
+        .padding(12)
+        .background(Color.white.opacity(0.6))
+        .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+    }
+
+    // MARK: - States
+
     private var loadingState: some View {
         VStack(spacing: 8) {
             ProgressView()
-            Text("Generating your routine...")
+            Text(L10n.s("routine_loading", lang: lang))
                 .font(.footnote)
                 .foregroundStyle(.secondary)
         }
@@ -135,12 +171,14 @@ struct RoutineView: View {
 
     private var emptyState: some View {
         VStack(spacing: 10) {
-            Text("No routine yet")
+            Text(L10n.s("routine_empty_title", lang: lang))
                 .font(.headline)
-            Text("Tap Regenerate to get a fresh set of practices for the day.")
+
+            Text(L10n.s("routine_empty_subtitle", lang: lang))
                 .font(.footnote)
                 .foregroundStyle(.secondary)
-            headerButton(title: "Regenerate", icon: "sparkles") {
+
+            headerButton(title: L10n.s("routine_btn_regenerate", lang: lang), icon: "sparkles") {
                 Task { await viewModel.regenerate() }
             }
         }
@@ -148,14 +186,16 @@ struct RoutineView: View {
         .padding(.vertical, 40)
     }
 
+    // MARK: - Content
+
     private func routineContent(plan: RoutinePlan) -> some View {
         VStack(alignment: .leading, spacing: 14) {
             if plan.status == .done {
-                banner(text: "Routine marked as done. Regenerate when you're ready for a fresh flow.")
+                banner(text: L10n.s("routine_banner_done", lang: lang))
             } else if let next = plan.nextIncomplete {
-                banner(text: "Next: \(next.title) • \(next.durationMinutes) min")
+                banner(text: L10n.f("routine_banner_next_format", lang: lang, next.title, next.durationMinutes))
             } else {
-                banner(text: "Great job! All practices are done.")
+                banner(text: L10n.s("routine_banner_all_done", lang: lang))
             }
 
             ForEach(plan.items) { item in
@@ -195,12 +235,15 @@ struct RoutineView: View {
                 VStack(alignment: .leading, spacing: 6) {
                     Text(item.title)
                         .font(.headline)
+
                     Text(item.details)
                         .font(.footnote)
                         .foregroundStyle(.secondary)
                 }
+
                 Spacer()
-                Text("\(item.durationMinutes) min")
+
+                Text(L10n.f("routine_minutes_format", lang: lang, item.durationMinutes))
                     .font(.caption.bold())
                     .padding(8)
                     .background(Color.black.opacity(0.08))
@@ -211,13 +254,15 @@ struct RoutineView: View {
                 if item.isCompleted {
                     Image(systemName: "checkmark.circle.fill")
                         .foregroundStyle(.green)
-                    Text("Completed")
+
+                    Text(L10n.s("routine_item_completed", lang: lang))
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 } else {
                     Image(systemName: "circle")
                         .foregroundStyle(.secondary)
-                    Text("Pending")
+
+                    Text(L10n.s("routine_item_pending", lang: lang))
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }
@@ -228,7 +273,7 @@ struct RoutineView: View {
                     Button {
                         viewModel.markUndone(item: item)
                     } label: {
-                        Text("Mark as Pending")
+                        Text(L10n.s("routine_btn_mark_pending", lang: lang))
                             .font(.caption.bold())
                             .padding(.horizontal, 10)
                             .padding(.vertical, 8)
@@ -241,7 +286,7 @@ struct RoutineView: View {
                     Button {
                         viewModel.markDone(item: item)
                     } label: {
-                        Text("Mark as Done")
+                        Text(L10n.s("routine_btn_mark_done_item", lang: lang))
                             .font(.caption.bold())
                             .padding(.horizontal, 10)
                             .padding(.vertical, 8)
@@ -264,19 +309,45 @@ struct RoutineView: View {
         )
     }
 
+    // MARK: - Days
+
     private var dayEntries: [DayEntry] {
         let calendar = Calendar.current
         let today = calendar.startOfDay(for: .now)
 
+        let localeID: String = {
+            switch lang {
+            case .ru: return "ru_RU"
+            case .en: return "en_US"
+            case .system: return Locale.current.identifier
+            }
+        }()
+
+        let loc = Locale(identifier: localeID)
+
+        // ВАЖНО: не берём calendar.shortWeekdaySymbols, потому что он зависит от Locale.current,
+        // а нам нужно уважать appLanguage.
+        let shortSymbols = Calendar(identifier: calendar.identifier).shortStandaloneWeekdaySymbols(with: loc)
+
         return (0..<7).compactMap { offset in
             guard let day = calendar.date(byAdding: .day, value: -offset, to: today) else { return nil }
+
             let weekdayIndex = max(calendar.component(.weekday, from: day) - 1, 0)
-            let short = calendar.shortWeekdaySymbols[weekdayIndex]
+            let short = shortSymbols[safe: weekdayIndex] ?? ""
+
             let isDone = viewModel.completionHistory[day] ?? false
-            return DayEntry(day: day, short: short.uppercased(), isDone: isDone, isToday: calendar.isDate(day, inSameDayAs: today))
-        }.reversed()
+            let isToday = calendar.isDate(day, inSameDayAs: today)
+
+            // Uppercase: делаем локально корректно
+            let display = short.uppercased(with: loc)
+
+            return DayEntry(day: day, short: display, isDone: isDone, isToday: isToday)
+        }
+        .reversed()
     }
 }
+
+// MARK: - Helpers
 
 private struct DayEntry: Identifiable {
     var id: Date { day }
@@ -284,4 +355,19 @@ private struct DayEntry: Identifiable {
     let short: String
     let isDone: Bool
     let isToday: Bool
+}
+
+private extension Calendar {
+    func shortStandaloneWeekdaySymbols(with locale: Locale) -> [String] {
+        var cal = self
+        cal.locale = locale
+        return cal.shortStandaloneWeekdaySymbols
+    }
+}
+
+private extension Array {
+    subscript(safe idx: Int) -> Element? {
+        guard idx >= 0, idx < count else { return nil }
+        return self[idx]
+    }
 }

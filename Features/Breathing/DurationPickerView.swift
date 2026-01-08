@@ -8,6 +8,9 @@ import SwiftUI
 struct DurationPickerView: View {
     @Environment(\.dismiss) private var dismiss
     @Binding var selected: BreathingDuration?
+    
+    @AppStorage("appLanguage") private var appLanguageRaw: String = AppLanguage.system.rawValue
+    private var lang: AppLanguage { AppLanguage(rawValue: appLanguageRaw) ?? .system }
 
     var body: some View {
         ZStack {
@@ -18,7 +21,7 @@ struct DurationPickerView: View {
 
                 VStack(spacing: 10) {
                     ForEach(BreathingDuration.allCases, id: \.self) { d in
-                        pill(title: d.title, isSelected: selected == d) {
+                        pill(title: d.title(lang: lang), isSelected: selected == d) {
                             selected = d
                             dismiss()
                         }
@@ -44,7 +47,7 @@ struct DurationPickerView: View {
 
             Spacer()
 
-            Text("bre_setup_duration_title")
+            Text(L10n.s("bre_setup_duration_title", lang: lang))
                 .font(.caption.bold())
                 .foregroundStyle(.secondary)
 

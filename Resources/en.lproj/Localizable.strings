@@ -1,101 +1,112 @@
-"gen_flow_hint" = "Fill in the details below to\ngenerate a meditation";
+/* ===== SETTINGS ===== */
+"settings_title" = "Settings";
+"settings_profile_section" = "Profile";
+"settings_name_placeholder" = "Name";
+"settings_language_section" = "Language";
+"settings_language_title" = "Language";
 
-"gen_goal_title" = "Meditation Goal";
-"gen_duration_title" = "Duration";
-"gen_voice_title" = "Voice Style";
-"gen_bg_title" = "Background Sound";
+/* ===== COMMON ===== */
+"common_meditation_default_title" = "Meditation";
 
-"gen_btn_generate" = "GENERATE";
-"gen_btn_generating" = "GENERATING...";
+/* ===== HOME ===== */
+"home_greeting_hello" = "Hello";
+"home_greeting_named_format" = "Hello, %@";
 
-"gen_nav_title" = "GENERATE MEDITATION";
+"home_header_title" = "How are you feeling today?";
 
-"gen_sheet_goal_title" = "MEDITATION GOAL";
-"gen_sheet_duration_title" = "DURATION";
-"gen_sheet_voice_title" = "VOICE STYLE";
-"gen_sheet_bg_title" = "BACKGROUND SOUND";
+"home_action_generate" = "GENERATE MEDITATION";
+"home_action_breathing" = "BREATHING EXERCISE";
+"home_action_routine" = "DAILY ROUTINE";
 
-"gen_row_tap_to_choose" = "Tap to choose";
-"gen_row_not_selected" = "Not selected";
+"home_today_title" = "Today’s Meditation";
+"home_today_fallback_summary" = "Take a quick meditation break";
 
-"gen_result_default_title" = "Meditation";
-"gen_result_summary_title" = "SUMMARY";
-"gen_result_summary_empty" = "Your meditation script will appear here.";
-"gen_result_btn_start" = "START";
-"gen_result_btn_save" = "SAVE TO HISTORY";
-"gen_result_nav_title" = "MEDITATION";
+"home_minutes_format_caps" = "%d MINUTES";
+"home_minutes_badge_format" = "%d MIN";
 
-"gen_result_cover_subtitle" = "%lld min guided session";
-"gen_result_duration_short" = "%lld min";
-"gen_result_bg_none" = "No background";
+"home_badge_daily_routine" = "DAILY ROUTINE";
+"home_badge_meditation" = "MEDITATION";
 
-"gen_result_a11y_start" = "Start meditation";
-"gen_result_a11y_save" = "Save meditation to history";
-"gen_result_a11y_duration_bg" = "Duration %lld minutes. Background %@";
+"home_recommended_title" = "Recommended Sessions";
+"home_rec_breathing_title" = "BREATHING";
+"home_rec_breathing_subtitle" = "3 min reset";
+"home_rec_routine_title" = "ROUTINE";
+"home_rec_meditation_title" = "MEDITATION";
+"home_rec_meditation_subtitle" = "5 min focus";
 
-"name_prompt_title" = "What's your name?";
-"name_prompt_subtitle" = "We’ll use it to personalize your Home screen.";
-"name_prompt_field_placeholder" = "Your name";
-"name_prompt_btn_continue" = "Continue";
-"name_prompt_btn_not_now" = "Not now";
+"home_next_practice_format" = "%d min • %@";
+"home_routine_completed_subtitle" = "Completed • generate new";
+"home_routine_fallback_subtitle" = "1–3 practices";
 
-"player_volume_voice" = "Voice";
-"player_volume_background" = "Background";
+"tab_home" = "Home";
+"tab_history" = "History";
+"tab_settings" = "Settings";
 
-"player_finish_title" = "Finish early?";
-"player_finish_btn_finish" = "Finish";
-"player_finish_btn_cancel" = "Cancel";
-"player_finish_message" = "Your session will stop and won’t auto-save unless you save manually.";
+/* ===== SETTINGS ===== */
+"settings_title" = "Settings";
+"settings_profile_section" = "Profile";
+"settings_name_placeholder" = "Name";
+"settings_language_section" = "Language";
+"settings_language_title" = "Language";
 
-"player_a11y_close" = "Close player";
-"player_a11y_favorites" = "Save to favorites";
+/* ===== LANGUAGES ===== */
+"language_system" = "System";
+"language_english" = "English";
+"language_russian" = "Russian";
 
-"player_cover_subtitle_minutes" = "%d min session";
-"player_summary_fallback" = "Relax and follow the guidance.";
+/* ===== TABS ===== */
+"tab_home" = "Home";
+"tab_history" = "History";
+"tab_settings" = "Settings";
 
-"player_a11y_voice_options" = "Voice options";
-"player_a11y_pause" = "Pause";
-"player_a11y_play" = "Play";
-"player_a11y_play_hint" = "Controls both voice and background";
-"player_a11y_timer_options" = "Timer options";
+/* ===== HISTORY ===== */
+"history_title" = "History";
+"history_segment_meditations" = "MEDITATIONS";
+"history_segment_breathing" = "BREATHING";
+"history_empty_meditations" = "No meditation sessions yet";
+"history_empty_breathing" = "No breathing sessions yet";
 
-"player_btn_finish_early" = "Finish Early";
-"player_a11y_finish_early" = "Finish session early";
+"history_delete_meditation_title" = "Delete meditation?";
+"history_delete_meditation_message_format" = "Remove %@ from history?";
+"history_delete_breathing_title" = "Delete breathing log?";
+"history_delete_breathing_message" = "Remove breathing entry from history?";
 
-"player_btn_saved" = "Saved";
-"player_btn_save_history" = "Save to History";
-"player_a11y_save_history" = "Save meditation to history";
+"history_stat_total_minutes_title" = "Total minutes";
+"history_stat_total_minutes_caption" = "Meditations";
+"history_stat_streak_title" = "Daily streak";
+"history_stat_streak_caption" = "days";
 
-"player_a11y_background_fmt" = "Background sound: %@";
-"player_a11y_volume_fmt" = "%@ volume";
+"history_weekly_progress_title" = "Weekly progress";
+"history_weekly_progress_value_format" = "%d / 70 min";
 
-"bg_picker_title" = "BACKGROUND SOUNDS";
-"bg_picker_subtitle" = "Pick an ambience that lasts through the whole session.";
-"bg_picker_a11y_hint" = "Changes background loop without stopping the voice track";
+"history_minutes_badge_format" = "%d MIN";
+"history_minutes_title_format" = "%d MINUTES";
+"history_breathing_subtitle" = "Guided breathing";
 
-"bg_picker_volume_title" = "Background Volume";
-"bg_picker_volume_a11y" = "Background volume";
+/* ===== COMMON ===== */
+"common_delete" = "Delete";
+"common_cancel" = "Cancel";
 
-"bg_picker_a11y_background_fmt" = "Background sound: %@";
-
-"bg_none" = "None";
-"bg_nature" = "Nature";
-"bg_ambient" = "Ambient";
-"bg_rain" = "Rain";
-
+/* ===== PAYWALL ===== */
 "paywall_title" = "Unlock AI Meditation";
 "paywall_subtitle" = "Try premium for deeper guidance, soothing sounds, and mindful routines.";
-"paywall_restore" = "Restore purchases";
-"paywall_disclaimer" = "You won't be charged today. Cancel anytime during the trial. After the trial, your chosen plan renews automatically.";
 
 "paywall_perks_title" = "Premium features";
 "paywall_perks_subtitle" = "Build a calming ritual with full access.";
 
+"paywall_perk_unlimited" = "Unlimited AI-generated meditations";
+"paywall_perk_backgrounds" = "Full library of ambient backgrounds";
+"paywall_perk_history" = "History & progress tracking";
+"paywall_perk_breathing" = "Breathing exercises and routines";
+
 "paywall_choose_plan" = "Choose your plan";
 
+"paywall_restore" = "Restore purchases";
+"paywall_disclaimer" = "You won't be charged today. Cancel anytime during the trial. After the trial, your chosen plan renews automatically.";
+
 "paywall_processing" = "Processing...";
-"paywall_continue" = "Continue";
 "paywall_start_trial_fmt" = "Start %@ trial";
+"paywall_continue" = "Continue";
 
 "paywall_badge_best_value" = "BEST VALUE";
 "paywall_badge_flexible" = "FLEXIBLE";
@@ -105,11 +116,7 @@
 "paywall_detail_save_vs_monthly" = "Save vs monthly";
 "paywall_detail_lifetime_access" = "Lifetime access";
 
-"paywall_perk_unlimited" = "Unlimited AI-generated meditations";
-"paywall_perk_backgrounds" = "Full library of ambient backgrounds";
-"paywall_perk_history" = "History & progress tracking";
-"paywall_perk_breathing" = "Breathing exercises and routines";
-
+/* ===== ONBOARDING ===== */
 "onb_skip" = "Skip";
 "onb_next" = "NEXT";
 "onb_start_now" = "START NOW";
@@ -135,52 +142,346 @@
 "onb_p4_h1" = "History of meditations & breathing";
 "onb_p4_h2" = "One tap to replay or continue";
 
-"bre_setup_title" = "BREATHING EXERCISE";
-"bre_setup_subtitle" = "Create a breathing exercise\nthat matches your current state";
+/* ===== GENERATOR FLOW ===== */
+"gen_nav_title" = "GENERATE MEDITATION";
+"gen_flow_hint" = "Fill in the details below to\ngenerate a meditation";
 
-"bre_setup_mood_title" = "Mood Check-in";
-"bre_setup_duration_title" = "Duration";
-"bre_setup_start_session" = "START SESSION";
+"gen_goal_title" = "Meditation Goal";
+"gen_duration_title" = "Duration";
+"gen_voice_title" = "Voice Style";
+"gen_bg_title" = "Background Sound";
 
-"bre_setup_minutes_format" = "%d min";
+"gen_btn_generate" = "GENERATE";
+"gen_btn_generating" = "GENERATING...";
 
-"common_select" = "Select";
-"common_close" = "Close";
-"common_not_selected" = "Not selected";
+"gen_row_tap_to_choose" = "Tap to choose";
+"gen_row_not_selected" = "Not selected";
 
-/* ===== BREATHING SETUP ===== */
-"bre_setup_title" = "BREATHING EXERCISE";
-"bre_setup_subtitle" = "Create a breathing exercise\nthat matches your current state";
-"bre_setup_mood_title" = "Mood Check-in";
-"bre_setup_duration_title" = "Duration";
-"bre_setup_start_session" = "START SESSION";
+"gen_sheet_goal_title" = "MEDITATION GOAL";
+"gen_sheet_duration_title" = "DURATION";
+"gen_sheet_voice_title" = "VOICE STYLE";
+"gen_sheet_bg_title" = "BACKGROUND SOUND";
 
-/* ===== MOODS ===== */
+/* ===== GENERATOR RESULT ===== */
+"gen_result_nav_title" = "MEDITATION";
+"gen_result_default_title" = "Meditation";
+
+"gen_result_summary_title" = "SUMMARY";
+"gen_result_summary_empty" = "Your meditation script will appear here.";
+
+"gen_result_cover_subtitle" = "%d min guided session";
+"gen_result_duration_short" = "%d min";
+
+"gen_result_bg_none" = "No background";
+
+"gen_result_btn_start" = "START";
+"gen_result_btn_save" = "SAVE TO HISTORY";
+
+"gen_result_a11y_start" = "Start meditation";
+"gen_result_a11y_save" = "Save meditation to history";
+"gen_result_a11y_duration_bg" = "Duration %d minutes. Background %@";
+
+/* ===== PLAYER ===== */
+"player_finish_title" = "Finish session?";
+"player_finish_message" = "Are you sure you want to end this session early?";
+"player_finish_btn_finish" = "Finish";
+"player_finish_btn_cancel" = "Cancel";
+
+"player_summary_fallback" = "Take a calm moment and breathe.";
+
+"player_cover_subtitle_minutes" = "%d min session";
+
+"player_btn_finish_early" = "Finish";
+"player_btn_save_history" = "Save";
+"player_btn_saved" = "Saved";
+
+"player_volume_voice" = "Voice";
+"player_volume_background" = "Background";
+
+"player_a11y_close" = "Close";
+"player_a11y_favorites" = "Favorites";
+"player_a11y_voice_options" = "Voice options";
+"player_a11y_timer_options" = "Timer options";
+"player_a11y_play" = "Play";
+"player_a11y_pause" = "Pause";
+"player_a11y_play_hint" = "Double tap to toggle playback.";
+
+"player_a11y_finish_early" = "Finish early";
+"player_a11y_save_history" = "Save to history";
+
+"player_a11y_background_fmt" = "Background sound: %@";
+"player_a11y_volume_fmt" = "%@ volume";
+
+/* ===== BACKGROUND PICKER ===== */
+"bg_picker_title" = "Background sound";
+"bg_picker_subtitle" = "Choose a calm ambience for your session.";
+"bg_picker_a11y_hint" = "Select one background sound.";
+
+"bg_picker_volume_title" = "Volume";
+"bg_picker_volume_a11y" = "Background volume";
+
+"bg_picker_a11y_background_fmt" = "Background sound: %@";
+
+"bg_none" = "None";
+"bg_nature" = "Nature";
+"bg_ambient" = "Ambient";
+"bg_rain" = "Rain";
+
+/* ===== COMMON ===== */
+"common_delete" = "Delete";
+"common_cancel" = "Cancel";
+
+/* ===== HISTORY ===== */
+"history_title" = "History";
+
+"history_segment_meditations" = "MEDITATIONS";
+"history_segment_breathing" = "BREATHING";
+
+"history_empty_meditations" = "No meditation sessions yet";
+"history_empty_breathing" = "No breathing sessions yet";
+
+"history_delete_meditation_title" = "Delete meditation?";
+"history_delete_meditation_message_format" = "Remove %@ from history?";
+
+"history_delete_breathing_title" = "Delete breathing log?";
+"history_delete_breathing_message" = "Remove breathing entry from history?";
+
+"history_stat_total_minutes_title" = "Total minutes";
+"history_stat_total_minutes_caption" = "Meditations";
+
+"history_stat_streak_title" = "Daily streak";
+"history_stat_streak_caption" = "days";
+
+"history_weekly_progress_title" = "Weekly progress";
+"history_weekly_progress_value_format" = "%d / 70 min";
+
+"history_minutes_badge_format" = "%d MIN";
+"history_minutes_title_format" = "%d MINUTES";
+
+"history_breathing_subtitle" = "Guided breathing";
+"history_meditation_summary_fallback" = "A short mindful session";
+
+/* ===== BREATHING MOODS (shared) ===== */
 "bre_mood_calm" = "Calm";
 "bre_mood_neutral" = "Neutral";
 "bre_mood_stressed" = "Stressed";
 "bre_mood_anxious" = "Anxious";
 
-/* ===== PHASE TITLES ===== */
+/* ===== GENERATOR FLOW ===== */
+"gen_nav_title" = "Generator";
+"gen_flow_hint" = "Choose options and generate a guided meditation.";
+"gen_btn_generate" = "Generate";
+"gen_btn_generating" = "Generating...";
+
+"gen_goal_title" = "Goal";
+"gen_duration_title" = "Duration";
+"gen_voice_title" = "Voice";
+"gen_bg_title" = "Background";
+
+"gen_sheet_goal_title" = "Choose goal";
+"gen_sheet_duration_title" = "Choose duration";
+"gen_sheet_voice_title" = "Choose voice";
+"gen_sheet_bg_title" = "Choose background";
+
+"gen_row_tap_to_choose" = "Tap to choose";
+"gen_row_not_selected" = "Not selected";
+
+/* durations */
+"gen_duration_5" = "5 min";
+"gen_duration_10" = "10 min";
+"gen_duration_15" = "15 min";
+
+/* backgrounds (ID must match rawValue) */
+"gen_bg_none" = "None";
+"gen_bg_nature" = "Nature";
+"gen_bg_ambient" = "Ambient";
+"gen_bg_rain" = "Rain";
+
+/* voices (пример — под свои rawValue) */
+"gen_voice_calm" = "Calm";
+"gen_voice_warm" = "Warm";
+"gen_voice_deep" = "Deep";
+
+/* goals (пример — под свои rawValue) */
+"gen_goal_focus" = "Focus";
+"gen_goal_sleep" = "Sleep";
+"gen_goal_relax" = "Relax";
+
+"mood_calm" = "Calm";
+"mood_neutral" = "Neutral";
+"mood_stressed" = "Stressed";
+"mood_anxious" = "Anxious";
+"mood_energized" = "Energized";
+
+"bre_mood_calm" = "Calm";
+"bre_mood_neutral" = "Neutral";
+"bre_mood_stressed" = "Stressed";
+"bre_mood_anxious" = "Anxious";
+
+/* Generator - Goals */
+"gen_goal_reduce_stress" = "Reduce stress";
+"gen_goal_improve_sleep" = "Improve sleep";
+"gen_goal_increase_focus" = "Increase focus";
+"gen_goal_boost_energy" = "Boost energy";
+"gen_goal_calm_anxiety" = "Calm anxiety";
+
+/* Generator - Voices */
+"gen_voice_soft" = "Soft";
+"gen_voice_neutral" = "Neutral";
+"gen_voice_deep" = "Deep";
+
+/* Generator - Backgrounds */
+"gen_bg_None" = "None";
+"gen_bg_Nature" = "Nature";
+"gen_bg_Ambient music" = "Ambient music";
+"gen_bg_Rain" = "Rain";
+
+/* Generator - Durations */
+"gen_duration_5" = "5 min";
+"gen_duration_10" = "10 min";
+"gen_duration_15" = "15 min";
+
+"routine_title" = "Daily routine";
+"routine_header_title" = "Structured practices";
+"routine_header_subtitle" = "Follow the suggested flow, regenerate a new one, or save it for later.";
+
+"routine_btn_start" = "Start";
+"routine_btn_regenerate" = "Regenerate";
+"routine_btn_save" = "Save";
+"routine_btn_mark_done" = "Mark Done";
+
+"routine_status_done" = "Marked as done";
+"routine_status_active" = "Active plan";
+
+"routine_week_title" = "This week";
+
+"routine_loading" = "Generating your routine...";
+
+"routine_empty_title" = "No routine yet";
+"routine_empty_subtitle" = "Tap Regenerate to get a fresh set of practices for the day.";
+
+"routine_banner_done" = "Routine marked as done. Regenerate when you're ready for a fresh flow.";
+"routine_banner_all_done" = "Great job! All practices are done.";
+"routine_banner_next_format" = "Next: %@ • %lld min";
+
+"routine_minutes_format" = "%lld min";
+
+"routine_item_completed" = "Completed";
+"routine_item_pending" = "Pending";
+
+"routine_btn_mark_pending" = "Mark as Pending";
+"routine_btn_mark_done_item" = "Mark as Done";
+
+/* Routine */
+"routine_title" = "Routine";
+"routine_header_title" = "Structured practices";
+"routine_header_subtitle" = "Follow the suggested flow, regenerate a new one, or save it for later.";
+
+"routine_btn_start" = "Start";
+"routine_btn_regenerate" = "Regenerate";
+"routine_btn_save" = "Save";
+"routine_btn_mark_done" = "Mark Done";
+
+"routine_status_done" = "Marked as done";
+"routine_status_active" = "Active plan";
+
+"routine_week_title" = "This week";
+
+"routine_loading" = "Generating your routine...";
+
+"routine_empty_title" = "No routine yet";
+"routine_empty_subtitle" = "Tap Regenerate to get a fresh set of practices for the day.";
+
+"routine_banner_done" = "Routine marked as done. Regenerate when you're ready for a fresh flow.";
+/* ВАЖНО: порядок как в коде: title, minutes */
+"routine_banner_next_format" = "Next: %@ • %d min";
+"routine_banner_all_done" = "Great job! All practices are done.";
+
+"routine_minutes_format" = "%d min";
+
+"routine_item_completed" = "Completed";
+"routine_item_pending" = "Pending";
+
+"routine_btn_mark_pending" = "Mark as Pending";
+"routine_btn_mark_done_item" = "Mark as Done";
+
+/* Routine errors (RoutineViewModel errorKey) */
+"routine_error_generic" = "Something went wrong. Please try again.";
+"routine_error_network" = "Network error. Please try again.";
+"routine_error_no_internet" = "No internet connection.";
+"routine_error_timeout" = "Request timed out. Please try again.";
+"routine_error_encoding" = "Couldn’t prepare routine data.";
+
+/* Routine AI prompts */
+"routine_ai_system_line1" = "You are a mindful routine coach.";
+"routine_ai_system_line2" = "Reply ONLY with JSON using shape: {\"items\":[{\"title\":\"string\",\"details\":\"string\",\"durationMinutes\":integer}]}";
+"routine_ai_system_line3" = "Provide 1 to 3 concise, actionable practices (3–20 minutes each).";
+"routine_ai_system_line4" = "Avoid markdown. No extra keys. No commentary.";
+
+"routine_ai_language_en" = "Write titles and details in English.";
+"routine_ai_language_ru" = "Write titles and details in Russian.";
+"routine_ai_language_system" = "Write titles and details in English.";
+
+"routine_ai_history_empty" = "No recent practices logged.";
+"routine_ai_yes" = "yes";
+"routine_ai_no" = "no";
+"routine_ai_history_line_format" = "- %@ (%dm) completed: %@";
+"routine_ai_history_block_format" = "Recent practice history:\n%@";
+
+"routine_ai_goals_fallback" = "Goal: general calm and focus.";
+"routine_ai_goals_format" = "Goals: %@.";
+
+"routine_ai_time_of_day_format" = "Time of day: %@.";
+"routine_ai_user_request" = "Suggest next mindful practices tailored to the time of day. Include short instructions in details and realistic durations.";
+
+"routine_daypart_morning" = "morning";
+"routine_daypart_afternoon" = "afternoon";
+"routine_daypart_evening" = "evening";
+
+/* Routine errors */
+"routine_error_empty_ai_response" = "AI returned no practices. Please regenerate.";
+
+"bre_complete_title" = "Session complete";
+"bre_complete_saved" = "Saved to History.";
+
+"bre_remaining" = "Remaining";
+
+"bre_a11y_close" = "Close";
+"bre_a11y_mute_hints" = "Hide breathing hints";
+"bre_a11y_unmute_hints" = "Show breathing hints";
+"bre_a11y_restart" = "Restart";
+
+"bre_setup_title" = "Breathing";
+"bre_setup_subtitle" = "Choose your mood and duration — and we’ll start.";
+"bre_setup_mood_title" = "Mood";
+"bre_setup_duration_title" = "Duration";
+"bre_setup_start_session" = "Start session";
+
 "bre_phase_inhale" = "Inhale";
 "bre_phase_hold" = "Hold";
 "bre_phase_exhale" = "Exhale";
 
-/* ===== PHASE INSTRUCTIONS ===== */
-"bre_hint_inhale" = "Inhale slowly";
-"bre_hint_hold" = "Hold gently";
-"bre_hint_exhale" = "Exhale fully";
+"bre_hint_inhale" = "Breathe in slowly";
+"bre_hint_hold" = "Hold your breath";
+"bre_hint_exhale" = "Breathe out slowly";
 
-/* ===== DURATION ===== */
 "bre_duration_minutes" = "%d min";
-
-/* ===== SESSION ===== */
 "bre_remaining" = "Remaining";
-"bre_complete_title" = "Breathing complete";
-"bre_complete_saved" = "Session saved to history";
+"bre_complete_title" = "Session complete";
+"bre_complete_saved" = "Saved to history.";
 
-/* ===== COMMON ===== */
+"bre_duration_minutes_format" = "%d min";
+
+"bre_mood_calm" = "Calm";
+"bre_mood_neutral" = "Neutral";
+"bre_mood_stressed" = "Stressed";
+"bre_mood_anxious" = "Anxious";
+
 "common_select" = "Select";
-"common_not_selected" = "Not selected";
-"common_close" = "Close";
-"common_restart" = "Restart";
+
+/* Name prompt */
+"name_prompt_title" = "What should we call you?";
+"name_prompt_subtitle" = "We’ll use your name in prompts and meditations.";
+"name_prompt_field_placeholder" = "For example: Vlad";
+"name_prompt_btn_continue" = "Continue";
+"name_prompt_btn_not_now" = "Not now";
