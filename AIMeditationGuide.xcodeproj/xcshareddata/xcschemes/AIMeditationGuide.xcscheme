@@ -50,8 +50,14 @@
             ReferencedContainer = "container:AIMeditationGuide.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
+      <CommandLineArguments>
+         <CommandLineArgument
+            argument = "-FIRDebugEnabled"
+            isEnabled = "YES">
+         </CommandLineArgument>
+      </CommandLineArguments>
       <StoreKitConfigurationFileReference
-         identifier = "../../App/AIMeditation.storekit">
+         identifier = "../App/AIMeditation.storekit">
       </StoreKitConfigurationFileReference>
    </LaunchAction>
    <ProfileAction

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8648DD322F0FC4A100370C54 /* AnalyticsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8648DD312F0FC4A000370C54 /* AnalyticsService.swift */; };
 		8655BD4B2F03180B00BAEA89 /* RoutineModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8655BD482F03180B00BAEA89 /* RoutineModels.swift */; };
 		8655BD4C2F03180B00BAEA89 /* RoutineViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8655BD4A2F03180B00BAEA89 /* RoutineViewModel.swift */; };
 		8655BD4D2F03180B00BAEA89 /* RoutineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8655BD492F03180B00BAEA89 /* RoutineView.swift */; };
@@ -34,7 +35,6 @@
 		86E6EAA42F02A50100532BE2 /* river.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 86E6EAA32F02A50100532BE2 /* river.mp3 */; };
 		86E6EAA62F02A51300532BE2 /* birds.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 86E6EAA52F02A51300532BE2 /* birds.mp3 */; };
 		86E6EAA82F02A51E00532BE2 /* waves.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 86E6EAA72F02A51E00532BE2 /* waves.mp3 */; };
-		86E6EAB82F02A97400532BE2 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 86E6EAB72F02A97400532BE2 /* Config.xcconfig */; };
 		86E6EAC92F02AC9800532BE2 /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E6EAC82F02AC8200532BE2 /* HistoryView.swift */; };
 		86E6EACA2F02ACA000532BE2 /* GeneratorFlowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E6EABE2F02AA9100532BE2 /* GeneratorFlowView.swift */; };
 		86E6EACB2F02ACA000532BE2 /* GeneratorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E6EABD2F02AA7F00532BE2 /* GeneratorViewModel.swift */; };
@@ -70,6 +70,7 @@
 /* Begin PBXFileReference section */
 		0ADC6AE24C2B30BB9B00682A /* Pods-AIMeditationGuide.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AIMeditationGuide.release.xcconfig"; path = "Target Support Files/Pods-AIMeditationGuide/Pods-AIMeditationGuide.release.xcconfig"; sourceTree = "<group>"; };
 		4708DE144315894144C7124B /* Pods_AIMeditationGuide.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AIMeditationGuide.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8648DD312F0FC4A000370C54 /* AnalyticsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsService.swift; sourceTree = "<group>"; };
 		8655BD472F03180B00BAEA89 /* RoutineGeneratorService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutineGeneratorService.swift; sourceTree = "<group>"; };
 		8655BD482F03180B00BAEA89 /* RoutineModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutineModels.swift; sourceTree = "<group>"; };
 		8655BD492F03180B00BAEA89 /* RoutineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutineView.swift; sourceTree = "<group>"; };
@@ -174,9 +175,28 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		8655320A2F0FEEC90095BC57 /* Purchases */ = {
+			isa = PBXGroup;
+			children = (
+				86CAA25A2F0E9A0300E45F8C /* UIViewController+Top.swift */,
+				86801AB82F0E68CF00EB2C63 /* PaywallProductVM.swift */,
+				86801AB42F0E597800EB2C63 /* ApphudManager.swift */,
+			);
+			path = Purchases;
+			sourceTree = "<group>";
+		};
+		8655320B2F0FEEEC0095BC57 /* Ads */ = {
+			isa = PBXGroup;
+			children = (
+				86CAA2582F0E99EB00E45F8C /* AdMobRewardedManager.swift */,
+			);
+			path = Ads;
+			sourceTree = "<group>";
+		};
 		86801AB02F0E547800EB2C63 /* Analytics */ = {
 			isa = PBXGroup;
 			children = (
+				8648DD312F0FC4A000370C54 /* AnalyticsService.swift */,
 				86801AB22F0E548600EB2C63 /* Analytics.swift */,
 			);
 			path = Analytics;
@@ -210,11 +230,7 @@
 		86E6EA912F02A42E00532BE2 /* App */ = {
 			isa = PBXGroup;
 			children = (
-				86CAA25A2F0E9A0300E45F8C /* UIViewController+Top.swift */,
-				86CAA2582F0E99EB00E45F8C /* AdMobRewardedManager.swift */,
 				86CAA2562F0E974400E45F8C /* TopMostViewController.swift */,
-				86801AB82F0E68CF00EB2C63 /* PaywallProductVM.swift */,
-				86801AB42F0E597800EB2C63 /* ApphudManager.swift */,
 				8672DED62F0CF33F00DF26B0 /* AppLanguage.swift */,
 				86E6EAC22F02ABF300532BE2 /* MainTabView.swift */,
 				86E6EAC12F02ABE100532BE2 /* RootView.swift */,
@@ -235,6 +251,8 @@
 		86E6EA932F02A43800532BE2 /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				8655320B2F0FEEEC0095BC57 /* Ads */,
+				8655320A2F0FEEC90095BC57 /* Purchases */,
 				86801AB02F0E547800EB2C63 /* Analytics */,
 				86E6EAB92F02AA1600532BE2 /* Networking */,
 				86E6EA972F02A45000532BE2 /* Storage */,
@@ -487,7 +505,6 @@
 				8672DED52F048BD800DF26B0 /* FunnelDisplay-VariableFont_wght 2.ttf in Resources */,
 				86E6EAA82F02A51E00532BE2 /* waves.mp3 in Resources */,
 				8672DED32F048BCD00DF26B0 /* Amstelvar-Italic[wdth,wght,opsz] 2.ttf in Resources */,
-				86E6EAB82F02A97400532BE2 /* Config.xcconfig in Resources */,
 				86E6EAA42F02A50100532BE2 /* river.mp3 in Resources */,
 				86E6EAA62F02A51300532BE2 /* birds.mp3 in Resources */,
 				86E6EA8A2F02A3DC00532BE2 /* Assets.xcassets in Resources */,
@@ -552,6 +569,7 @@
 				8672DED02F048B2A00DF26B0 /* NamePromtView.swift in Sources */,
 				8672DED12F048B2A00DF26B0 /* SettingsView.swift in Sources */,
 				8655BD4B2F03180B00BAEA89 /* RoutineModels.swift in Sources */,
+				8648DD322F0FC4A100370C54 /* AnalyticsService.swift in Sources */,
 				8672DEDB2F0D0E7C00DF26B0 /* BreathingLog.swift in Sources */,
 				8655BD4C2F03180B00BAEA89 /* RoutineViewModel.swift in Sources */,
 				8655BD4D2F03180B00BAEA89 /* RoutineView.swift in Sources */,
@@ -619,6 +637,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -673,6 +692,7 @@
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -684,6 +704,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -731,6 +752,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -749,9 +771,13 @@
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = AIMeditationGuide/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = AiMeditationGuide;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
+				INFOPLIST_KEY_NSUserTrackingUsageDescription = "“Мы используем идентификатор для показа более релевантной рекламы.”";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIStatusBarStyle = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -784,9 +810,13 @@
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = AIMeditationGuide/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = AiMeditationGuide;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
+				INFOPLIST_KEY_NSUserTrackingUsageDescription = "“Мы используем идентификатор для показа более релевантной рекламы.”";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIStatusBarStyle = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (

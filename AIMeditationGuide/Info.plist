@@ -4,19 +4,21 @@
 <dict>
 	<key>ADMOB_REWARDED_AD_UNIT_ID</key>
 	<string>$(ADMOB_REWARDED_AD_UNIT_ID)</string>
-	<key>NSUserTrackingUsageDescription</key>
-	<string>“Мы используем идентификатор для показа более релевантной рекламы.”</string>
-	<key>GADApplicationIdentifier</key>
-	<string>$(GADApplicationIdentifier)</string>
 	<key>APPHUD_API_KEY</key>
 	<string>$(APPHUD_API_KEY)</string>
 	<key>APPMETRICA_API_KEY</key>
 	<string>$(APPMETRICA_API_KEY)</string>
-	<key>UIAppFonts</key>
-	<array>
-		<string>Amstelvar-Italic[wdth,wght,opsz].ttf</string>
-		<string>FunnelDisplay-VariableFont_wght.ttf</string>
-	</array>
+	<key>APPSFLYER_APP_ID</key>
+	<string>$(APPSFLYER_APP_ID)</string>
+	<key>APPSFLYER_DEV_KEY</key>
+	<string>$(APPSFLYER_DEV_KEY)</string>
+	<key>GADApplicationIdentifier</key>
+	<string>$(GADApplicationIdentifier)</string>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
 	<key>OPENAI_API_KEY</key>
 	<string>$(OPENAI_API_KEY)</string>
 	<key>OPENAI_MODEL</key>
@@ -25,10 +27,10 @@
 	<string>$(OPENAI_TTS_MODEL)</string>
 	<key>OPENAI_TTS_VOICE</key>
 	<string>$(OPENAI_TTS_VOICE)</string>
-	<key>NSAppTransportSecurity</key>
-	<dict>
-		<key>NSAllowsArbitraryLoads</key>
-		<true/>
-	</dict>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Amstelvar-Italic[wdth,wght,opsz].ttf</string>
+		<string>FunnelDisplay-VariableFont_wght.ttf</string>
+	</array>
 </dict>
 </plist>

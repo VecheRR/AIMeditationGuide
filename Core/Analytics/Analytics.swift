@@ -10,18 +10,28 @@ import Foundation
 import YandexMobileMetrica
 
 enum Analytics {
-
-    /// Универсальная отправка событий
-    static func event(_ name: String, _ params: [String: Any]? = nil) {
-        YMMYandexMetrica.reportEvent(name, parameters: params) { error in
-            #if DEBUG
-            print("📊 AppMetrica error:", error)
-            #endif
-        }
+    static func screen(_ name: String) {
+        AnalyticsService.shared.screen(name)
     }
 
-    /// Трекинг экранов
-    static func screen(_ name: String) {
-        event("screen_view", ["screen": name])
+    static func event(_ name: String, _ params: [String: Any] = [:]) {
+        AnalyticsService.shared.log(name, params)
     }
 }
+
+//enum Analytics {
+//
+//    /// Универсальная отправка событий
+//    static func event(_ name: String, _ params: [String: Any]? = nil) {
+//        YMMYandexMetrica.reportEvent(name, parameters: params) { error in
+//            #if DEBUG
+//            print("📊 AppMetrica error:", error)
+//            #endif
+//        }
+//    }
+//
+//    /// Трекинг экранов
+//    static func screen(_ name: String) {
+//        event("screen_view", ["screen": name])
+//    }
+//}

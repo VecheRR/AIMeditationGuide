@@ -127,6 +127,9 @@ final class OpenAIClient {
     // MARK: - Networking helpers
 
     private func postJSON(url: URL, body: [String: Any], domain: String) async throws -> Data {
+        let trimmed = apiKey.trimmingCharacters(in: .whitespacesAndNewlines)
+        print("OPENAI key len=\(trimmed.count) prefix=\(trimmed.prefix(7)) suffix=\(trimmed.suffix(4)) model=\(model)")
+        
         var req = URLRequest(url: url)
         req.httpMethod = "POST"
         req.setValue("Bearer \(apiKey)", forHTTPHeaderField: "Authorization")
@@ -139,7 +142,7 @@ final class OpenAIClient {
             let text = String(data: data, encoding: .utf8) ?? "Unknown error"
             throw NSError(domain: domain, code: 1, userInfo: [NSLocalizedDescriptionKey: text])
         }
-
+    
         return data
     }
 

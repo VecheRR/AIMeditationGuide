@@ -7,84 +7,132 @@
 
 import SwiftUI
 import SwiftData
+
 import ApphudSDK
 import YandexMobileMetrica
 import GoogleMobileAds
+import FirebaseCore
+import AppsFlyerLib
+
 import AppTrackingTransparency
 import AdSupport
 
 @main
 struct AIMeditationGuideApp: App {
-
-    // Инициализация SDK на старте приложения
     @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
 
     var body: some Scene {
-        WindowGroup {
-            RootView()
-        }
-        .modelContainer(AppModelContainer.container)
+        WindowGroup { RootView() }
+            .modelContainer(AppModelContainer.container)
     }
 }
 
 // MARK: - AppDelegate
 
-final class AppDelegate: NSObject, UIApplicationDelegate {
-    private enum Keys {
-        static var apphud: String {
-            (Bundle.main.object(forInfoDictionaryKey: "APPHUD_API_KEY") as? String ?? "")
-                .trimmingCharacters(in: .whitespacesAndNewlines)
-        }
-        static var appmetrica: String {
-            (Bundle.main.object(forInfoDictionaryKey: "APPMETRICA_API_KEY") as? String ?? "")
-                .trimmingCharacters(in: .whitespacesAndNewlines)
-        }
-        static var admobAppId: String {
-            (Bundle.main.object(forInfoDictionaryKey: "GADApplicationIdentifier") as? String ?? "")
-                .trimmingCharacters(in: .whitespacesAndNewlines)
-        }
-    }
+final class AppDelegate: NSObject, UIApplicationDelegate, AppsFlyerLibDelegate {
 
     func application(
         _ application: UIApplication,
-        didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
+        didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil
     ) -> Bool {
 
         // 1) Apphud
-        let apphudKey = Keys.apphud
-        if !apphudKey.isEmpty {
-            Apphud.start(apiKey: apphudKey)
-        } else {
+        if Keys.apphud.isEmpty {
             assertionFailure("APPHUD_API_KEY is missing in Info.plist")
+        } else {
+            Apphud.start(apiKey: Keys.apphud)
         }
 
         // 2) AppMetrica
-        let metricaKey = Keys.appmetrica
-        if !metricaKey.isEmpty, let config = YMMYandexMetricaConfiguration(apiKey: metricaKey) {
+        if Keys.appmetrica.isEmpty {
+            assertionFailure("APPMETRICA_API_KEY is missing in Info.plist")
+        } else if let config = YMMYandexMetricaConfiguration(apiKey: Keys.appmetrica) {
             config.handleFirstActivationAsUpdate = false
             YMMYandexMetrica.activate(with: config)
-        } else {
-            assertionFailure("APPMETRICA_API_KEY is missing in Info.plist")
         }
 
-        // 3) AdMob init
-        // ВАЖНО: в Info.plist должен быть GADApplicationIdentifier = ca-app-pub-xxx~yyy
-        let admobId = Keys.admobAppId
-        if admobId.isEmpty {
-            assertionFailure("GADApplicationIdentifier is missing in Info.plist")
-        }
+        // 3) Firebase
+        FirebaseApp.configure()
+
+        // 4) AdMob
         MobileAds.shared.start()
 
-        // 4) ATT (по желанию, но лучше для рекламы)
-        requestATTIfNeeded()
+        // 5) AppsFlyer
+        configureAppsFlyer()
+
+        // 6) ATT (даём AppsFlyer подождать)
+        configureATTFlow()
 
         return true
     }
 
-    private func requestATTIfNeeded() {
+    func applicationDidBecomeActive(_ application: UIApplication) {
+        // стандартная рекомендация AppsFlyer
+        AppsFlyerLib.shared().start()
+    }
+
+    // MARK: - AppsFlyer
+
+    private func configureAppsFlyer() {
+        // IMPORTANT: добавь это в Info.plist и в Keys.swift (если ещё нет)
+        // APPSFLYER_APP_ID = "123456789" (без id)
+        let devKey = Keys.appsflyer
+        let appId  = Keys.plist("APPSFLYER_APP_ID")
+
+        if devKey.isEmpty { assertionFailure("APPSFLYER_DEV_KEY is missing in Info.plist") }
+        if appId.isEmpty  { assertionFailure("APPSFLYER_APP_ID is missing in Info.plist") }
+
+        let af = AppsFlyerLib.shared()
+        af.appsFlyerDevKey = devKey
+        af.appleAppID = appId
+        af.delegate = self
+
+        #if DEBUG
+        af.isDebug = true
+        #endif
+    }
+
+    // MARK: - ATT
+
+    private func configureATTFlow() {
         guard #available(iOS 14, *) else { return }
+
+        // пусть ждёт ATT (но не вечно)
+        AppsFlyerLib.shared().waitForATTUserAuthorization(timeoutInterval: 60)
+
         if ATTrackingManager.trackingAuthorizationStatus == .notDetermined {
-            ATTrackingManager.requestTrackingAuthorization { _ in }
+            ATTrackingManager.requestTrackingAuthorization { _ in
+                // безопасно дернуть start ещё раз
+                DispatchQueue.main.async {
+                    AppsFlyerLib.shared().start()
+                }
+            }
         }
+    }
+
+    // MARK: - AppsFlyerLibDelegate -> Apphud attribution
+
+    func onConversionDataSuccess(_ conversionInfo: [AnyHashable: Any]) {
+        let uid = AppsFlyerLib.shared().getAppsFlyerUID()
+
+        // ВАЖНО: без trailing closure — иначе "Extra trailing closure passed in call"
+        Apphud.setAttribution(
+            data: ApphudAttributionData(rawData: conversionInfo),
+            from: .appsFlyer,
+            identifer: uid,
+            callback: nil
+        )
+    }
+
+    func onConversionDataFail(_ error: Error) {
+        let uid = AppsFlyerLib.shared().getAppsFlyerUID()
+
+        // тоже передаем как rawData, чтобы тип совпадал
+        Apphud.setAttribution(
+            data: ApphudAttributionData(rawData: ["error": error.localizedDescription]),
+            from: .appsFlyer,
+            identifer: uid,
+            callback: nil
+        )
     }
 }

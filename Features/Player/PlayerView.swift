@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Combine
 
 struct PlayerView: View {
     @Environment(\.dismiss) private var dismiss
@@ -29,6 +30,45 @@ struct PlayerView: View {
 
     @AppStorage("appLanguage") private var appLanguageRaw: String = AppLanguage.system.rawValue
     private var lang: AppLanguage { AppLanguage(rawValue: appLanguageRaw) ?? .system }
+
+    // MARK: - Sleep Timer
+
+    private enum SleepTimerOption: String, CaseIterable, Identifiable {
+        case off
+        case fiveMin
+        case oneMin
+        case threeMin
+        case endOfSession
+
+        var id: String { rawValue }
+
+        var title: String {
+            switch self {
+            case .off: return "Off"
+            case .fiveMin: return "Stop in 5 min"
+            case .oneMin: return "Stop in 1 min"
+            case .threeMin: return "Stop in 3 min"
+            case .endOfSession: return "Stop at end of session"
+            }
+        }
+
+        var seconds: Int? {
+            switch self {
+            case .off: return nil
+            case .oneMin: return 1 * 60
+            case .threeMin: return 3 * 60
+            case .fiveMin: return 5 * 60
+            case .endOfSession: return nil
+            }
+        }
+    }
+
+    @State private var sleepTimer: SleepTimerOption = .off
+    @State private var sleepSecondsLeft: Int? = nil
+    @State private var showSleepFinishedAlert = false
+
+    // тикер раз в секунду
+    private let tick = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
 
     var body: some View {
         ZStack {
@@ -78,6 +118,28 @@ struct PlayerView: View {
             )
         }
         .onDisappear { audio.stop() }
+
+        // ✅ Sleep Timer tick
+        .onReceive(tick) { _ in
+            guard audio.isPlaying else { return }            // тикаем только когда играет
+            guard sleepTimer != .off else { return }
+
+            if sleepTimer == .endOfSession {
+                // остановить в конце: когда дошли до конца трека (или target)
+                if audio.duration > 0, audio.currentTime >= (audio.duration - 0.25) {
+                    stopBySleepTimer()
+                }
+                return
+            }
+
+            guard let left = sleepSecondsLeft else { return }
+            if left <= 1 {
+                stopBySleepTimer()
+            } else {
+                sleepSecondsLeft = left - 1
+            }
+        }
+
         .sheet(isPresented: $showBgPicker) {
             BackgroundPickerView(selected: $background, volume: $audio.bgVolume)
                 .presentationDetents([.medium])
@@ -95,6 +157,7 @@ struct PlayerView: View {
 
             if wasPlaying { audio.play() }
         }
+
         .alert(L10n.s("player_finish_title", lang: lang), isPresented: $showFinishConfirmation) {
             Button(L10n.s("player_finish_btn_finish", lang: lang), role: .destructive) {
                 audio.stop()
@@ -106,6 +169,13 @@ struct PlayerView: View {
             }
         } message: {
             Text(L10n.s("player_finish_message", lang: lang))
+        }
+
+        // ✅ Sleep timer finished
+        .alert("Timer finished", isPresented: $showSleepFinishedAlert) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text("Playback stopped by timer.")
         }
     }
 
@@ -192,18 +262,37 @@ struct PlayerView: View {
                     .clipShape(Circle())
             }
             .accessibilityLabel(Text(audio.isPlaying ? L10n.s("player_a11y_pause", lang: lang) : L10n.s("player_a11y_play", lang: lang)))
-            .accessibilityHint(Text(L10n.s("player_a11y_play_hint", lang: lang)))
 
-            Button {
-                // потом: timer
+            // ✅ Sleep timer menu
+            Menu {
+                ForEach(SleepTimerOption.allCases) { opt in
+                    Button {
+                        setSleepTimer(opt)
+                    } label: {
+                        if opt == sleepTimer {
+                            Label(opt.title, systemImage: "checkmark")
+                        } else {
+                            Text(opt.title)
+                        }
+                    }
+                }
+
+                if sleepTimer != .off {
+                    Divider()
+                    Button(role: .destructive) {
+                        setSleepTimer(.off)
+                    } label: {
+                        Text("Turn off timer")
+                    }
+                }
             } label: {
-                Image(systemName: "timer")
+                Image(systemName: sleepTimer == .off ? "timer" : "timer.circle.fill")
                     .foregroundStyle(.primary)
                     .padding(12)
                     .background(.ultraThinMaterial)
                     .clipShape(Circle())
             }
-            .accessibilityLabel(Text(L10n.s("player_a11y_timer_options", lang: lang)))
+            .accessibilityLabel(Text("Sleep timer"))
         }
     }
 
@@ -222,20 +311,24 @@ struct PlayerView: View {
 
             HStack {
                 Text(timeString(audio.currentTime))
+
                 Spacer()
-                Text(timeString(audio.duration))
+
+                // справа: общий duration + (если включен) остаток sleep timer
+                HStack(spacing: 10) {
+                    if let left = sleepSecondsLeft, sleepTimer != .off, sleepTimer != .endOfSession {
+                        Text("⏱ \(timeString(TimeInterval(left)))")
+                    } else if sleepTimer == .endOfSession, sleepTimer != .off {
+                        Text("⏱ End")
+                    }
+
+                    Text(timeString(audio.duration))
+                }
             }
             .font(.caption)
             .foregroundStyle(.secondary)
         }
         .padding(.top, 12)
-    }
-
-    private func backgroundTitle(_ bg: GenBackground) -> String {
-        if bg == .none {
-            return L10n.s("gen_bg_none", lang: lang)
-        }
-        return L10n.s("gen_bg_\(bg.rawValue)", lang: lang)
     }
 
     // MARK: - Bottom bar
@@ -273,7 +366,6 @@ struct PlayerView: View {
                 .background(.ultraThinMaterial)
                 .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
             }
-            .accessibilityLabel(Text(L10n.s("player_a11y_finish_early", lang: lang)))
 
             Spacer()
 
@@ -298,18 +390,42 @@ struct PlayerView: View {
                     .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
                 }
                 .disabled(isAlreadySaved || didSaveFromPlayer)
-                .accessibilityLabel(Text(L10n.s("player_a11y_save_history", lang: lang)))
             }
         }
         .padding(.top, 12)
+    }
+
+    // MARK: - Sleep Timer helpers
+
+    private func setSleepTimer(_ opt: SleepTimerOption) {
+        sleepTimer = opt
+
+        if opt == .off {
+            sleepSecondsLeft = nil
+            return
+        }
+
+        if opt == .endOfSession {
+            sleepSecondsLeft = nil
+            return
+        }
+
+        // фиксированное время
+        sleepSecondsLeft = opt.seconds
+    }
+
+    @MainActor
+    private func stopBySleepTimer() {
+        audio.stop()
+        sleepTimer = .off
+        sleepSecondsLeft = nil
+        showSleepFinishedAlert = true
     }
 
     // MARK: - Volume
 
     private func volumeSlider(titleKey: String, value: Binding<Double>) -> some View {
         let title = L10n.s(titleKey, lang: lang)
-        let a11y = L10n.f("player_a11y_volume_fmt", lang: lang, title)
-
         return HStack(spacing: 10) {
             Text(title)
                 .font(.caption)
@@ -318,7 +434,6 @@ struct PlayerView: View {
 
             Slider(value: value, in: 0...1)
                 .tint(.accentColor)
-                .accessibilityLabel(Text(a11y))
         }
     }
 
@@ -329,6 +444,11 @@ struct PlayerView: View {
         let m = total / 60
         let s = total % 60
         return String(format: "%02d:%02d", m, s)
+    }
+
+    private func backgroundTitle(_ bg: GenBackground) -> String {
+        if bg == .none { return L10n.s("gen_bg_none", lang: lang) }
+        return L10n.s("gen_bg_\(bg.rawValue)", lang: lang)
     }
 
     private func resolvedBackgroundURL(for background: GenBackground) -> URL? {
