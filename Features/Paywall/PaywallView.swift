@@ -8,11 +8,15 @@
 import SwiftUI
 
 struct PaywallView: View {
+    @Binding var isPresented: Bool
     @EnvironmentObject private var apphud: ApphudManager
+
     @State private var selectedProductID: String?
 
     @AppStorage("appLanguage") private var appLanguageRaw: String = AppLanguage.system.rawValue
     private var lang: AppLanguage { AppLanguage(rawValue: appLanguageRaw) ?? .system }
+
+    @AppStorage("paywall_skipped_once") private var paywallSkippedOnce: Bool = false
 
     private let perkKeys: [String] = [
         "paywall_perk_unlimited",
@@ -23,32 +27,37 @@ struct PaywallView: View {
 
     var body: some View {
         ZStack {
-            AppBackground()
+            // ⚠️ ВАЖНО: гарантированно видимый фон
+            Color(.systemBackground).ignoresSafeArea()
 
-            VStack(spacing: 18) {
-
+            VStack(spacing: 16) {
                 header
 
-                VStack(spacing: 12) {
-                    perksCard
-                    planPicker
+                ScrollView(showsIndicators: false) {
+                    VStack(spacing: 12) {
+                        perksCard
+                        planPicker
 
-                    if let error = apphud.lastError, !error.isEmpty {
-                        Text(error)
-                            .font(.footnote)
-                            .foregroundStyle(.red)
-                            .multilineTextAlignment(.center)
-                            .frame(maxWidth: .infinity)
+                        if let error = apphud.lastError, !error.isEmpty {
+                            Text(error)
+                                .font(.footnote)
+                                .foregroundStyle(.red)
+                                .multilineTextAlignment(.center)
+                                .frame(maxWidth: .infinity)
+                                .padding(.top, 6)
+                        }
                     }
+                    .padding(.horizontal, 20)
                 }
 
-                VStack(spacing: 12) {
+                VStack(spacing: 10) {
                     PrimaryButton(title: primaryButtonTitle) {
                         purchaseSelected()
                     }
                     .disabled(apphud.isLoading || selectedProductID == nil)
 
                     Button {
+                        Analytics.event("paywall_restore_tap", ["source": "paywall"])
                         apphud.restore()
                     } label: {
                         Text(L10n.s("paywall_restore", lang: lang))
@@ -56,34 +65,53 @@ struct PaywallView: View {
                             .foregroundStyle(.secondary)
                     }
                     .disabled(apphud.isLoading)
-                }
-                .padding(.bottom, 12)
 
-                Text(L10n.s("paywall_disclaimer", lang: lang))
-                    .font(.caption2)
-                    .foregroundStyle(.secondary)
-                    .multilineTextAlignment(.center)
-                    .padding(.horizontal, 12)
-            }
-            .padding(.horizontal, 20)
-            .padding(.vertical, 18)
-            .task {
-                // грузим планы один раз при открытии экрана
-                if apphud.products.isEmpty && !apphud.isLoading {
-                    apphud.loadPaywallProducts()
+                    // ✅ единственный выход
+                    Button {
+                        Analytics.event("paywall_skip", ["source": "paywall"])
+                        paywallSkippedOnce = true
+                        isPresented = false
+                    } label: {
+                        Text(L10n.s("paywall_not_now", lang: lang))
+                            .font(.footnote.weight(.semibold))
+                            .foregroundStyle(.secondary)
+                            .padding(.top, 2)
+                    }
+                    .disabled(apphud.isLoading)
+
+                    Text(L10n.s("paywall_disclaimer", lang: lang))
+                        .font(.caption2)
+                        .foregroundStyle(.secondary)
+                        .multilineTextAlignment(.center)
+                        .padding(.top, 6)
+                        .padding(.horizontal, 24)
                 }
-                if selectedProductID == nil {
-                    selectedProductID = apphud.products.first?.id
-                }
+                .padding(.horizontal, 20)
+                .padding(.bottom, 14)
             }
-            .onAppear {
-                Analytics.event("paywall_open", ["source": "app_gate"])
+            .padding(.top, 18)
+        }
+        .onAppear {
+            print("PAYWALL view appeared 👀")
+            Analytics.event("paywall_open", ["source": "app_gate"])
+        }
+        .task {
+            if apphud.products.isEmpty && !apphud.isLoading {
+                apphud.loadPaywallProducts()
+            }
+            if selectedProductID == nil {
+                selectedProductID = apphud.products.first?.id
+            }
+        }
+        .onChange(of: apphud.hasPremium) { _, isPremium in
+            if isPremium {
+                isPresented = false
             }
         }
     }
 
     private var header: some View {
-        VStack(spacing: 10) {
+        VStack(spacing: 8) {
             Text(L10n.s("paywall_title", lang: lang))
                 .font(.system(size: 30, weight: .semibold))
                 .multilineTextAlignment(.center)
@@ -92,14 +120,14 @@ struct PaywallView: View {
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
-                .padding(.horizontal, 8)
+                .padding(.horizontal, 20)
         }
-        .padding(.top, 8)
+        .padding(.horizontal, 20)
     }
 
     private var perksCard: some View {
         VStack(alignment: .leading, spacing: 12) {
-            HStack(alignment: .center, spacing: 12) {
+            HStack(spacing: 12) {
                 ZStack {
                     Circle()
                         .fill(Color.green.opacity(0.12))
@@ -135,7 +163,7 @@ struct PaywallView: View {
         }
         .padding(16)
         .frame(maxWidth: .infinity)
-        .background(Color.white.opacity(0.8))
+        .background(Color(.secondarySystemBackground))
         .clipShape(RoundedRectangle(cornerRadius: 22, style: .continuous))
     }
 
@@ -149,22 +177,12 @@ struct PaywallView: View {
                 ForEach(apphud.products, id: \.id) { vm in
                     Button {
                         selectedProductID = vm.id
+                        Analytics.event("paywall_plan_select", ["product_id": vm.id])
                     } label: {
-                        HStack(alignment: .center, spacing: 12) {
+                        HStack(spacing: 12) {
                             VStack(alignment: .leading, spacing: 4) {
-                                HStack(spacing: 8) {
-                                    Text(vm.displayName.uppercased())
-                                        .font(.caption.weight(.semibold))
-
-                                    if let b = badge(for: vm) {
-                                        Text(b)
-                                            .font(.caption2.weight(.heavy))
-                                            .padding(.horizontal, 8)
-                                            .padding(.vertical, 4)
-                                            .background(Color.black.opacity(0.06))
-                                            .clipShape(Capsule())
-                                    }
-                                }
+                                Text(vm.displayName.uppercased())
+                                    .font(.caption.weight(.semibold))
 
                                 Text(vm.displayPrice.isEmpty ? "—" : vm.displayPrice)
                                     .font(.title3.weight(.semibold))
@@ -180,19 +198,16 @@ struct PaywallView: View {
 
                             Image(systemName: selectedProductID == vm.id ? "largecircle.fill.circle" : "circle")
                                 .font(.title3)
-                                .foregroundStyle(.black)
+                                .foregroundStyle(.primary)
                         }
                         .padding(14)
                         .frame(maxWidth: .infinity)
                         .background(
                             RoundedRectangle(cornerRadius: 18, style: .continuous)
-                                .fill(Color.white.opacity(0.72))
+                                .fill(Color(.secondarySystemBackground))
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 18, style: .continuous)
-                                        .stroke(
-                                            selectedProductID == vm.id ? Color.black : Color.black.opacity(0.08),
-                                            lineWidth: 1.2
-                                        )
+                                        .stroke(selectedProductID == vm.id ? Color.primary : Color.primary.opacity(0.12), lineWidth: 1.2)
                                 )
                         )
                     }
@@ -207,25 +222,8 @@ struct PaywallView: View {
     }
 
     private var primaryButtonTitle: String {
-        if apphud.isLoading {
-            return L10n.s("paywall_processing", lang: lang)
-        }
-
-        if let vm = apphud.products.first(where: { $0.id == selectedProductID }),
-           vm.hasTrial {
-            // у тебя нет displayPrice у trial периода, поэтому просто “Start trial”
-            return L10n.s("paywall_continue", lang: lang)
-        }
-
+        if apphud.isLoading { return L10n.s("paywall_processing", lang: lang) }
         return L10n.s("paywall_continue", lang: lang)
-    }
-
-    private func badge(for vm: PaywallProductVM) -> String? {
-        let id = vm.id.lowercased()
-        if id.contains("year") { return L10n.s("paywall_badge_best_value", lang: lang) }
-        if id.contains("month") { return L10n.s("paywall_badge_flexible", lang: lang) }
-        if id.contains("week") { return nil }
-        return nil
     }
 
     private func detail(for vm: PaywallProductVM) -> String? {
@@ -239,6 +237,7 @@ struct PaywallView: View {
 
     private func purchaseSelected() {
         guard let vm = apphud.products.first(where: { $0.id == selectedProductID }) else { return }
+        Analytics.event("paywall_purchase_tap", ["product_id": vm.id])
         apphud.purchase(vm)
     }
 }

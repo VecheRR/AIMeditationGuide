@@ -485,3 +485,16 @@
 "name_prompt_field_placeholder" = "For example: Vlad";
 "name_prompt_btn_continue" = "Continue";
 "name_prompt_btn_not_now" = "Not now";
+
+"paywall_not_now" = "Not now";
+"paywall_close" = "Close paywall";
+
+"settings_premium_section" = "Premium";
+"settings_get_premium" = "Get Premium";
+"settings_manage_subscription" = "Manage subscription";
+"settings_reset_paywall" = "Show paywall again";
+
+"sub_status_free_title" = "Plan: Basic";
+"sub_status_free_subtitle" = "Upgrade to unlock premium features";
+"sub_status_premium_title" = "Plan: Premium";
+"sub_status_premium_subtitle" = "All features unlocked";

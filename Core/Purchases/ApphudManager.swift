@@ -20,6 +20,7 @@ final class ApphudManager: ObservableObject {
     @Published private(set) var products: [PaywallProductVM] = []
     @Published private(set) var isLoading: Bool = false
     @Published var lastError: String?
+    @Published var isReady: Bool = false
 
     // Создай в Apphud → Placements identifier = "main" и привяжи к нему paywall main_paywall
     private let placementID = "placement_main"
@@ -58,104 +59,84 @@ final class ApphudManager: ObservableObject {
 
     func loadPaywallProducts() {
         isLoading = true
+        isReady = false
         lastError = nil
         products = []
 
         Apphud.fetchPlacements { [weak self] placements, error in
             guard let self else { return }
-
-            print("PLACEMENTS:", placements.map { $0.identifier })
-
-            guard let placement = placements.first(where: { $0.identifier == self.placementID }) else {
-                self.lastError = "Apphud: placement '\(self.placementID)' не найден."
-                return
-            }
-
-            guard let paywall = placement.paywall else {
-                self.lastError = "Apphud: у placement нет paywall."
-                return
-            }
-
-            print("APPHUD PAYWALL PRODUCTS:", paywall.products.map { $0.productId })
-
-            if let error {
-                Task { @MainActor in
-                    self.isLoading = false
-                    self.lastError = "Apphud placements error: \(error.localizedDescription)"
-                }
-                return
-            }
-
-            guard let placement = placements.first(where: { $0.identifier == self.placementID }) else {
-                Task { @MainActor in
-                    self.isLoading = false
-                    self.lastError = "Apphud: Placement '\(self.placementID)' не найден. Создай его в Apphud → Placements."
-                }
-                return
-            }
-
-            guard let paywall = placement.paywall else {
-                Task { @MainActor in
-                    self.isLoading = false
-                    self.lastError = "Apphud: у placement '\(self.placementID)' не привязан paywall. Привяжи paywall \(self.expectedPaywallID)."
-                }
-                return
-            }
-
-            // необязательно, но полезно для аналитики Apphud
-            Apphud.paywallShown(paywall)
-
-            let apphudProducts = paywall.products
-            if apphudProducts.isEmpty {
-                Task { @MainActor in
-                    self.isLoading = false
-                    self.lastError = "Paywall найден, но products пустые. Проверь привязку IAP к paywall в Apphud."
-                }
-                return
-            }
-
-            // Собираем VM максимально безопасно (через SKProduct, если он доступен)
-            let mapped: [PaywallProductVM] = apphudProducts.map { p in
-                let productId = p.productId
-
-                // Имя: если есть SKProduct — берём title, иначе productId
-                let name = (p.skProduct?.localizedTitle.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty == false)
-                    ? p.skProduct!.localizedTitle
-                    : productId
-
-                // Цена: форматируем SKProduct
-                let price = p.skProduct?.formattedPrice ?? ""
-
-                // Период по id (у тебя id: weekly/monthly/yearly)
-                let unit: String? = {
-                    let id = productId.lowercased()
-                    if id.contains("weekly") { return "week" }
-                    if id.contains("monthly") { return "month" }
-                    if id.contains("yearly") { return "year" }
-                    return nil
-                }()
-
-                // Trial: у SKProduct есть introductoryPrice
-                let hasTrial = (p.skProduct?.introductoryPrice != nil)
-
-                return PaywallProductVM(
-                    id: productId,
-                    displayName: name,
-                    displayPrice: price,
-                    periodUnit: unit,
-                    hasTrial: hasTrial,
-                    apphudProduct: p
-                )
-            }
+            defer { Task { @MainActor in self.isReady = true } }
 
             Task { @MainActor in
-                self.products = mapped
-                self.refreshStatus()
-                self.isLoading = false
+                defer {
+                    self.isLoading = false
+                    self.refreshStatus()
+                    self.isReady = true          // ✅ ВСЕГДА СТАВИМ READY
+                }
 
-                // Если цены пустые — значит StoreKit config не подцепился / IAP не доступны
+                if let error {
+                    self.lastError = "Apphud placements error: \(error.localizedDescription)"
+                    return
+                }
+
+                let allIDs = placements.map { $0.identifier }
+                print("PLACEMENTS:", allIDs)
+
+                guard let placement = placements.first(where: { $0.identifier == self.placementID }) else {
+                    self.lastError = "Apphud: Placement '\(self.placementID)' не найден. Есть: \(allIDs.joined(separator: ", "))"
+                    return
+                }
+
+                guard let paywall = placement.paywall else {
+                    self.lastError = "Apphud: у placement '\(self.placementID)' нет paywall. Привяжи paywall \(self.expectedPaywallID)."
+                    return
+                }
+
+                // необязательно, но полезно
+                Apphud.paywallShown(paywall)
+
+                let apphudProducts = paywall.products
+                print("APPHUD PAYWALL PRODUCTS:", apphudProducts.map { $0.productId })
+
+                guard !apphudProducts.isEmpty else {
+                    self.lastError = "Paywall найден, но products пустые. Проверь привязку IAP к paywall в Apphud."
+                    return
+                }
+
+                let mapped: [PaywallProductVM] = apphudProducts.map { p in
+                    let productId = p.productId
+
+                    let name: String = {
+                        let t = p.skProduct?.localizedTitle.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+                        return t.isEmpty ? productId : t
+                    }()
+
+                    let price = p.skProduct?.formattedPrice ?? ""
+
+                    let unit: String? = {
+                        let id = productId.lowercased()
+                        if id.contains("weekly") { return "week" }
+                        if id.contains("monthly") { return "month" }
+                        if id.contains("yearly") { return "year" }
+                        return nil
+                    }()
+
+                    let hasTrial = (p.skProduct?.introductoryPrice != nil)
+
+                    return PaywallProductVM(
+                        id: productId,
+                        displayName: name,
+                        displayPrice: price,
+                        periodUnit: unit,
+                        hasTrial: hasTrial,
+                        apphudProduct: p
+                    )
+                }
+
+                self.products = mapped
+
                 if mapped.allSatisfy({ $0.displayPrice.isEmpty }) {
-                    self.lastError = "Apphud продукты пришли, но цены пустые. Проверь StoreKit Configuration в Scheme и/или что продукты доступны (StoreKit Test)."
+                    self.lastError = "Apphud продукты пришли, но цены пустые. Проверь StoreKit Configuration / Sandbox / доступность IAP."
                 }
             }
         }

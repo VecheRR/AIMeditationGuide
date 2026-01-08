@@ -9,6 +9,11 @@ import SwiftUI
 import SwiftData
 
 struct HomeView: View {
+    @EnvironmentObject private var apphud: ApphudManager
+    @EnvironmentObject private var paywall: PaywallPresenter
+
+    @AppStorage("didAskName") private var didAskName: Bool = false
+
     // Data
     @Query(sort: \MeditationSession.createdAt, order: .reverse)
     private var sessions: [MeditationSession]
@@ -29,7 +34,7 @@ struct HomeView: View {
     @AppStorage("userName") private var userName: String = ""
     @State private var showNamePrompt = false
 
-    // Language (важно!)
+    // Language
     @AppStorage("appLanguage") private var appLanguageRaw: String = AppLanguage.system.rawValue
     private var lang: AppLanguage { AppLanguage(rawValue: appLanguageRaw) ?? .system }
 
@@ -49,6 +54,7 @@ struct HomeView: View {
                 ScrollView(.vertical, showsIndicators: false) {
                     VStack(spacing: 18) {
                         header
+                        subscriptionBadge
                         quickActionsCard
 
                         if let last {
@@ -81,9 +87,11 @@ struct HomeView: View {
                 )
             }
             .onAppear {
-                if userName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-                    showNamePrompt = true
-                }
+                tryPresentNamePromptIfNeeded()
+            }
+            .onChange(of: paywall.lastDismissedAt) { _, _ in
+                // ✅ Paywall закрыли → можно спросить имя (если нужно)
+                tryPresentNamePromptIfNeeded()
             }
             .sheet(isPresented: $showNamePrompt) {
                 NamePromptView(name: $userName)
@@ -97,6 +105,71 @@ struct HomeView: View {
 
 // MARK: - UI blocks
 private extension HomeView {
+
+    // ✅ Плашка подписки
+    var subscriptionBadge: some View {
+        HStack(spacing: 10) {
+            ZStack {
+                Circle()
+                    .fill(badgeTint.opacity(0.14))
+                    .frame(width: 34, height: 34)
+
+                Image(systemName: apphud.hasPremium ? "crown.fill" : "person.fill")
+                    .font(.system(size: 14, weight: .semibold))
+                    .foregroundStyle(badgeTint)
+            }
+
+            VStack(alignment: .leading, spacing: 2) {
+                Text(apphud.hasPremium
+                     ? L10n.s("sub_status_premium_title", lang: lang)
+                     : L10n.s("sub_status_free_title", lang: lang))
+                    .font(.system(size: 14, weight: .semibold))
+                    .foregroundStyle(.black)
+
+                Text(apphud.hasPremium
+                     ? L10n.s("sub_status_premium_subtitle", lang: lang)
+                     : L10n.s("sub_status_free_subtitle", lang: lang))
+                    .font(.system(size: 12, weight: .regular))
+                    .foregroundStyle(.black.opacity(0.55))
+            }
+
+            Spacer()
+
+            if !apphud.hasPremium {
+                Image(systemName: "chevron.right")
+                    .font(.system(size: 12, weight: .semibold))
+                    .foregroundStyle(.black.opacity(0.25))
+            }
+        }
+        .padding(14)
+        .background(badgeBackground)
+        .overlay(
+            RoundedRectangle(cornerRadius: 22, style: .continuous)
+                .stroke(badgeStroke, lineWidth: 1)
+        )
+        .clipShape(RoundedRectangle(cornerRadius: 22, style: .continuous))
+        .contentShape(Rectangle())
+        .onTapGesture {
+            guard !apphud.hasPremium else { return }
+            Analytics.event("home_subscription_badge_tap")
+            paywall.present()
+        }
+    }
+
+    var badgeTint: Color {
+        apphud.hasPremium ? .yellow : .gray
+    }
+
+    var badgeBackground: some View {
+        RoundedRectangle(cornerRadius: 22, style: .continuous)
+            .fill(apphud.hasPremium ? Color.yellow.opacity(0.18) : Color.white.opacity(0.65))
+    }
+
+    var badgeStroke: Color {
+        apphud.hasPremium ? Color.yellow.opacity(0.45) : Color.white.opacity(0.35)
+    }
+
+    // ---- остальной UI (твой код) ----
 
     var backgroundLayer: some View {
         AppBackground()
@@ -158,7 +231,6 @@ private extension HomeView {
 
                 Spacer()
 
-                // ВАЖНО: локаль для этого текста будет системной, пока ты не задашь .environment(\.locale, ...)
                 Text(s.createdAt, style: .date)
                     .font(.system(size: 14, weight: .regular))
                     .foregroundStyle(.black.opacity(0.55))
@@ -269,7 +341,6 @@ private extension HomeView {
                         .font(.system(size: 16, weight: .semibold))
                         .foregroundStyle(tint)
 
-                    // ВАЖНО: не делаем .uppercased() “в лоб” — иначе RU выглядит по-дурацки + зависит от системной локали.
                     Text(uppercaseUI(L10n.s(titleKey, lang: lang)))
                         .font(.system(size: 12, weight: .semibold))
                         .foregroundStyle(.black.opacity(0.7))
@@ -371,6 +442,29 @@ private extension HomeView {
         }
     }
 
+    // MARK: - Name prompt logic
+
+    private func tryPresentNamePromptIfNeeded() {
+        // Уже спрашивали — не спрашиваем снова
+        guard !didAskName else { return }
+
+        // Если paywall сейчас на экране — не мешаем
+        guard !paywall.isPresented else { return }
+
+        // Если имя уже есть — фиксируем флаг и выходим
+        let n = userName.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard n.isEmpty else {
+            didAskName = true
+            return
+        }
+
+        // Спрашиваем имя только после того, как paywall хотя бы раз закрыли
+        guard paywall.lastDismissedAt != nil else { return }
+
+        showNamePrompt = true
+        didAskName = true
+    }
+
     // MARK: - Helpers
 
     func open(session: MeditationSession) {
@@ -380,15 +474,13 @@ private extension HomeView {
     }
 
     func uppercaseUI(_ s: String) -> String {
-        // В RU верхний регистр часто выглядит хуже (особенно в UI-лейблах).
-        // Для EN оставляем uppercase.
         switch lang {
         case .ru:
             return s
         case .en:
             return s.uppercased(with: Locale(identifier: "en_US"))
         case .system:
-            return s.uppercased() // как было, по системной локали
+            return s.uppercased()
         }
     }
 }

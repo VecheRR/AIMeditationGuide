@@ -485,3 +485,16 @@
 "name_prompt_field_placeholder" = "Например: Влад";
 "name_prompt_btn_continue" = "Продолжить";
 "name_prompt_btn_not_now" = "Не сейчас";
+
+"paywall_not_now" = "Не сейчас";
+"paywall_close" = "Закрыть";
+
+"settings_premium_section" = "Премиум";
+"settings_get_premium" = "Оформить подписку";
+"settings_manage_subscription" = "Управление подпиской";
+"settings_reset_paywall" = "Показывать paywall снова";
+
+"sub_status_free_title" = "План: Обычный";
+"sub_status_free_subtitle" = "Откройте премиум, чтобы получить больше";
+"sub_status_premium_title" = "План: Премиум";
+"sub_status_premium_subtitle" = "Все функции доступны";

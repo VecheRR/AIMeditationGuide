@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		8648DD322F0FC4A100370C54 /* AnalyticsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8648DD312F0FC4A000370C54 /* AnalyticsService.swift */; };
+		865532152F106CC40095BC57 /* PaywallPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 865532142F106CC40095BC57 /* PaywallPresenter.swift */; };
 		8655BD4B2F03180B00BAEA89 /* RoutineModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8655BD482F03180B00BAEA89 /* RoutineModels.swift */; };
 		8655BD4C2F03180B00BAEA89 /* RoutineViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8655BD4A2F03180B00BAEA89 /* RoutineViewModel.swift */; };
 		8655BD4D2F03180B00BAEA89 /* RoutineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8655BD492F03180B00BAEA89 /* RoutineView.swift */; };
@@ -71,6 +72,7 @@
 		0ADC6AE24C2B30BB9B00682A /* Pods-AIMeditationGuide.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AIMeditationGuide.release.xcconfig"; path = "Target Support Files/Pods-AIMeditationGuide/Pods-AIMeditationGuide.release.xcconfig"; sourceTree = "<group>"; };
 		4708DE144315894144C7124B /* Pods_AIMeditationGuide.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AIMeditationGuide.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8648DD312F0FC4A000370C54 /* AnalyticsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsService.swift; sourceTree = "<group>"; };
+		865532142F106CC40095BC57 /* PaywallPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallPresenter.swift; sourceTree = "<group>"; };
 		8655BD472F03180B00BAEA89 /* RoutineGeneratorService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutineGeneratorService.swift; sourceTree = "<group>"; };
 		8655BD482F03180B00BAEA89 /* RoutineModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutineModels.swift; sourceTree = "<group>"; };
 		8655BD492F03180B00BAEA89 /* RoutineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutineView.swift; sourceTree = "<group>"; };
@@ -178,6 +180,7 @@
 		8655320A2F0FEEC90095BC57 /* Purchases */ = {
 			isa = PBXGroup;
 			children = (
+				865532142F106CC40095BC57 /* PaywallPresenter.swift */,
 				86CAA25A2F0E9A0300E45F8C /* UIViewController+Top.swift */,
 				86801AB82F0E68CF00EB2C63 /* PaywallProductVM.swift */,
 				86801AB42F0E597800EB2C63 /* ApphudManager.swift */,
@@ -603,6 +606,7 @@
 				8672DEDF2F0DC61F00DF26B0 /* AppHUD.swift in Sources */,
 				86E6EAD42F02ACAB00532BE2 /* RootView.swift in Sources */,
 				86E6EAC92F02AC9800532BE2 /* HistoryView.swift in Sources */,
+				865532152F106CC40095BC57 /* PaywallPresenter.swift in Sources */,
 				8672DEB52F03DFCD00DF26B0 /* CoverPlaceholderView.swift in Sources */,
 				B1F6EB112F04C00100AAAAAA /* KenBurnsCoverView.swift in Sources */,
 				86E6EACA2F02ACA000532BE2 /* GeneratorFlowView.swift in Sources */,
