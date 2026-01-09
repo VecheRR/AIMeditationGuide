@@ -106,68 +106,67 @@ struct HomeView: View {
 // MARK: - UI blocks
 private extension HomeView {
 
-    // ✅ Плашка подписки
     var subscriptionBadge: some View {
-        HStack(spacing: 10) {
-            ZStack {
-                Circle()
-                    .fill(badgeTint.opacity(0.14))
-                    .frame(width: 34, height: 34)
+            HStack(spacing: 10) {
+                ZStack {
+                    Circle()
+                        .fill(badgeTint.opacity(0.14))
+                        .frame(width: 34, height: 34)
 
-                Image(systemName: apphud.hasPremium ? "crown.fill" : "person.fill")
-                    .font(.system(size: 14, weight: .semibold))
-                    .foregroundStyle(badgeTint)
+                    Image(systemName: apphud.premiumActive ? "crown.fill" : "person.fill")
+                        .font(.system(size: 14, weight: .semibold))
+                        .foregroundStyle(badgeTint)
+                }
+
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(apphud.premiumActive
+                         ? L10n.s("sub_status_premium_title", lang: lang)
+                         : L10n.s("sub_status_free_title", lang: lang))
+                        .font(.system(size: 14, weight: .semibold))
+                        .foregroundStyle(.black)
+
+                    Text(apphud.premiumActive
+                         ? L10n.s("sub_status_premium_subtitle", lang: lang)
+                         : L10n.s("sub_status_free_subtitle", lang: lang))
+                        .font(.system(size: 12, weight: .regular))
+                        .foregroundStyle(.black.opacity(0.55))
+                }
+
+                Spacer()
+
+                if !apphud.premiumActive {
+                    Image(systemName: "chevron.right")
+                        .font(.system(size: 12, weight: .semibold))
+                        .foregroundStyle(.black.opacity(0.25))
+                }
             }
-
-            VStack(alignment: .leading, spacing: 2) {
-                Text(apphud.hasPremium
-                     ? L10n.s("sub_status_premium_title", lang: lang)
-                     : L10n.s("sub_status_free_title", lang: lang))
-                    .font(.system(size: 14, weight: .semibold))
-                    .foregroundStyle(.black)
-
-                Text(apphud.hasPremium
-                     ? L10n.s("sub_status_premium_subtitle", lang: lang)
-                     : L10n.s("sub_status_free_subtitle", lang: lang))
-                    .font(.system(size: 12, weight: .regular))
-                    .foregroundStyle(.black.opacity(0.55))
-            }
-
-            Spacer()
-
-            if !apphud.hasPremium {
-                Image(systemName: "chevron.right")
-                    .font(.system(size: 12, weight: .semibold))
-                    .foregroundStyle(.black.opacity(0.25))
+            .padding(14)
+            .background(badgeBackground)
+            .overlay(
+                RoundedRectangle(cornerRadius: 22, style: .continuous)
+                    .stroke(badgeStroke, lineWidth: 1)
+            )
+            .clipShape(RoundedRectangle(cornerRadius: 22, style: .continuous))
+            .contentShape(Rectangle())
+            .onTapGesture {
+                guard !apphud.premiumActive else { return }
+                Analytics.event("home_subscription_badge_tap")
+                paywall.present()
             }
         }
-        .padding(14)
-        .background(badgeBackground)
-        .overlay(
+
+        var badgeTint: Color {
+            apphud.premiumActive ? .yellow : .gray
+        }
+
+        var badgeBackground: some View {
             RoundedRectangle(cornerRadius: 22, style: .continuous)
-                .stroke(badgeStroke, lineWidth: 1)
-        )
-        .clipShape(RoundedRectangle(cornerRadius: 22, style: .continuous))
-        .contentShape(Rectangle())
-        .onTapGesture {
-            guard !apphud.hasPremium else { return }
-            Analytics.event("home_subscription_badge_tap")
-            paywall.present()
+                .fill(apphud.premiumActive ? Color.yellow.opacity(0.18) : Color.white.opacity(0.65))
         }
-    }
 
-    var badgeTint: Color {
-        apphud.hasPremium ? .yellow : .gray
-    }
-
-    var badgeBackground: some View {
-        RoundedRectangle(cornerRadius: 22, style: .continuous)
-            .fill(apphud.hasPremium ? Color.yellow.opacity(0.18) : Color.white.opacity(0.65))
-    }
-
-    var badgeStroke: Color {
-        apphud.hasPremium ? Color.yellow.opacity(0.45) : Color.white.opacity(0.35)
-    }
+        var badgeStroke: Color {
+            apphud.premiumActive ? Color.yellow.opacity(0.45) : Color.white.opacity(0.35)
+        }
 
     // ---- остальной UI (твой код) ----
 

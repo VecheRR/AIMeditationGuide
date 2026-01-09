@@ -2,7 +2,7 @@
 //  AdMobRewardedManager.swift
 //  AIMeditationGuide
 //
-//  Created by  Vladislav on 07.01.2026.
+//  Created by Vladislav on 07.01.2026.
 //
 
 import Foundation
@@ -19,17 +19,41 @@ final class AdMobRewardedManager: NSObject, ObservableObject {
     @Published private(set) var isReady: Bool = false
 
     private var rewardedAd: RewardedAd?
+
     private var adUnitId: String {
-        // Тестовый rewarded ID (поменяешь на свой в проде)
-        // ca-app-pub-3940256099942544/5224354917
-        Bundle.main.object(forInfoDictionaryKey: "ADMOB_REWARDED_AD_UNIT_ID") as? String ?? "ca-app-pub-3940256099942544/5224354917"
+        Keys.rewardedAd.isEmpty
+        ? "ca-app-pub-3940256099942544/5224354917" // test rewarded
+        : Keys.rewardedAd
     }
 
     private var rewardEarned: Bool = false
     private var showContinuation: CheckedContinuation<Bool, Never>?
 
+    // ✅ единая точка правды: реклама только для НЕ premium (включая debug premium)
+    private var canShowAds: Bool {
+        !ApphudManager.shared.premiumActive
+    }
+
+    // ✅ сброс состояния + безопасное завершение ожидания
+    func disableAdsForPremium() {
+        rewardedAd = nil
+        isReady = false
+        isLoading = false
+
+        // если кто-то ждёт show() — премиуму “награду” можно отдать сразу
+        showContinuation?.resume(returning: true)
+        showContinuation = nil
+    }
+
     func preload() {
+        // ✅ Premium -> вообще не грузим
+        guard canShowAds else {
+            disableAdsForPremium()
+            return
+        }
+
         guard !isLoading else { return }
+
         isLoading = true
         isReady = false
 
@@ -37,13 +61,21 @@ final class AdMobRewardedManager: NSObject, ObservableObject {
         RewardedAd.load(with: adUnitId, request: request) { [weak self] ad, error in
             guard let self else { return }
             Task { @MainActor in
+                // пока грузили — мог включиться premium (в т.ч. debug)
+                guard self.canShowAds else {
+                    self.disableAdsForPremium()
+                    return
+                }
+
                 self.isLoading = false
+
                 if let error {
                     print("AdMob Rewarded load error:", error)
                     self.rewardedAd = nil
                     self.isReady = false
                     return
                 }
+
                 self.rewardedAd = ad
                 self.rewardedAd?.fullScreenContentDelegate = self
                 self.isReady = true
@@ -52,17 +84,17 @@ final class AdMobRewardedManager: NSObject, ObservableObject {
         }
     }
 
-    /// Возвращает true ТОЛЬКО если пользователь реально получил награду.
+    /// true — только если получил награду.
+    /// ✅ Premium: возвращаем true без рекламы.
     func show(from vc: UIViewController) async -> Bool {
-        // если рекламы нет — попробуем подгрузить
-        if rewardedAd == nil {
-            preload()
+        guard canShowAds else {
+            disableAdsForPremium()
+            return true
         }
 
-        // ждём чуть-чуть, если грузится (не бесконечно)
+        // если нет рекламы — попробуем подгрузить
         if rewardedAd == nil {
-            // можно сделать улучшение: ждать isReady через async stream
-            return false
+            preload()
         }
 
         guard let ad = rewardedAd else { return false }
@@ -82,20 +114,21 @@ final class AdMobRewardedManager: NSObject, ObservableObject {
     }
 }
 
+// MARK: - FullScreenContentDelegate
 extension AdMobRewardedManager: FullScreenContentDelegate {
 
     func adDidDismissFullScreenContent(_ ad: FullScreenPresentingAd) {
         print("Ad dismissed ✅ rewardEarned=\(rewardEarned)")
         isLoading = false
 
-        // Сбрасываем и сразу грузим следующую
         rewardedAd = nil
         isReady = false
-        preload()
 
-        // ВАЖНО: завершаем await именно тут (после закрытия)
         showContinuation?.resume(returning: rewardEarned)
         showContinuation = nil
+
+        // ✅ грузим следующую только если НЕ premium
+        if canShowAds { preload() }
     }
 
     func ad(_ ad: FullScreenPresentingAd, didFailToPresentFullScreenContentWithError error: Error) {
@@ -103,9 +136,10 @@ extension AdMobRewardedManager: FullScreenContentDelegate {
         isLoading = false
         rewardedAd = nil
         isReady = false
-        preload()
 
         showContinuation?.resume(returning: false)
         showContinuation = nil
+
+        if canShowAds { preload() }
     }
 }

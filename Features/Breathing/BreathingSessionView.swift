@@ -130,7 +130,6 @@ struct BreathingSessionView: View {
                 .background(Color.black.opacity(0.18))
                 .clipShape(Capsule())
                 .animation(.easeInOut(duration: 0.2), value: countdown)
-                .glassEffect(in: .capsule)
         }
     }
 
@@ -142,7 +141,6 @@ struct BreathingSessionView: View {
                     .padding(10)
                     .background(Color.white.opacity(0.7))
                     .clipShape(Circle())
-                    .glassEffect()
             }
             .accessibilityLabel(
                 Text(
@@ -201,7 +199,9 @@ struct BreathingSessionView: View {
                 t.invalidate()
                 countdownTimer = nil
                 isCountingDown = false
-                vm.start()
+                Task { @MainActor in
+                    vm.start()
+                }
             } else {
                 countdown -= 1
             }

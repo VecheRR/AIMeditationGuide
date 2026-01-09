@@ -35,19 +35,17 @@ struct SettingsView: View {
                 Button {
                     Analytics.event("settings_premium_tap")
 
-                    if apphud.hasPremium {
-                        // Открыть управление подписками Apple
+                    if apphud.premiumActive {
                         if let url = URL(string: "https://apps.apple.com/account/subscriptions") {
                             UIApplication.shared.open(url)
                         }
                     } else {
-                        // Показать paywall
                         paywall.present()
                     }
 
                 } label: {
                     HStack {
-                        Text(apphud.hasPremium
+                        Text(apphud.premiumActive
                              ? L10n.s("settings_manage_subscription", lang: uiLang)
                              : L10n.s("settings_get_premium", lang: uiLang))
                         Spacer()
@@ -56,7 +54,6 @@ struct SettingsView: View {
                     }
                 }
 
-                // опционально: дать “сбросить отказ”, чтобы снова показывался paywall на старте
                 if paywallSkippedOnce {
                     Button {
                         paywallSkippedOnce = false
@@ -70,6 +67,29 @@ struct SettingsView: View {
             } header: {
                 Text(L10n.s("settings_premium_section", lang: uiLang))
             }
+
+#if DEBUG
+            // ✅ DEBUG section: force premium on/off
+            Section {
+                Toggle(isOn: $apphud.debugForcePremium) {
+                    Text("Debug: Force Premium")
+                }
+
+                Button {
+                    // чтобы прямо сейчас тестить рекламу без перезапуска
+                    if apphud.premiumActive {
+                        AdMobRewardedManager.shared.disableAdsForPremium()
+                    } else {
+                        AdMobRewardedManager.shared.preload()
+                    }
+                } label: {
+                    Text("Apply Ad State")
+                        .foregroundStyle(.secondary)
+                }
+            } header: {
+                Text("Debug")
+            }
+#endif
 
             Section {
                 TextField(L10n.s("settings_name_placeholder", lang: uiLang), text: $userName)

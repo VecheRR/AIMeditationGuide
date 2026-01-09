@@ -32,15 +32,16 @@ struct RoutineGeneratorService {
 
     /// Generates 1–3 purposeful practices using the OpenAI client.
     func generateRoutine(
-        context: RoutineGenerationContext = .basic(),
+        context: RoutineGenerationContext? = nil,
         lang: AppLanguage
     ) async throws -> [RoutineItem] {
 
-        let dayPart = DayPart(date: context.referenceDate)
+        let ctx = context ?? RoutineGenerationContext.basic()
 
-        // ВАЖНО: язык промптов зависит от appLanguage
+        let dayPart = DayPart(date: ctx.referenceDate)
+
         let system = systemPrompt(lang: lang)
-        let user = userPrompt(context: context, dayPart: dayPart, lang: lang)
+        let user = userPrompt(context: ctx, dayPart: dayPart, lang: lang)
 
         struct RoutineAIResponse: Decodable { let items: [RoutineAIItem] }
         struct RoutineAIItem: Decodable { let title: String; let details: String; let durationMinutes: Int }

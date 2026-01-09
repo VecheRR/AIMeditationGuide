@@ -63,14 +63,14 @@
 		86E6EAF72F02D75500532BE2 /* MoodPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E6EAEA2F02D11800532BE2 /* MoodPickerView.swift */; };
 		86E6EAF82F02D75500532BE2 /* BreathingPhase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E6EAF22F02D14300532BE2 /* BreathingPhase.swift */; };
 		86E6EAF92F02D75500532BE2 /* DurationPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E6EAEC2F02D12400532BE2 /* DurationPickerView.swift */; };
-		90B6A05704376DFC09266756 /* Pods_AIMeditationGuide.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4708DE144315894144C7124B /* Pods_AIMeditationGuide.framework */; };
 		B1F6EB112F04C00100AAAAAA /* KenBurnsCoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F6EB102F04C00100AAAAAA /* KenBurnsCoverView.swift */; };
 		B1LOCAL012F05C00000AAAAAA /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = B1LOCAL002F05BFF800AAAAAA /* Localizable.strings */; };
+		F0DC49BF5BF0F8D65FBE4DA7 /* Pods_AIMeditationGuide.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 332F8B715981B61BDE2C12A1 /* Pods_AIMeditationGuide.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		0ADC6AE24C2B30BB9B00682A /* Pods-AIMeditationGuide.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AIMeditationGuide.release.xcconfig"; path = "Target Support Files/Pods-AIMeditationGuide/Pods-AIMeditationGuide.release.xcconfig"; sourceTree = "<group>"; };
-		4708DE144315894144C7124B /* Pods_AIMeditationGuide.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AIMeditationGuide.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		30AD023608603B6A7C60479B /* Pods-AIMeditationGuide.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AIMeditationGuide.release.xcconfig"; path = "Target Support Files/Pods-AIMeditationGuide/Pods-AIMeditationGuide.release.xcconfig"; sourceTree = "<group>"; };
+		332F8B715981B61BDE2C12A1 /* Pods_AIMeditationGuide.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AIMeditationGuide.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8648DD312F0FC4A000370C54 /* AnalyticsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsService.swift; sourceTree = "<group>"; };
 		865532142F106CC40095BC57 /* PaywallPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallPresenter.swift; sourceTree = "<group>"; };
 		8655BD472F03180B00BAEA89 /* RoutineGeneratorService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutineGeneratorService.swift; sourceTree = "<group>"; };
@@ -132,7 +132,7 @@
 		B1F6EB102F04C00100AAAAAA /* KenBurnsCoverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KenBurnsCoverView.swift; sourceTree = "<group>"; };
 		B1LOCAL032F05C01E00AAAAAA /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		B1LOCAL042F05C02700AAAAAA /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
-		DF0FF6D086CBEB9D5CA82F43 /* Pods-AIMeditationGuide.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AIMeditationGuide.debug.xcconfig"; path = "Target Support Files/Pods-AIMeditationGuide/Pods-AIMeditationGuide.debug.xcconfig"; sourceTree = "<group>"; };
+		F4ECF58BB329E9A5FC9BB784 /* Pods-AIMeditationGuide.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AIMeditationGuide.debug.xcconfig"; path = "Target Support Files/Pods-AIMeditationGuide/Pods-AIMeditationGuide.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -161,18 +161,26 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				90B6A05704376DFC09266756 /* Pods_AIMeditationGuide.framework in Frameworks */,
+				F0DC49BF5BF0F8D65FBE4DA7 /* Pods_AIMeditationGuide.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3EBB1276B2FFD5BBD1EE0025 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				332F8B715981B61BDE2C12A1 /* Pods_AIMeditationGuide.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		4D557E985366AFDC7CBA63D5 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				DF0FF6D086CBEB9D5CA82F43 /* Pods-AIMeditationGuide.debug.xcconfig */,
-				0ADC6AE24C2B30BB9B00682A /* Pods-AIMeditationGuide.release.xcconfig */,
+				F4ECF58BB329E9A5FC9BB784 /* Pods-AIMeditationGuide.debug.xcconfig */,
+				30AD023608603B6A7C60479B /* Pods-AIMeditationGuide.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -218,7 +226,7 @@
 				86E6EA842F02A3DA00532BE2 /* AIMeditationGuide */,
 				86E6EA832F02A3DA00532BE2 /* Products */,
 				4D557E985366AFDC7CBA63D5 /* Pods */,
-				BC115B3629D9EB8C3051BCF8 /* Frameworks */,
+				3EBB1276B2FFD5BBD1EE0025 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -430,14 +438,6 @@
 			path = Networking;
 			sourceTree = "<group>";
 		};
-		BC115B3629D9EB8C3051BCF8 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				4708DE144315894144C7124B /* Pods_AIMeditationGuide.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -445,11 +445,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 86E6EA8D2F02A3DC00532BE2 /* Build configuration list for PBXNativeTarget "AIMeditationGuide" */;
 			buildPhases = (
-				D2F8B1CF9A46DAD51ED2FB04 /* [CP] Check Pods Manifest.lock */,
+				340CC3C65E1211F8C3DB000F /* [CP] Check Pods Manifest.lock */,
 				86E6EA7E2F02A3DA00532BE2 /* Sources */,
 				86E6EA7F2F02A3DA00532BE2 /* Frameworks */,
 				86E6EA802F02A3DA00532BE2 /* Resources */,
-				33CA3B65CEA3529FE326478A /* [CP] Copy Pods Resources */,
+				9A050E2DA653AAB6C626C655 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -517,28 +517,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		33CA3B65CEA3529FE326478A /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-AIMeditationGuide/Pods-AIMeditationGuide-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-AIMeditationGuide/Pods-AIMeditationGuide-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-AIMeditationGuide/Pods-AIMeditationGuide-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		D2F8B1CF9A46DAD51ED2FB04 /* [CP] Check Pods Manifest.lock */ = {
+		340CC3C65E1211F8C3DB000F /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -558,6 +537,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		9A050E2DA653AAB6C626C655 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-AIMeditationGuide/Pods-AIMeditationGuide-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-AIMeditationGuide/Pods-AIMeditationGuide-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-AIMeditationGuide/Pods-AIMeditationGuide-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -690,7 +686,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 26.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -699,6 +695,8 @@
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				WARNING_CFLAGS = "-Wno-deprecated-declarations";
+				"WARNING_CFLAGS[arch=*]" = "-Wno-deprecated-declarations";
 			};
 			name = Debug;
 		};
@@ -751,7 +749,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 26.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -759,12 +757,13 @@
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				VALIDATE_PRODUCT = YES;
+				WARNING_CFLAGS = "-Wno-deprecated-declarations";
 			};
 			name = Release;
 		};
 		86E6EA8E2F02A3DC00532BE2 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = DF0FF6D086CBEB9D5CA82F43 /* Pods-AIMeditationGuide.debug.xcconfig */;
+			baseConfigurationReference = F4ECF58BB329E9A5FC9BB784 /* Pods-AIMeditationGuide.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -784,6 +783,7 @@
 				INFOPLIST_KEY_UIStatusBarStyle = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -803,7 +803,7 @@
 		};
 		86E6EA8F2F02A3DC00532BE2 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0ADC6AE24C2B30BB9B00682A /* Pods-AIMeditationGuide.release.xcconfig */;
+			baseConfigurationReference = 30AD023608603B6A7C60479B /* Pods-AIMeditationGuide.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -823,6 +823,7 @@
 				INFOPLIST_KEY_UIStatusBarStyle = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

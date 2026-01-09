@@ -20,10 +20,17 @@ import AdSupport
 @main
 struct AIMeditationGuideApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
+    @Environment(\.scenePhase) private var scenePhase
 
     var body: some Scene {
         WindowGroup { RootView() }
             .modelContainer(AppModelContainer.container)
+            .onChange(of: scenePhase) { _, phase in
+                if phase == .active {
+                    // 🔥 железобетон: просим ATT когда сцена стала active
+                    AppDelegate.requestATTThenStartAppsFlyer()
+                }
+            }
     }
 }
 
@@ -31,10 +38,18 @@ struct AIMeditationGuideApp: App {
 
 final class AppDelegate: NSObject, UIApplicationDelegate, AppsFlyerLibDelegate {
 
+    // делаем статиком, чтобы можно было дергать из scenePhase
+    private static var didRequestATT: Bool {
+        get { UserDefaults.standard.bool(forKey: "did_request_att") }
+        set { UserDefaults.standard.set(newValue, forKey: "did_request_att") }
+    }
+
     func application(
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil
     ) -> Bool {
+
+        NSLog("✅ APP: didFinishLaunching")
 
         // 1) Apphud
         if Keys.apphud.isEmpty {
@@ -60,22 +75,18 @@ final class AppDelegate: NSObject, UIApplicationDelegate, AppsFlyerLibDelegate {
         // 5) AppsFlyer
         configureAppsFlyer()
 
-        // 6) ATT (даём AppsFlyer подождать)
-        configureATTFlow()
-
         return true
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
-        // стандартная рекомендация AppsFlyer
-        AppsFlyerLib.shared().start()
+        NSLog("✅ APP: applicationDidBecomeActive")
+        // Доп. страховка (не мешает сценам)
+        Self.requestATTThenStartAppsFlyer()
     }
 
     // MARK: - AppsFlyer
 
     private func configureAppsFlyer() {
-        // IMPORTANT: добавь это в Info.plist и в Keys.swift (если ещё нет)
-        // APPSFLYER_APP_ID = "123456789" (без id)
         let devKey = Keys.appsflyer
         let appId  = Keys.plist("APPSFLYER_APP_ID")
 
@@ -92,18 +103,47 @@ final class AppDelegate: NSObject, UIApplicationDelegate, AppsFlyerLibDelegate {
         #endif
     }
 
-    // MARK: - ATT
+    // MARK: - ATT (железобетон)
 
-    private func configureATTFlow() {
-        guard #available(iOS 14, *) else { return }
+    static func requestATTThenStartAppsFlyer() {
+        #if targetEnvironment(simulator)
+        NSLog("⚠️ ATT: SIMULATOR (может вести себя странно)")
+        #endif
 
-        // пусть ждёт ATT (но не вечно)
+        guard #available(iOS 14, *) else {
+            NSLog("ATT: iOS < 14 -> start AppsFlyer")
+            AppsFlyerLib.shared().start()
+            return
+        }
+
+        let status = ATTrackingManager.trackingAuthorizationStatus
+        NSLog("ATT: status=%d didRequestATT=%@", status.rawValue, didRequestATT.description)
+
+        // если уже не notDetermined — окна не будет
+        guard status == .notDetermined else {
+            NSLog("ATT: status != notDetermined -> start AppsFlyer")
+            AppsFlyerLib.shared().start()
+            return
+        }
+
+        // если уже пытались — не долбим
+        guard !didRequestATT else {
+            NSLog("ATT: already requested flag -> start AppsFlyer")
+            AppsFlyerLib.shared().start()
+            return
+        }
+
+        // AppsFlyer ждёт ATT
         AppsFlyerLib.shared().waitForATTUserAuthorization(timeoutInterval: 60)
 
-        if ATTrackingManager.trackingAuthorizationStatus == .notDetermined {
-            ATTrackingManager.requestTrackingAuthorization { _ in
-                // безопасно дернуть start ещё раз
+        // важно: запрос только когда UI активен; даем небольшую паузу
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
+            NSLog("ATT: requesting now...")
+
+            ATTrackingManager.requestTrackingAuthorization { newStatus in
                 DispatchQueue.main.async {
+                    didRequestATT = true
+                    NSLog("ATT: result=%d", newStatus.rawValue)
                     AppsFlyerLib.shared().start()
                 }
             }
@@ -114,8 +154,6 @@ final class AppDelegate: NSObject, UIApplicationDelegate, AppsFlyerLibDelegate {
 
     func onConversionDataSuccess(_ conversionInfo: [AnyHashable: Any]) {
         let uid = AppsFlyerLib.shared().getAppsFlyerUID()
-
-        // ВАЖНО: без trailing closure — иначе "Extra trailing closure passed in call"
         Apphud.setAttribution(
             data: ApphudAttributionData(rawData: conversionInfo),
             from: .appsFlyer,
@@ -126,8 +164,6 @@ final class AppDelegate: NSObject, UIApplicationDelegate, AppsFlyerLibDelegate {
 
     func onConversionDataFail(_ error: Error) {
         let uid = AppsFlyerLib.shared().getAppsFlyerUID()
-
-        // тоже передаем как rawData, чтобы тип совпадал
         Apphud.setAttribution(
             data: ApphudAttributionData(rawData: ["error": error.localizedDescription]),
             from: .appsFlyer,

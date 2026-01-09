@@ -1,4 +1,4 @@
-platform :ios, '26.1'
+platform :ios, '18.0'
 
 use_frameworks! :linkage => :static
 inhibit_all_warnings!

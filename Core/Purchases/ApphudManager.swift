@@ -10,8 +10,6 @@ import ApphudSDK
 import StoreKit
 import Combine
 
-// MARK: - ViewModel for Paywall product (если у тебя уже есть свой PaywallProductVM — УДАЛИ этот блок)
-
 @MainActor
 final class ApphudManager: ObservableObject {
     static let shared = ApphudManager()
@@ -22,39 +20,73 @@ final class ApphudManager: ObservableObject {
     @Published var lastError: String?
     @Published var isReady: Bool = false
 
-    // Создай в Apphud → Placements identifier = "main" и привяжи к нему paywall main_paywall
+    // MARK: - DEBUG premium override
+    private static let debugKey = "debug_force_premium"
+
+    @Published var debugForcePremium: Bool = UserDefaults.standard.bool(forKey: debugKey) {
+        didSet {
+            UserDefaults.standard.set(debugForcePremium, forKey: Self.debugKey)
+
+            // ✅ очень важно: после тумблера сразу “подтянуть” логику
+            objectWillChange.send()
+
+            // ✅ если включили premium — сразу выключим рекламу и сбросим загруженные ads
+            if premiumActive {
+                AdMobRewardedManager.shared.disableAdsForPremium()
+            } else {
+                // если выключили — можно заново начать подгрузку
+                AdMobRewardedManager.shared.preload()
+            }
+        }
+    }
+
+    /// ✅ Это должен использовать ВЕСЬ UI/логика
+    var premiumActive: Bool {
+#if DEBUG
+        return debugForcePremium || hasPremium
+#else
+        return hasPremium
+#endif
+    }
+
+    // Apphud placement/paywall IDs
     private let placementID = "placement_main"
     private let expectedPaywallID = "main_paywall"
 
     private var didBootstrap = false
-
     private init() {}
 
-    /// Вызывай после старта SDK (у тебя старт уже в AppDelegate)
     func start() {
-        // НЕ стартуем SDK тут, чтобы не было двойного старта.
-        // В AppDelegate у тебя уже есть:
-        // Apphud.start(apiKey: Keys.apphud)
-
         guard !didBootstrap else { return }
         didBootstrap = true
 
         refreshStatus()
+
+#if DEBUG
+        debugForcePremium = UserDefaults.standard.bool(forKey: Self.debugKey)
+#endif
+
         loadPaywallProducts()
-        
+
+        // optional debug (StoreKit2)
         Task {
             do {
-                let ids = ["sonicforge_weekly","sonicforge_monthly","sonicforge_yearly"]
-                let products = try await Product.products(for: ids)
-                print("StoreKit products:", products.map { $0.id })
+                let ids = ["sonicforge_weekly", "sonicforge_monthly", "sonicforge_yearly"]
+                let sk2 = try await Product.products(for: ids)
+                print("StoreKit2 products:", sk2.map { $0.id })
             } catch {
-                print("StoreKit error:", error)
+                print("StoreKit2 error:", error)
             }
         }
     }
 
     func refreshStatus() {
         hasPremium = Apphud.hasActiveSubscription() || Apphud.hasPremiumAccess()
+
+        // ✅ если реальный premium стал активен — выключаем рекламу
+        if premiumActive {
+            AdMobRewardedManager.shared.disableAdsForPremium()
+        }
     }
 
     func loadPaywallProducts() {
@@ -65,13 +97,12 @@ final class ApphudManager: ObservableObject {
 
         Apphud.fetchPlacements { [weak self] placements, error in
             guard let self else { return }
-            defer { Task { @MainActor in self.isReady = true } }
 
             Task { @MainActor in
                 defer {
                     self.isLoading = false
                     self.refreshStatus()
-                    self.isReady = true          // ✅ ВСЕГДА СТАВИМ READY
+                    self.isReady = true
                 }
 
                 if let error {
@@ -92,7 +123,6 @@ final class ApphudManager: ObservableObject {
                     return
                 }
 
-                // необязательно, но полезно
                 Apphud.paywallShown(paywall)
 
                 let apphudProducts = paywall.products
@@ -181,15 +211,7 @@ final class ApphudManager: ObservableObject {
 
 // MARK: - Helpers
 
-private extension Optional where Wrapped == String {
-    var nonEmptyOrNil: String? {
-        guard let s = self?.trimmingCharacters(in: .whitespacesAndNewlines), !s.isEmpty else { return nil }
-        return s
-    }
-}
-
 private extension SKProduct {
-    /// Форматированная цена, типа "₽199.00" / "$4.99"
     var formattedPrice: String {
         let formatter = NumberFormatter()
         formatter.numberStyle = .currency
